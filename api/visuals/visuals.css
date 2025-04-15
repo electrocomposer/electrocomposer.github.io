@@ -1,0 +1,328 @@
+:root {
+  --trackNameSize: 5rem;
+  --trackDurationSize: 7rem;
+  --albumDurationSize: 6rem;
+  --albumNameSize: 1.5rem;
+  --genreSize: 1.3rem;
+}
+
+body {
+  background-color: #f3f0f0;
+}
+
+.track-item {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1280px;
+  height: auto; /* Let height adjust automatically */
+  aspect-ratio: 16 / 9; /* Maintain a 16:9 ratio (1280x720) */
+  /* padding: 10px; */
+  border: 1px dashed #888;
+
+  /* background-image: url(photocopy-overlay-flat.png); */
+  background-image: url(dual-texture-alt-2-25-1280.png);
+
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: contain;
+  line-height: 0.75;
+}
+
+.track-item p {
+  width: fit-content;
+  height: fit-content;
+  margin: 10px;
+  /* filter: blur(0.6px);  */
+  /* blur(0.2px) used in JS for PNG download */
+  padding: 20px;
+}
+
+.id span:nth-child(1) {
+  white-space: nowrap;
+  /* filter: blur(0.6px);  */
+}
+
+.id span:nth-child(2) {
+  font-size: 2rem;
+  color: red;
+  /* filter: blur(0.6px);  */
+}
+
+.trackName {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.75;
+}
+
+.trackName span:nth-child(1) {
+  margin-bottom: 10px;
+  margin-left: 4px;
+  /* filter: blur(0.6px); */
+}
+
+.trackName span:nth-child(2) {
+  font-family: sans-serif!important;
+  font-size: var(--trackNameSize);
+  font-weight: bold;
+  letter-spacing: -5px;
+  color: white;
+  /* color: #050505; */
+  opacity: 0.85;
+  /* filter: blur(0.4px); */
+}
+
+.trackDuration {
+  white-space: nowrap;
+}
+
+.trackDuration span:nth-child(1) {
+  font-size: 0.8rem;
+  rotate: -90deg;
+  display: inline-block;
+  opacity: 0.8;
+  /* filter: blur(0.4px); */
+}
+
+.trackDuration span:nth-child(2) {
+  font-size: var(--trackDurationSize);
+  font-style: italic;
+  letter-spacing: -5px;
+  color: transparent;
+  -webkit-text-stroke: 1px black;
+  /* filter: blur(0.3px); */
+}
+
+.trackNumber span:nth-child(1) {
+  opacity: 0.5;
+  margin-right: 2px;
+  /* filter: blur(0.6px); */
+}
+
+.trackNumber span:nth-child(2) {
+  font-size: 2rem;
+}
+
+.albumName {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  /* filter: blur(0.6px); */
+}
+
+.albumName span:nth-child(1) {
+  margin-right: -10px;
+  font-style: italic;
+  opacity: 0.5;
+}
+
+.albumName span:nth-child(2) {
+  font-size: var(--albumNameSize);
+}
+
+.albumDuration {
+  white-space: nowrap;
+}
+
+.albumDuration span:nth-child(1) {
+  font-size: 0.8rem;
+  margin-right: -4px;
+  rotate: -90deg;
+  display: inline-block;
+  opacity: 0.7;
+  /* filter: blur(0.4px); */
+}
+
+.albumDuration span:nth-child(2) {
+  font-size: var(--albumDurationSize);
+  font-weight: bold;
+  opacity: 0.1;
+  /* filter: blur(0.4px); */
+}
+
+.releaseYear {
+  color: inherit;
+  /* filter: blur(0.6px); */
+}
+
+.releaseYear span:nth-child(1) {
+  margin-right: 0px;
+}
+
+.releaseYear span:nth-child(2) {
+  font-size: 1rem;
+  opacity: 0.4;
+}
+
+.genre {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.genre span:nth-child(1) {
+  width: fit-content;
+  margin-bottom: -3px;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  /* filter: blur(0.3px); */
+}
+
+.genre span:nth-child(2) {
+  font-size: var(--genreSize);
+  /* filter: blur(0.7px); */
+}
+
+.color-container {
+  position: absolute;
+  top: 200px;
+  right: -20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.color-box {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+  :root {
+    --trackNameSize: 7rem;
+    --trackDurationSize: 5rem;
+    --albumDurationSize: 3.5rem;
+    --albumNameSize: 1rem;
+    --genreSize: 0.5rem;
+  }
+
+  .track-item {
+    margin: 10px 0 0;
+  }
+
+  .track-item {
+    font-size: 0.5rem !important;
+  }
+
+  .trackName span:nth-child(2) {
+    font-weight: bold;
+    letter-spacing: -5px;
+  }
+
+  .trackDuration span:nth-child(1),
+  .albumDuration span:nth-child(1) {
+    font-size: 0.5rem;
+  }
+
+  .genre span:nth-child(1) {
+    font-size: 0.4rem;
+  }
+
+  .color-container {
+    top: 50px;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  :root {
+    --trackNameSize: 3.5rem;
+    --trackDurationSize: 2.2rem;
+    --albumDurationSize: 1.5rem;
+    --albumNameSize: 0.8rem;
+    --genreSize: 0.2rem;
+  }
+
+  .track-item {
+    margin: 10px 0 0;
+  }
+
+  .track-item {
+    font-size: 0.5rem !important;
+  }
+
+  .trackName span:nth-child(2) {
+    font-weight: bold;
+    letter-spacing: -5px;
+  }
+
+  .trackDuration span:nth-child(1),
+  .albumDuration span:nth-child(1) {
+    font-size: 0.5rem;
+  }
+
+  .genre span:nth-child(1) {
+    font-size: 0.4rem;
+  }
+
+  .color-container {
+    top: 5px;
+    right: 0px;
+  }
+
+  .color-box {
+    width: 5px;
+    height: 20px;
+    border: 1px solid #ddd;
+  }
+}
+
+
+/* hover download PNG buttons */
+/* hacky hide on small screens */
+  .download-btn,
+  .remove-bg-btn,
+  .white-text-btn,
+  .bg-and-white-text-btn, 
+  .bg-black-title-black-text-btn, 
+  .bg-black-title-white-text-btn, 
+  .no-bg-black-title-black-text-btn, 
+  .no-bg-black-title-white-text-btn {
+    background: transparent;
+    color: transparent;
+  }
+
+@media (min-width: 767px) {
+  .download-btn,
+  .remove-bg-btn,
+  .white-text-btn,
+  .bg-and-white-text-btn, 
+  .bg-black-title-black-text-btn, 
+  .bg-black-title-white-text-btn,
+  .no-bg-black-title-black-text-btn, 
+  .no-bg-black-title-white-text-btn {
+    background: transparent;
+    color: transparent;
+    padding: 8px 4px;
+    cursor: pointer;
+  }
+
+  .track-item:hover .download-btn,
+  .track-item:hover .bg-and-white-text-btn,
+  .track-item:hover .remove-bg-btn,
+  .track-item:hover .white-text-btn, 
+  .track-item:hover .bg-black-title-black-text-btn, 
+  .track-item:hover .bg-black-title-white-text-btn,
+  .track-item:hover .no-bg-black-title-black-text-btn,
+  .track-item:hover .no-bg-black-title-white-text-btn {
+    background: #000;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+
+
+.fade-in-load-more-btn {
+      animation: fadeIn 3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }

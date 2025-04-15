@@ -1,0 +1,136 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root{
+    --lines:#00ffec;
+    --slices-above:#ff00ce;
+    --slices-below:#21ff25;
+    --inner-hoop:	#fffc02;
+    --outer-hoop:#cc00ff;
+    }
+    body{
+      background-color: #ff00ce;
+      overflow: hidden;
+    }
+    .wrapper{
+      width: 100vw;
+      height: 100vh;
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    svg{
+      position: absolute; /* change to relative to see layers */
+      top: 0%;
+      height: 100%;
+      width: 100%;
+      filter: saturate(.3);
+    }
+    circle{
+      opacity: 1;
+      animation: draw 3000ms ease-in backwards infinite;
+    }
+    @keyframes draw{
+      0%{
+        stroke-dashoffset: 10;
+        /* opacity: 1; */
+        filter: hue-rotate(0deg);
+        transform: matrix(1);
+        /* transform: matrix(6, 2, 3, 4, 5, 6); */
+      }
+      20%{
+        stroke-dashoffset: 20;
+        /* opacity: .9; */
+        filter: hue-rotate(10deg);
+        transform: matrix(6, 2, 2, 4, 5, 3);
+      }
+      40%{
+        stroke-dashoffset: 30;
+        /* opacity: .7; */
+        filter: hue-rotate(20deg);
+        transform: matrix(3, 2, 2, 4, 5, 3);
+      }
+      60%{
+        stroke-dashoffset: 40;
+        /* opacity: .5; */
+        filter: hue-rotate(20deg);
+      }
+      80%{
+        stroke-dashoffset: 50;
+        /* opacity: .3; */
+        filter: hue-rotate(10deg);
+      }
+      100%{
+        stroke-dashoffset: 60;
+        /* opacity: .1; */
+        filter: hue-rotate(0deg);
+        transform: matrix(3, 2, 2, 4, 5, 3);
+      }
+    }
+    text{
+      position: absolute;
+      top: 42%;
+      font-size: clamp(3.5rem, 12.5vw, 7.5rem);
+      font-weight: bold;
+      line-height: calc(10.5vh + 37%);
+      color: #fffc02;
+      filter: saturate(.1);
+      text-anchor: middle;
+      animation: pulse 3000ms cubic-bezier(.50,.85,.25,1) infinite;
+    }
+    @keyframes pulse {
+      0%{
+        scale: 0;
+        opacity: 0;
+      }
+      10%{
+        scale: 0.5;
+        opacity: 0;
+      }
+      15%{
+        scale: 1.5;
+        opacity: 1;
+      }
+      25%{
+        scale: 1.7;
+        opacity: 1;
+      }
+      50%{
+        scale: 0;
+        opacity: .5;
+      }
+      75%{
+        scale: 0;
+        opacity: 0;
+      }
+      100%{
+        scale: 0;
+        opacity: 0;
+      }
+    }
+
+#content{
+  color: black;
+  font-size: 10rem;
+}
+
+
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

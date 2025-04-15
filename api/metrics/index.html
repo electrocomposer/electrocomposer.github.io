@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>electroComposer</title>
+  <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
+  <script src='/tailwindcss.min.js'></script>
+</head>
+<style>
+body{
+  font-size: 20px;
+  background-color: #202123;
+}
+.slideDown{
+  animation: .5s ease-out 0s 1 slideDown;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+</style>
+<body class="space-mono-regular pb-[80px] slideDown">
+
+<div class="flex flex-col justify-center items-center">
+
+<a class="text-white" href="/api/">&larr;back</a>
+
+<!-- <div id="metrics"></div>   -->
+
+<div class="bg-red-300 border border-dashed" id="shortestTrack"></div>  
+<div class="-ml-16 rotate-3 bg-yellow-300 border border-dashed" id="longestTrack"></div>  
+<div class="ml-16 bg-cyan-300 -rotate-3 border border-dashed" id="averageTrack"></div>  
+<div class="bg-green-300 border border-dashed" id="medianTrack"></div>  
+<div class="bg-orange-300 -ml-16 rotate-3 border border-dashed" id="modeTrack"></div>  
+<div class="bg-purple-300 -rotate-3 ml-16 border border-dashed" id="rangeCoefficient"></div>  
+<div class="bg-gray-100 border border-dashed" id="duplicateDurations"></div>  
+
+</div>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+const api = "https://ecapi.olk1.com/tracks"; 
+  // 
+  // 
+  // 
+  // 
+
+
+
+
+
+
+const metricsContainer = document.querySelector("#metrics");
+const shortestTrackContainer = document.querySelector("#shortestTrack");
+const longestTrackContainer = document.querySelector("#longestTrack");
+const averageTrackContainer = document.querySelector("#averageTrack");
+const medianTrackContainer = document.querySelector("#medianTrack");
+const modeTrackContainer = document.querySelector("#modeTrack");
+const rangeCoefficientContainer = document.querySelector("#rangeCoefficient");
+
+const duplicateDurationsContainer = document.querySelector("#duplicateDurations");
+
+async function fetchData() {
+  try {
+    const response = await fetch(api);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+}
+
+
+async function fetchTrackData(data) {
+  try {
+  
+    const trackDurations = data.map(item => item.trackDuration.toFixed(2));
+    
+    metricsContainer.innerHTML = `<pre>${JSON.stringify(trackDurations, null, 2)}</pre>`;
+  
+  } catch (error) {
+  
+    metricsContainer.innerHTML = "<p>Error fetching data.</p>";
+    return [];
+  }
+}
+
+
+
+
+async function findShortestTrack(data) {
+  try {
+    // Extract trackDuration values and convert to seconds (as numbers)
+    const trackDurationsInSeconds = data.map(item => {
+      const duration = parseFloat(item.trackDuration); // Convert string to float
+      return duration;
+    });
+
+    // Find the shortest track by using Math.min on the array of durations
+    const ShortestTrack = Math.min(...trackDurationsInSeconds);
+
+    // Log the shortest track value
+    // console.log("Shortest Track (in minutes):", ShortestTrack);
+
+    shortestTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Shortest Track</p> <p>${ShortestTrack}s</p></div>`;  
+
+    return ShortestTrack;
+  } catch (error) {
+    console.error("Error finding the shortest track:", error);
+    return null;
+  }
+}
+
+
+async function findLongestTrack(data) {
+  try {
+    // Extract trackDuration values and convert to seconds (as numbers)
+    const trackDurationsInSeconds = data.map(item => {
+      const duration = parseFloat(item.trackDuration); // Convert string to float
+      return duration;
+    });
+
+    // Find the shortest track by using Math.min on the array of durations
+    const LongestTrack = Math.max(...trackDurationsInSeconds);
+
+    // Log the shortest track value
+    // console.log("Longest Track (in minutes):", LongestTrack);
+
+    longestTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Longest Track</p> <p>${LongestTrack}m</p></div>`;  
+
+    return LongestTrack;
+  } catch (error) {
+    console.error("Error finding the Longest track:", error);
+    return null;
+  }
+}
+
+
+
+// To calculate the average, you need to sum all the track durations and then divide by the number of tracks.
+async function findAverageTrackLength(data) {
+  try {
+    // Extract trackDuration values and convert to seconds (as numbers)
+    const trackDurationsInSeconds = data.map(item => {
+      const duration = parseFloat(item.trackDuration); // Convert string to float
+      return duration;
+    });
+
+    // Calculate the sum of all track durations
+    const totalDuration = trackDurationsInSeconds.reduce((acc, curr) => acc + curr, 0);
+
+    // Calculate the average duration (in minutes)
+    const averageTrackLength = totalDuration / trackDurationsInSeconds.length;
+
+    // Log the average track length
+    // console.log("Average Track Length (in minutes):", averageTrackLength);
+
+    averageTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Average Track Length</p> <p>${averageTrackLength.toFixed(2)}m</p></div>`;  
+
+    return averageTrackLength;
+  } catch (error) {
+    console.error("Error finding the average track length:", error);
+    return null;
+  }
+}
+
+
+
+
+// find the middle value. if the number of durations is odd the median is the middle value else the median is the average of the two middle values
+async function findMedianTrackLength(data) {
+  try {
+    // Extract trackDuration values and convert to seconds (as numbers)
+    const trackDurationsInSeconds = data.map(item => {
+      const duration = parseFloat(item.trackDuration); // Convert string to float
+      return duration;
+    });
+
+    // Sort the track durations in ascending order
+    trackDurationsInSeconds.sort((a, b) => a - b);
+
+    // Find the median
+    const middleIndex = Math.floor(trackDurationsInSeconds.length / 2);
+    let medianTrackLength;
+
+    if (trackDurationsInSeconds.length % 2 === 0) {
+      // If even number of tracks, median is the average of the two middle values
+      medianTrackLength = (trackDurationsInSeconds[middleIndex - 1] + trackDurationsInSeconds[middleIndex]) / 2;
+    } else {
+      // If odd number of tracks, median is the middle value
+      medianTrackLength = trackDurationsInSeconds[middleIndex];
+    }
+
+    // Log the median track length
+    // console.log("Median Track Length (in minutes):", medianTrackLength);
+
+    medianTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Median Track Length</p> <p>${medianTrackLength.toFixed(2)}m</p></div>`;
+
+    return medianTrackLength;
+  } catch (error) {
+    console.error("Error finding the median track length:", error);
+    return null;
+  }
+}
+
+
+
+//  the mode of the track lengths, we need to find the track duration that appears most frequently in the data
+async function findModeTrackLength(data) {
+  try {
+    // Extract trackDuration values and convert to seconds (as numbers)
+    const trackDurationsInSeconds = data.map(item => {
+      const duration = parseFloat(item.trackDuration); // Convert string to float
+      return duration;
+    });
+
+    // Create an object to count the frequency of each duration
+    const frequencyMap = trackDurationsInSeconds.reduce((acc, curr) => {
+      acc[curr] = (acc[curr] || 0) + 1; // Increment the count for the current duration
+      return acc;
+    }, {});
+
+    // Find the maximum frequency
+    const maxFrequency = Math.max(...Object.values(frequencyMap));
+
+    // Find all durations that have the maximum frequency (mode(s))
+    const modeTrackLengths = Object.keys(frequencyMap)
+      .filter(duration => frequencyMap[duration] === maxFrequency)
+      .map(Number); // Convert the string keys back to numbers
+
+    // Log the mode track lengths
+    // console.log("Mode Track Length(s) (in minutes):", modeTrackLengths);
+
+    modeTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Mode Track Length</p> <p>${modeTrackLengths.join(', ')}m</p></div>`;
+
+    return modeTrackLengths;
+  } catch (error) {
+    console.error("Error finding the mode track length:", error);
+    return null;
+  }
+}
+
+
+
+// The Range Coefficient is a statistical measure that expresses the range(entire dataset / difference between the maximum and minimum values) relative to the mean
+
+async function findRangeCoefficient(data) {
+  try {
+    // Extract trackDuration values and convert to seconds (as numbers)
+    const trackDurationsInSeconds = data.map(item => {
+      const duration = parseFloat(item.trackDuration); // Convert string to float
+      return duration;
+    });
+
+    // Find the maximum and minimum track durations
+    const maxTrackDuration = Math.max(...trackDurationsInSeconds);
+    const minTrackDuration = Math.min(...trackDurationsInSeconds);
+
+    // Calculate the range
+    const range = maxTrackDuration - minTrackDuration;
+
+    // Calculate the mean (average) track duration
+    const mean = trackDurationsInSeconds.reduce((acc, curr) => acc + curr, 0) / trackDurationsInSeconds.length;
+
+    // Calculate the range coefficient
+    const rangeCoefficient = range / mean;
+
+    // Log the range coefficient
+    // console.log("Range Coefficient:", rangeCoefficient);
+
+    rangeCoefficientContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Range Coefficient</p> <p>${rangeCoefficient.toFixed(2)}m</p></div>`;
+
+    return rangeCoefficient;
+  } catch (error) {
+    console.error("Error finding the range coefficient:", error);
+    return null;
+  }
+}
+
+
+
+
+
+
+async function sortDuplicateDurations(data) {
+  try {
+    // Extract trackDuration values and convert to numbers
+    const trackDurationsInSeconds = data.map(item => parseFloat(item.trackDuration)); // Convert string to float
+
+    // Create an object to track the frequency of each track duration
+    const durationCount = {};
+
+    trackDurationsInSeconds.forEach(duration => {
+      // If the duration exists in the object, increment the count, otherwise, set to 1
+      durationCount[duration] = (durationCount[duration] || 0) + 1;
+    });
+
+    // Filter to get only the durations that appear more than once (duplicates)
+    const duplicateDurations = Object.keys(durationCount)
+      .filter(duration => durationCount[duration] > 1) // Only keep durations that appear more than once
+      .map(duration => ({
+        duration: parseFloat(duration).toFixed(2),  // Ensure 2 decimal places
+        count: durationCount[duration]
+      }));
+
+    // Sort the duplicateDurations by the frequency (most frequent first)
+    // and by the duration in descending order within each frequency
+    duplicateDurations.sort((a, b) => {
+      if (b.count === a.count) {
+        return b.duration - a.duration; // If counts are the same, sort by duration (longer first)
+      }
+      return b.count - a.count; // Sort by count (most frequent first)
+    });
+
+    // Log the results for debugging
+    // console.log("Sorted Duplicate Durations:", duplicateDurations);
+
+    // If no duplicates, display a message
+    if (duplicateDurations.length === 0) {
+      duplicateDurationsContainer.innerHTML = "<p>No duplicate durations found.</p>";
+    } else {
+      // Display the results in the UI
+      duplicateDurationsContainer.innerHTML = `
+        <div class="overflow-x-auto">
+          <table class="w-full md:w-[500px] table-auto border-collapse border border-gray-200">
+            <thead>
+              <tr class="bg-gray-200">
+                <th class="text-center px-4 py-2 text-left border border-gray-300">Track Duration (min:sec)</th>
+                <th class="text-center px-4 py-2 text-left border border-gray-300">Same track length occurrence</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${duplicateDurations.map(item => `
+                <tr class="border-b">
+                  <td class="px-4 py-2 text-center border border-gray-300">${item.duration}</td>
+                  <td class="px-4 py-2 text-center border border-gray-300">${item.count} times</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    return { duplicateDurations };
+
+  } catch (error) {
+    console.error("Error sorting track durations:", error);
+    return { duplicateDurations: [] };
+  }
+}
+
+
+
+
+
+
+
+async function init() {
+  const data = await fetchData();
+  // fetchTrackData(data);
+
+  const ShortestTrack = await findShortestTrack(data);
+  const LongestTrack = await findLongestTrack(data);
+  const averageTrack = await findAverageTrackLength(data);
+  const medianTrack = await findMedianTrackLength(data);
+  const modeTrack = await findModeTrackLength(data);
+  const rangeCoefficient = await findRangeCoefficient(data);
+  const duplicateDurations = await sortDuplicateDurations(data);
+
+}
+
+init();
+
+
+
+
+
+
+
+
+
+  
+});
+
+  </script>
+</body>
+</html>

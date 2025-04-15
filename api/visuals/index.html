@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>electroComposer</title>
+  <script type="module" src="/components/header.js"></script>
+  <script src='dom-to-image.min.js'></script>
+  <script src='/tailwindcss.min.js'></script>
+  <link rel='stylesheet' href='/style.css' />
+  <link rel='stylesheet' href='visuals.css' />
+  <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
+</head>
+<body class="space-mono-regular pb-[330px] lg:pb-[500px] fade-in">
+
+
+<div class="space-mono-regular">
+<record-label-header></record-label-header>
+</div>
+
+
+<div id="controls" class="mt-8 lg:mt-20"></div>
+
+<div class="gap-2 mt-4 flex flex-col items-center justify-center" id="trackList"></div>
+
+<div class="flex justify-center">
+  <button id="load-more-btn" class="fade-in-load-more-btn w-fit px-3 py-1 mt-3 bg-green-500 text-white rounded hover:bg-green-600 transition">Load More</button>
+</div>
+
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

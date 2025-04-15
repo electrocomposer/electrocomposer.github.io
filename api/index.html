@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>electroComposer</title>
+  <script type="module" src="/components/header.js"></script>
+  <script src='/tailwindcss.min.js'></script>
+  <link rel='stylesheet' href='/style.css' />
+  <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
+  <style>
+    input[type="checkbox"] {
+      user-select: none;
+    }
+    label {
+      user-select: none; /* Prevent selection of label text */
+    }
+  </style>
+</head>
+<body class="pb-[330px] lg:pb-[500px]">
+
+
+<div class="space-mono-regular">
+<record-label-header></record-label-header>
+</div>
+
+<section class="bg-[#202123] space-mono-regular mt-0 md:mt-16 md:h-48">
+      
+      <div class="cursor-default flex flex-col justify-center md:flex-row md:gap-12 pt-4 md:pt-6 md:pb-8">
+          
+          <div class="flex flex-col items-center">
+            
+            <a class="z-10 relative cursor-pointer text-blue-300 underline -mb-0 md:-mb-4 zoom caption delay" href="/api/metrics">More Metrics</a>
+
+            <h2 class="slideDown text-7xl text-white mt-1 md:mt-3 mb-8 md:mb-1" id="totalTracks"></h2>
+            
+            <p class="w-full text-center zoom caption delay bg-[#f64056] text-xl text-white p-3">Total Tracks</p>
+          </div>
+
+
+          <div class="flex flex-col justify-center items-center">
+            <h2 class="slideDown text-7xl text-white mt-7 mb-8 md:mb-1 md:mt-5" id="totalAlbums"></h2>
+            
+            <p class="w-full text-center caption delay zoom bg-[#b353fc] text-xl text-white p-3">Total Albums</p>
+          </div>
+
+
+          <div class="flex flex-col items-center">
+            
+            <div class="flex gap-0 mt-9 md:mt-0 mb-8 md:mb-1">
+              <div class="w-[100px] flex flex-col items-center">
+                <p class="caption delay zoom text-sm text-white">Hours</p>
+                <h2 class="max-w-[200px] slideDown text-7xl text-white" id="totalHours"></h2>
+              </div>
+              <div>
+                <p class="caption delay text-gray-500 text-7xl mt-4 -ml-1">:</p>
+              </div>
+              <div class="w-[100px] flex flex-col items-center">
+                <p class="caption delay zoom text-sm text-white">Mins</p>
+                <h2 class="max-w-[200px] slideDown text-7xl text-white" id="totalMinutes"></h2>
+              </div>
+            </div>
+            
+            <p class="w-full text-center zoom caption delay bg-[#11cdb1] text-xl text-white p-3">Total Time</p>
+          </div>
+
+     </div>
+    </section>
+
+
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+
+<div id="app" class="max-w-[800px] container mx-auto md:mt-0 px-4 py-6 bg-white rounded">
+
+  <div class="flex justify-end items-center text-sm mb-1">
+    <p>Total: <span id="totalCount">0</span></p>
+  </div>
+
+
+  <input 
+    type="text" 
+    id="searchInput" 
+    placeholder="Search for a track...add () to show full album" 
+    class="w-full p-2 border rounded mb-0.5 focus:outline-none focus:ring focus:ring-blue-300"
+  />
+  <p class="mb-4 text-sm text-slate-400">Example album search: bang () &larr; just add ()</p>
+
+  <div class="flex justify-center gap-4">
+    <div class="flex items-center justify-center">
+      <label for="sort-alpha-checkbox">
+        <input type="checkbox" id="sort-alpha-checkbox" class="mr-1">
+        <span id="sort-alpha">Alpha</span><span class="hidden md:inline-block">betically</span>
+      </label>
+    </div>
+    
+    <div class="flex items-center justify-center gap-1">
+      <label for="sort-track-length-checkbox">
+        <input type="checkbox" id="sort-track-length-checkbox">
+        <span id="sort-track-length">Track Length</span>
+      </label>
+    </div>
+    
+    <div id="album-length-checkbox-container" class="flex items-center justify-center gap-1">
+      <label for="sort-album-length-checkbox">
+        <input type="checkbox" id="sort-album-length-checkbox">
+        <span id="sort-album-length">Album Length</span>
+      </label>
+    </div>
+  
+  </div>
+<!--  -->
+</div>
+
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+
+
+<div class="bg-gray-100 min-h-screen">
+  <div class="max-w-[2600px] container-md mx-auto p-2">
+    
+    <div class="mb-4">
+      
+      <div class="flex justify-center items-center">
+        <div id="storedData" class="mt-2 mr-2 flex gap-2"></div>
+      </div>
+    </div>
+
+    <ul id="trackList" class="flex flex-wrap gap-2 justify-center"></ul>
+  </div>
+
+
+</div>
+
+
+
+
+
+<script src="stats.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

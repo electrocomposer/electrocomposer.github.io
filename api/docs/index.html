@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>electroComposer</title>
+  <script type="module" src="/components/header.js"></script>
+  <script src='/tailwindcss.min.js'></script>
+  <link rel='stylesheet' href='/style.css' />  
+  <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
+  <style>
+
+  </style>
+</head>
+<body class="fade-in pb-[80px]">
+
+<div class="space-mono-regular">
+  <record-label-header></record-label-header>
+</div>
+
+<div class="font-sans leading-10 text-sm sm:text-xl mt-8 p-2 sm:p-8 xl:p-48 bg-gray-100">
+  <div class="bg-white lg:p-16">
+
+    <div class="flex flex-col w-fit p-2 pt-8 lg:pt-0 pl-4">
+      <p class="text-xl tracking-[5px] text-gray-800 mb-2">API Documentation</p>
+
+      <div class="space-mono-regular text-center pb-0.5 mt-0 bg-black text-white">
+        electroComposer
+      </div>
+    </div>
+
+    <div class="bg-gray-50 p-6 mt-2">
+    <strong class="text-gray-700">Base URL:</strong>
+
+    <ul class="ml-6 text-gray-700">
+      <li><strong>Tracks:</strong> <a href="https://ecapi.olk1.com/tracks" target="_blank" class="text-blue-600 hover:underline"><code class="bg-gray-200 px-2 py-1 rounded"><span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks</code></a></li>
+      <span class="italic text-gray-600">Returns all track information fields/the entire data set.</span>
+    </ul>
+    
+    </div>
+
+    <h2 class="italic text-3xl font-semibold text-gray-700 pl-4 mt-4">How to use</h2>
+
+    <div class="bg-gray-50 p-6 mt-4">
+      <div class="mt-0">
+        <strong class="text-gray-700">Response Fields:</strong>
+        <ul class="ml-6 text-gray-700">
+          <li><code class="bg-gray-100 px-2 py-1 rounded">id</code> (Integer): Unique identifier for the track.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">trackName</code> (String): The name of the track.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">albumName</code> (String): The name of the album.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">artistName</code> (String): The artist's name.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">trackNumber</code> (Integer): Track number on the album.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">releaseYear</code> (Integer): The release year.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">trackDuration</code> (Float): Duration of the track (e.g. <code>mm:ss</code>).</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">albumDuration</code> (Float): Duration of an album (e.g. <code>mm:ss</code>).</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">genre</code> (String): The musical genre of the track.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">artwork</code> (String): The accompanying image for the track.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">ytUrl</code> (String): The URL which links to a YouTube video for the track.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">ytPlaylistUrl</code> (String): The URL which links to a YouTube playlist for the album, on which the track features.</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <h3 class="italic text-3xl font-semibold text-gray-700 pl-4 mt-4">Query Parameters <span class="text-xl">(where n = a numerical value)</span></h3>
+
+
+    <div class="bg-gray-50 p-6 mt-4">
+      <div class="mt-0">
+          
+      <h4 class="mt-0 text-lg font-semibold text-gray-800">Pagination:</h4>  
+
+        <ul class="ml-6 text-gray-700">
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks/<em>n</em></code> Get a track by <code>id</code>.</li>
+          
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_limit=<em>n</em></code> Limits the number of results returned.</li>
+          
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_start=<em>n</em></code> Defines the starting index for fetching data.</li>
+
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_start=<em>n</em>&_limit=<em>n</em></code> Defines the pagination range.</li>
+     </ul>
+      </div>
+    </div>
+
+
+
+
+
+
+    <div class="bg-gray-50 p-6 mt-4">
+      <div class="mt-0">
+      
+      <h4 class="mt-0 text-lg font-semibold text-gray-800">Sorting:</h4>
+        
+        <ul class="ml-6 text-gray-700">    
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_sort=releaseYear</code> Specifies the field to sort by (e.g. trackDuration, releaseYear).</li>
+          
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_order=desc</code> Specifies the sorting order (asc or desc/reverse).</li>
+     </ul>
+      </div>
+    </div>
+
+
+
+
+
+
+    <div class="bg-gray-50 p-6 mt-4">
+      <div class="mt-0">
+
+      <h4 class="mt-0 text-lg font-semibold text-gray-800">Filtering:</h4>
+      
+        <ul class="ml-6 text-gray-700">
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?minDuration=120&maxDuration=300</code> Filter by track duration.</li>
+          
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?genre=New Wave</code> Filter match exact values (e.g. genre=New Wave).</li>
+     </ul>
+      </div>
+    </div>
+
+
+
+  <div class="bg-gray-50 p-6 mt-4">
+      <div class="mt-0">
+    
+    <h4 class="mt-0 text-lg font-semibold text-gray-800">Search:</h4>
+    
+        <ul class="ml-6 text-gray-700">
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_search=vanilla</code> Full-text search on albumName and trackName.</li>
+     </ul>
+      </div>
+    </div>
+
+
+
+
+<div class="bg-gray-50 p-6 mt-4">
+      <div class="mt-0">
+    
+    <h4 class="mt-0 text-lg font-semibold text-gray-800">Random:</h4>
+    
+        <ul class="ml-6 text-gray-700">
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_random=5</code> Fetches a random subset of the dataset.</li>
+
+     </ul>
+      </div>
+    </div>
+
+
+
+
+
+
+
+<div class="bg-gray-50 p-6 mt-4">
+      <div class="mt-0">
+    
+    <h4 class="mt-0 text-lg font-semibold text-gray-800">Combine queries (use &amp;):</h4>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_sort=releaseYear&_order=desc</code> Fetch tracks by release year in descending order.</li>   
+     </ul>
+      </div>
+    </div>
+
+
+
+
+
+
+    <div class="bg-gray-50 p-6 mt-4">
+    
+      <h4 class="mt-0 text-lg font-semibold text-gray-800">Example Requests:</h4>
+    
+      <ul class="ml-6 text-gray-700">
+        <li><code class="bg-gray-100 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks/42</code></li>
+        <li><code class="bg-gray-100 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?_limit=50</code></li>
+        <li><code class="bg-gray-100 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?_start=200&_limit=50</code></li>
+        <li class="hidden lg:inline"><code class="bg-gray-100 px-2 py-1 rounded">GET https://ecapi.olk1.com/tracks?minDuration=120&maxDuration=300&_order=desc&genre=Pop</code></li>
+      </ul>
+    </div>
+
+
+<!--  -->
+<!--  -->
+<!--  -->
+  </div>
+</div>
+
+</body>
+</html>

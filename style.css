@@ -1,0 +1,250 @@
+/* #f3f4f6 */
+/* ^^^grey */
+
+/* #FD6A6D */ 
+/* ^^^ brand red */
+
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/SpaceMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/SpaceMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/SpaceMono-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/SpaceMono-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* Correct font usage */
+.space-mono-regular {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.space-mono-bold {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.space-mono-regular-italic {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.space-mono-bold-italic {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-style: italic;
+}
+
+
+img {
+  width: 100%;
+  height: auto;
+}
+li{
+  list-style-type: none;
+}
+/* Prevent scrolling bounce on iOS and macOS */
+html, body {
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
+    overflow-x: hidden;
+}
+html {
+    overflow-y: scroll;
+}
+
+body {
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+    padding-right: 0!important;
+}
+
+
+body:focus {
+    outline: none;
+    -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
+}
+
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+
+.wordspacing{
+  word-spacing: -4px;
+}
+
+
+
+
+
+
+
+/* CATALOGUE API */
+.delay{
+  display: none;
+}
+
+.slideDown{
+  animation: 1.1s ease-out 0s 1 slideDown;
+}
+.zoom{
+  animation: .1s ease-out 0s 1 zoom;
+}
+.slideLeft{
+  animation: .25s ease-out 0s 1 slideLeft;
+}
+.slideRight{
+  animation: .25s ease-out 0s 1 slideRight;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-1500px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes slideLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    transform: translateX(0);
+  }
+}
+@keyframes slideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes zoom {
+  0% {
+    opacity: 0;
+    transform: scale(.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* NAV MODAL CONTENT */
+#mobileMenu
+ {
+  overflow-x: hidden;
+  display: none;
+  /* display: flex;  */
+  /* ^^^ keep open for testing/ styling */
+  margin: 0px auto;
+  position: fixed;
+  top: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  background: red;
+  color: white;
+  /* clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0); */
+} 
+/* NAV ANIMATION / SEE JS */
+#mobileMenu.open {
+  animation: clipPathOpen .5s ease-out forwards;
+}
+@keyframes clipPathOpen {
+  0% {
+    clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  100% {
+    clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%);
+  }
+}
+
+#mobileMenu.close {
+  animation: clipPathClose .5s ease-out forwards;
+}
+@keyframes clipPathClose {
+  0% {
+    clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%);
+  }
+  100% {
+    clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0);
+  }
+}
+
+#nav-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh; */
+  max-width: 95%;
+  /* margin: 150px 40px 80px 20px; */
+}

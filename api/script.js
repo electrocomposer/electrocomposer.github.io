@@ -328,7 +328,14 @@ const renderTracks = (tracks) => {
 
     details.appendChild(albumDuration);
 
+    const ytUrl = document.createElement('p');
+    ytUrl.innerHTML = `<a class="block mt-2 w-fit bg-green-200 rounded-md text-sm text-black font-bold tracking-wider pt-0.5 pb-1 px-1" href="${track.ytUrl}" target="_blank">Play Track</a>`;
+
+    track.ytUrl && details.appendChild(ytUrl);
+
+    //
     details.className = 'relative p-5 mt-0.5';
+    //
 
     // Thumbs container
     const controls = document.createElement('div');

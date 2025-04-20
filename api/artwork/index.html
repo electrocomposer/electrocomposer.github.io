@@ -17,7 +17,7 @@
       width: 100%;
       height: auto;
       display: block;
-      margin-bottom: 20px;
+      /* margin-bottom: 20px; */
       filter: brightness(1.1);
   }
 
@@ -97,10 +97,10 @@
 </div>
 
 
-  <div class="gallery mt-8 sm:p-8 mx-auto lg:grid grid-cols-3 gap-8"></div>
+  <div class="gallery mt-8 sm:p-8 mx-auto grid md:grid-cols-3 gap-8"></div>
 
 
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal hidden md:block">
       <span class="arrow left">&#10094;</span>
       <span class="arrow right">&#10095;</span>
       <div class="gallery-image-container">
@@ -149,62 +149,83 @@ async function fetchArtworks() {
         // Clear existing gallery content
         gallery.innerHTML = '';
 
-        if (window.innerWidth > 960) {
-            const validArtworks = data.filter(x => x.artwork); // Filter artworks with images
-            
-            validArtworks.forEach((x, index) => {
-                const img = document.createElement('img');
-                img.src = x.artwork;
-                img.classList.add('gallery-image');
+        const uniqueOnly = new Set();
+        const validArtworks = data.filter(x => {
+          if (!x.artwork || uniqueOnly.has(x.artwork)) return false;
+          uniqueOnly.add(x.artwork);
+          return true;
+        });
 
-                img.addEventListener('click', function () {
-                    currentIndex = index;
-                    modal.style.display = "flex";
-                    modalImg.src = validArtworks[currentIndex].artwork;
-                    gallery.style.position = "fixed";
-                });
 
-                gallery.appendChild(img);
-            });
+        validArtworks.forEach((x, index) => {
+        const imageContainer = document.createElement('div');
+        imageContainer.classList.add("flex", "flex-col", "items-center");
 
-            function showImage(index) {
-                currentIndex = (index + validArtworks.length) % validArtworks.length;
-                modalImg.src = validArtworks[currentIndex].artwork;
-            }
+        const img = document.createElement('img');
+        img.src = x.artwork;
+        img.classList.add('gallery-image');
 
-            document.querySelector('.arrow.left').onclick = function () {
-                showImage(currentIndex - 1);
-            };
-
-            document.querySelector('.arrow.right').onclick = function () {
-                showImage(currentIndex + 1);
-            };
-
-            // Close modal event listeners
-            span.onclick = closeModal;
-            modalImg.onclick = closeModal;
-            window.onclick = function (event) {
-                if (event.target == modal) closeModal();
-            };
-
-            function closeModal() {
-                modal.style.display = "none";
-                gallery.style.position = "relative";
-            }
-
-            // Keyboard navigation
-            document.addEventListener('keydown', function (event) {
-                if (modal.style.display === "flex") {
-                    if (event.key === "ArrowLeft") {
-                        showImage(currentIndex - 1);
-                    } else if (event.key === "ArrowRight") {
-                        showImage(currentIndex + 1);
-                    } else if (event.key === "Escape") {
-                        closeModal();
-                    }
-                }
-            });
+        // modal click on larger screens only
+        if (window.innerWidth > 768) {
+          img.addEventListener('click', () => {
+            currentIndex = index;
+            modal.style.display = "flex";
+            modalImg.src = validArtworks[currentIndex].artwork;
+            gallery.style.position = "fixed";
+          });
         }
+
+        const linkText = document.createElement('a');
+        
+        linkText.href = x.ytPlaylistUrl;
+        linkText.textContent = "Play Album";
+        linkText.classList.add("bg-green-200", "text-center", "w-fit");
+        linkText.target = "_blank";
+
+        imageContainer.appendChild(img);
+        x.ytPlaylistUrl && imageContainer.appendChild(linkText);
+
+        gallery.appendChild(imageContainer);
+      });
+
+
+        function showImage(index) {
+            currentIndex = (index + validArtworks.length) % validArtworks.length;
+            modalImg.src = validArtworks[currentIndex].artwork;
+        }
+
+        document.querySelector('.arrow.left').onclick = function () {
+            showImage(currentIndex - 1);
+        };
+
+        document.querySelector('.arrow.right').onclick = function () {
+            showImage(currentIndex + 1);
+        };
+
+        // Close modal event listeners
+        span.onclick = closeModal;
+        modalImg.onclick = closeModal;
+        window.onclick = function (event) {
+            if (event.target == modal) closeModal();
+        };
+
+        function closeModal() {
+            modal.style.display = "none";
+            gallery.style.position = "relative";
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function (event) {
+            if (modal.style.display === "flex") {
+                if (event.key === "ArrowLeft") {
+                    showImage(currentIndex - 1);
+                } else if (event.key === "ArrowRight") {
+                    showImage(currentIndex + 1);
+                } else if (event.key === "Escape") {
+                    closeModal();
+                }
+            }
+        });
     } catch (error) {
         console.error('Error fetching artworks:', error);
     }

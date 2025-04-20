@@ -34,8 +34,8 @@ class RecordLabelHeader extends HTMLElement {
                   </button>
                   <ul id="apiDropdownMenu" class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden">
                     <li><a href="/api/" class="nav-link block px-4 py-2 hover:bg-gray-100">Track Search</a></li>
-                    <li><a href="/api/visuals" class="nav-link block px-4 py-2 hover:bg-gray-100">Visuals</a></li>
-                    <!-- <li><a href="/api/artwork" class="nav-link block px-4 py-2 hover:bg-gray-100">Artwork</a></li> -->
+                    <li><a href="/api/overlays" class="nav-link block px-4 py-2 hover:bg-gray-100">Overlays</a></li>
+                    <li><a href="/api/artwork" class="nav-link block px-4 py-2 hover:bg-gray-100">Artwork</a></li>
                     <li><a href="/api/charts" class="nav-link block px-4 py-2 hover:bg-gray-100">Charts</a></li>
                     <li><a href="/api/docs" class="nav-link block px-4 py-2 hover:bg-gray-100">API Docs</a></li>
                   </ul>
@@ -65,8 +65,8 @@ class RecordLabelHeader extends HTMLElement {
           <p class="pt-12 -pb-0 flex justify-center"><span class="w-fit block bg-white text-black ">Catalogue API</span></p>
 
             <a href="/api/" class="block">Track Search</a>
-            <a href="/api/visuals" class="block">Visuals</a>
-            <!-- <a href="/api/artwork" class="block">Artwork</a> -->
+            <a href="/api/overlays" class="block">Overlays</a>
+            <a href="/api/artwork" class="block">Artwork</a>
             <a href="/api/charts" class="block">Charts</a>
             <a href="/api/docs" class="block">API Docs</a>
           </div>

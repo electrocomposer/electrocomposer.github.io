@@ -38,6 +38,19 @@ body {
   padding: 20px;
 }
 
+.artistName {
+  rotate: -3deg;
+}
+
+.artistName span{
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.artistName span::before{
+  content: "artist: ";
+}
+
 .id span:nth-child(1) {
   white-space: nowrap;
   /* filter: blur(0.6px);  */

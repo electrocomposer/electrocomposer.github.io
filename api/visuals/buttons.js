@@ -80,7 +80,7 @@ export const downloadPngButtons = (listItem, item) => {
 
       await downloadImage(
         trackItem, buttons,
-        `api_cat_track_${item.id}_white_text_no_bg.png`,
+        `electroComposer-api_cat_track_${item.id}_white_text_no_bg.png`,
         () => {
           trackItem.style.backgroundImage = originalBackgroundImage;
           trackItem.style.color = '';
@@ -96,7 +96,7 @@ export const downloadPngButtons = (listItem, item) => {
 
       await downloadImage(
         trackItem, buttons,
-        `api_cat_track_${item.id}_white_text.png`,
+        `electroComposer-api_cat_track_${item.id}_white_text.png`,
         () => {
           trackItem.style.color = '';
         }
@@ -113,7 +113,7 @@ if (bgAndBlackTitleBlackTextBtn) {
 
     await downloadImage(
       trackItem, buttons,
-      `api_cat_track_${item.id}_black_title_black_text.png`,
+      `electroComposer-api_cat_track_${item.id}_black_title_black_text.png`,
       () => {
         trackName.style.color = originalTrackNameColor;
       }
@@ -132,7 +132,7 @@ if (bgAndBlackTitleWhiteTextBtn) {
 
     await downloadImage(
       trackItem, buttons,
-      `api_cat_track_${item.id}_black_title_white_text.png`,
+      `electroComposer-api_cat_track_${item.id}_black_title_white_text.png`,
       () => {
         trackName.style.color = originalTrackNameColor;
         trackItem.style.color = originalTrackItemColor;
@@ -155,7 +155,7 @@ if (noBgAndBlackTitleBlackTextBtn) {
 
     await downloadImage(
       trackItem, buttons,
-      `api_cat_track_${item.id}_no_bg_black_title_black_txt.png`,
+      `electroComposer-api_cat_track_${item.id}_no_bg_black_title_black_txt.png`,
       () => {
         // Restore original styles
         trackItem.style.backgroundImage = originalBackgroundImage;
@@ -179,7 +179,7 @@ if (noBgAndBlackTitleWhiteTextBtn) {
 
     await downloadImage(
       trackItem, buttons,
-      `api_cat_track_${item.id}_no_bg_black_title_white_txt.png`,
+      `electroComposer-api_cat_track_${item.id}_no_bg_black_title_white_txt.png`,
       () => {
         // Restore original styles
         trackItem.style.backgroundImage = originalBackgroundImage;
@@ -199,7 +199,7 @@ if (noBgAndBlackTitleWhiteTextBtn) {
     downloadBtn.addEventListener('click', async () => {
       await downloadImage(
         trackItem, buttons,
-        `api_cat_track_${item.id}.png`
+        `electroComposer-api_cat_track_${item.id}.png`
       );
     });
   }

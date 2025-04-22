@@ -4,6 +4,8 @@ archive/*
 .env
 DEVREADME.md
 notes.js
+notes.json
+notes.md
 .next
 .vscode
 db.json

@@ -17,7 +17,7 @@ class RecordLabelHeader extends HTMLElement {
 
     render() {
         this.innerHTML = `<div class="z-50 md:fixed top-0 w-full">
-      <header class="relative flex items-center justify-between px-2 pt-0 mt-0 -mb-1 border-b-2 border-black md:border-0 lg:mt-0 lg:mb-0 md:bg-white md:text-black lg:px-4 lg:py-2">
+      <header class="relative flex items-center justify-between px-2 pt-0 mt-0 -mb-1 border-b-2 border-black md:border-0 lg:mt-0 lg:mb-0 md:bg-white md:text-black lg:px-4 lg:py-2 md:h-[58px]">
 
         <div class="my-2 lg:mt-0 lg:mb-0">
             <a href="/"><h1>${RecordLabel}</h1></a>

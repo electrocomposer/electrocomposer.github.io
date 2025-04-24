@@ -1,3 +1,5 @@
+const API = "https://ecapi.olk1.com/tracks";
+
 /**
  * Compare fetched API data with localStorage data based on track.id
  * and return a merged dataset with states ("up" or "down") applied.
@@ -23,7 +25,7 @@
 
     const fetchApiData = async () => {
       try {
-        const response = await fetch('https://ecapi.olk1.com/tracks');
+        const response = await fetch(API);
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
@@ -67,8 +69,6 @@
     const storedData = document.getElementById('storedData');
   
 
-let updatedTracks = [];
-const totalCount = document.getElementById('totalCount');
 
 let filteredTracks = null; // Track the current filtered subset
 
@@ -78,8 +78,11 @@ let sortAlbumLengthContainer = document.getElementById('album-length-checkbox-co
 const searchTracks = (query, tracks) => {
   const normalizedQuery = query.toLowerCase();
 
-  // Check if the query contains the exact word '()' (case-insensitive)
+  // Check if the query contains the exact characters '()'
   const isAlbumSearch = normalizedQuery.includes("()");
+
+  // Check if the query contains the exact character '*'
+  const isReverseSearch = normalizedQuery.includes("*");
 
   // Adjust visibility of sortAlbumLengthContainer based on the search type
   if (isAlbumSearch) {
@@ -89,16 +92,14 @@ const searchTracks = (query, tracks) => {
   }
 
   let filteredTracks = tracks.filter((track) => {
-    // If the query contains '()', search only by albumName
     if (isAlbumSearch) {
-      const albumNameMatch = track.albumName?.toLowerCase().includes(normalizedQuery.replace("()", "").trim());
-      
-      return albumNameMatch;
+      const albumQuery = normalizedQuery.replace("()", "").replace("*", "").trim();
+      return track.albumName?.toLowerCase().includes(albumQuery);
     }
 
-    // Otherwise, search by trackName or releaseYear
-    const trackNameMatch = track.trackName?.toLowerCase().includes(normalizedQuery);
-    const releaseYearMatch = track.releaseYear?.toString().includes(normalizedQuery);
+    const cleanQuery = normalizedQuery.replace("*", "").trim();
+    const trackNameMatch = track.trackName?.toLowerCase().includes(cleanQuery);
+    const releaseYearMatch = track.releaseYear?.toString().includes(cleanQuery);
 
     return trackNameMatch || releaseYearMatch;
   });
@@ -108,9 +109,17 @@ const searchTracks = (query, tracks) => {
     filteredTracks.sort((a, b) => a.trackNumber - b.trackNumber);
   }
 
+  // If reverse search, reverse the filtered results
+  if (isReverseSearch) {
+    filteredTracks.reverse();
+  }
+
   return filteredTracks;
 };
 
+
+let updatedTracks = [];
+const totalCount = document.getElementById('totalCount');
 
 const handleSearch = (event) => {
   const query = event.target.value;

@@ -22,7 +22,7 @@
       border: 1px dashed #bbb;
   }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
 
   .close, .arrow{
       display: none;
@@ -56,16 +56,16 @@
       }
       .close {
           position: absolute;
-          top: 0px;
+          top: -45px;
           right: -50px;
           color: #fff;
-          font-size: 40px;
+          font-size: 80px;
           font-weight: bold;
           transition: 0.3s;
           cursor: pointer;
       }
       .close:hover,
-      .close:focus {
+      .close:focus, .arrow:hover {
           color: #bbb;
           text-decoration: none;
           cursor: pointer;
@@ -98,7 +98,7 @@
 </div>
 
 
-  <div class="gallery mt-8 sm:p-8 mx-auto grid md:grid-cols-3 gap-8"></div>
+  <div class="gallery mt-8 sm:p-8 mx-auto grid lg:grid-cols-3 gap-8"></div>
 
 
     <div id="myModal" class="modal hidden">
@@ -118,7 +118,7 @@
 
 
 <script>
-if(window.innerWidth > 768){
+if(window.innerWidth > 1024){
     window.addEventListener("resize", () => {
       location.reload();
   });
@@ -168,7 +168,7 @@ async function fetchArtworks() {
         img.classList.add('gallery-image');
 
         // modal click on larger screens only
-        if (window.innerWidth > 768) {
+        if (window.innerWidth > 1024) {
           img.addEventListener('click', () => {
             currentIndex = index;
             modal.style.display = "flex";

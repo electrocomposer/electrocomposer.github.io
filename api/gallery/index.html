@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>electroComposer</title>
+    <script type="module" src="/components/header.js"></script>
+    <script src='/tailwindcss.min.js'></script>
+    <link rel='stylesheet' href='/style.css' />
+    <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
+<style>  
+  .gallery {
+      /* display: grid; */
+      margin-bottom: 300px;
+  }
+  .gallery img {
+      width: 100%;
+      height: auto;
+      display: block;
+      /* margin-bottom: 20px; */
+      filter: brightness(1.1);
+  }
+
+@media (min-width: 768px) {
+
+  .close, .arrow{
+      display: none;
+  }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        /* top: -100px; */
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.9);
+        align-items: center;
+        justify-content: center;
+      }
+
+   
+      .modal-content {
+        display: block;
+        margin: 0 auto;
+        max-width: 800px;
+        height: auto;
+        filter: brightness(1.02);
+      }
+      .close, .arrow{
+        display: block;
+      }
+      .gallery-image-container{
+        position: relative;;
+      }
+      .close {
+          position: absolute;
+          top: 0px;
+          right: -50px;
+          color: #fff;
+          font-size: 40px;
+          font-weight: bold;
+          transition: 0.3s;
+          cursor: pointer;
+      }
+      .close:hover,
+      .close:focus {
+          color: #bbb;
+          text-decoration: none;
+          cursor: pointer;
+      }
+      .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 40px;
+        color: white;
+        cursor: pointer;
+        user-select: none;
+      }
+      .arrow.left {
+        left: 20px;
+      }
+      .arrow.right {
+        right: 20px;
+      }
+  }
+  </style>
+
+
+</head>
+
+<body class="space-mono-regular fade-in">
+  
+<div class="space-mono-regular">
+  <record-label-header></record-label-header>
+</div>
+
+
+  <div class="gallery mt-8 sm:p-8 mx-auto grid md:grid-cols-3 gap-8"></div>
+
+
+    <div id="myModal" class="modal hidden">
+      <span class="arrow left">&#10094;</span>
+      <span class="arrow right">&#10095;</span>
+      <div class="gallery-image-container">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+      </div>
+    </div>
+
+
+
+
+</body>
+</html>
+
+
+<script>
+if(window.innerWidth > 768){
+    window.addEventListener("resize", () => {
+      location.reload();
+  });
+};
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+const API = "gallery.json";
+
+async function fetchArtworks() {
+    try {
+        const response = await fetch(API);
+        const data = await response.json();
+        // console.log(data);
+        const modal = document.getElementById("myModal");
+        const modalImg = document.getElementById("modalImage");
+        const span = document.querySelector(".close");
+        const gallery = document.querySelector('.gallery');
+        let currentIndex = 0;
+
+        // Clear existing gallery content
+        gallery.innerHTML = '';
+
+        const uniqueOnly = new Set();
+        const validArtworks = data.filter(x => {
+          if (!x.canvas || uniqueOnly.has(x.canvas)) return false;
+          uniqueOnly.add(x.canvas);
+          return true;
+        });
+
+
+        validArtworks.forEach((x, index) => {
+        const imageContainer = document.createElement('div');
+        imageContainer.classList.add("flex", "flex-col", "items-center");
+
+        const img = document.createElement('img');
+        img.src = x.canvas;
+        img.classList.add('gallery-image');
+
+        // modal click on larger screens only
+        if (window.innerWidth > 768) {
+          img.addEventListener('click', () => {
+            currentIndex = index;
+            modal.style.display = "flex";
+            modalImg.src = validArtworks[currentIndex].canvas;
+            gallery.style.position = "fixed";
+          });
+        }
+
+        // const linkText = document.createElement('a');
+        
+        // linkText.href = x.ytPlaylistUrl;
+        // linkText.textContent = "Play Album";
+        // linkText.classList.add("bg-green-200", "text-center", "w-fit");
+        // linkText.target = "_blank";
+
+        imageContainer.appendChild(img);
+        // x.ytPlaylistUrl && imageContainer.appendChild(linkText);
+
+        gallery.appendChild(imageContainer);
+      });
+
+
+        function showImage(index) {
+            currentIndex = (index + validArtworks.length) % validArtworks.length;
+            modalImg.src = validArtworks[currentIndex].canvas;
+        }
+
+        document.querySelector('.arrow.left').onclick = function () {
+            showImage(currentIndex - 1);
+        };
+
+        document.querySelector('.arrow.right').onclick = function () {
+            showImage(currentIndex + 1);
+        };
+
+        // Close modal event listeners
+        span.onclick = closeModal;
+        modalImg.onclick = closeModal;
+        window.onclick = function (event) {
+            if (event.target == modal) closeModal();
+        };
+
+        function closeModal() {
+            modal.style.display = "none";
+            gallery.style.position = "relative";
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function (event) {
+            if (modal.style.display === "flex") {
+                if (event.key === "ArrowLeft") {
+                    showImage(currentIndex - 1);
+                } else if (event.key === "ArrowRight") {
+                    showImage(currentIndex + 1);
+                } else if (event.key === "Escape") {
+                    closeModal();
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching artworks:', error);
+    }
+}
+
+// Call function to load images
+document.addEventListener("DOMContentLoaded", fetchArtworks);
+
+</script>
+
+</body>
+</html>

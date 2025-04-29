@@ -140,6 +140,7 @@ async function fetchArtworks() {
     try {
         const response = await fetch(API);
         const data = await response.json();
+        data.reverse();
         // console.log(data);
         const modal = document.getElementById("myModal");
         const modalImg = document.getElementById("modalImage");

@@ -1,6 +1,8 @@
+const API = "https://ecapi.olk1.com/tracks";
+
 async function fetchAndProcessData() {
-  // Fetch data
-  const res = await fetch("https://ecapi.olk1.com/tracks");
+
+  const res = await fetch(API);
   const json = await res.json();
 
 
@@ -18,25 +20,30 @@ async function fetchAndProcessData() {
   const totalAlbumsInDiscography = [...new Set(albums)];
 
   // TIME
-  const totalAlbumMinutes = [...new Set(albumDuration)];
-
-  function calculateTotalTime(timeArray) {
-    const totalSeconds = timeArray.reduce((acc, albumsDuration) => {
-      const [minutes, seconds] = albumsDuration.toString().split('.').map(Number);
-      return acc + minutes * 60 + seconds;
-    }, 0);
-
-    const hours = Math.floor(totalSeconds / 3600);
-    const remainingSeconds = totalSeconds % 3600;
-    const minutes = Math.floor(remainingSeconds / 60);
-    const seconds = remainingSeconds % 60;
-
-    return { 
-      hours, 
-      minutes: minutes < 10 ? minutes : minutes, 
-      seconds: seconds < 10 ? seconds : seconds 
-    };
+const uniqueAlbumDurations = new Map();
+json.forEach(item => {
+  if (!uniqueAlbumDurations.has(item.albumName)) {
+    uniqueAlbumDurations.set(item.albumName, item.albumDuration);
   }
+});
+
+const totalAlbumMinutes = [...uniqueAlbumDurations.values()];
+
+function calculateTotalTime(timeArray) {
+  const totalSeconds = timeArray.reduce((acc, duration) => {
+    const minutes = Math.floor(duration);
+    const seconds = Math.round((duration - minutes) * 100);
+    return acc + minutes * 60 + seconds;
+  }, 0);
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const remainingSeconds = totalSeconds % 3600;
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
+
+  return { hours, minutes, seconds };
+}
+
 
   const totalTime = calculateTotalTime(totalAlbumMinutes);
 
@@ -117,6 +124,3 @@ async function fetchAndProcessData() {
 
 // Run the function
 fetchAndProcessData();
-
-
-

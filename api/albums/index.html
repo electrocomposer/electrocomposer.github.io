@@ -15,11 +15,12 @@
   }
   .gallery img {
       width: 100%;
+      max-width: 300px;
       height: auto;
       display: block;
       /* margin-bottom: 20px; */
       filter: brightness(1.1);
-      border: 1px dashed #bbb;
+      /* border: 1px dashed #bbb; */
   }
 
 @media (min-width: 1024px) {
@@ -98,7 +99,7 @@
 </div>
 
 
-  <div class="gallery mt-8 sm:p-8 mx-auto grid lg:grid-cols-3 gap-8"></div>
+  <div class="gallery mt-8 sm:p-8 mx-auto grid lg:grid-cols-3 gap-8 lg:max-w-[1000px]"></div>
 
 
     <div id="myModal" class="modal hidden">

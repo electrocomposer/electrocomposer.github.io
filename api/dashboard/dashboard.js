@@ -109,6 +109,13 @@ toggleThemeBtn.addEventListener("click", () => {
 
 
 
+function formatDuration(val) {
+  // if number like 3.1, pad it to 3.10
+  if (!val) return "";
+  const num = parseFloat(val);
+  if (isNaN(num)) return String(val);
+  return num.toFixed(2); // Ensures 3.1 becomes "3.10"
+}
 
 
 searchInput.addEventListener("input", (e) => {
@@ -122,16 +129,17 @@ searchInput.addEventListener("input", (e) => {
       track.id,
       track.trackName,
       track.albumName,
-      track.albumDuration,
+      formatDuration(track.albumDuration),
       track.genre,
       track.releaseYear,
-      track.trackDuration
+      formatDuration(track.trackDuration)
     ]
     .map(val => String(val).toLowerCase())
     .join(" "); // Combine into one searchable string
 
-    // Check if every keyword is found in the searchable string
-    return keywords.every(kw => searchableFields.includes(kw));
+    // return keywords.every(kw => searchableFields.includes(kw));
+    return keywords.every(kw => searchableFields.includes(kw) || searchableFields.includes(kw + "0"));
+
   });
 
   renderTable(filtered);
@@ -171,7 +179,7 @@ function toggleFocus(card) {
   // reset all cards
   charts.forEach(c => {
     c.classList.remove("focused", "hidden");
-    c.classList.add("block");
+    c.classList.add("block", "fade-in");
   });
 
   if (!isFocused) {
@@ -188,7 +196,7 @@ function toggleFocus(card) {
     // remove scrollbars when chart is full screen
     document.querySelector('html').classList.add("overflow-hidden");
 
-    card.classList.add("focused");
+    card.classList.add("focused", "fade-in");
     sidebar.classList.add("hidden"); // hide sidebar only when focusing a chart
   } else {
     // add scrollbars back to UI

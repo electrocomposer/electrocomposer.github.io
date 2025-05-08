@@ -3,124 +3,163 @@
   padding: 0;
   box-sizing: border-box;
 }
-:root{
-    --lines:#00ffec;
-    --slices-above:#ff00ce;
-    --slices-below:#21ff25;
-    --inner-hoop:	#fffc02;
-    --outer-hoop:#cc00ff;
-    }
-    body{
-      background-color: #ff00ce;
-      overflow: hidden;
-    }
-    .wrapper{
-      width: 100vw;
-      height: 100vh;
-      max-width: 1140px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    svg{
-      position: absolute; /* change to relative to see layers */
-      top: 0%;
-      height: 100%;
-      width: 100%;
-      filter: saturate(.3);
-    }
-    circle{
-      opacity: 1;
-      animation: draw 3000ms ease-in backwards infinite;
-    }
-    @keyframes draw{
-      0%{
-        stroke-dashoffset: 10;
-        /* opacity: 1; */
-        filter: hue-rotate(0deg);
-        transform: matrix(1);
-        /* transform: matrix(6, 2, 3, 4, 5, 6); */
-      }
-      20%{
-        stroke-dashoffset: 20;
-        /* opacity: .9; */
-        filter: hue-rotate(10deg);
-        transform: matrix(6, 2, 2, 4, 5, 3);
-      }
-      40%{
-        stroke-dashoffset: 30;
-        /* opacity: .7; */
-        filter: hue-rotate(20deg);
-        transform: matrix(3, 2, 2, 4, 5, 3);
-      }
-      60%{
-        stroke-dashoffset: 40;
-        /* opacity: .5; */
-        filter: hue-rotate(20deg);
-      }
-      80%{
-        stroke-dashoffset: 50;
-        /* opacity: .3; */
-        filter: hue-rotate(10deg);
-      }
-      100%{
-        stroke-dashoffset: 60;
-        /* opacity: .1; */
-        filter: hue-rotate(0deg);
-        transform: matrix(3, 2, 2, 4, 5, 3);
-      }
-    }
-    text{
-      position: absolute;
-      top: 42%;
-      font-size: clamp(3.5rem, 12.5vw, 7.5rem);
-      font-weight: bold;
-      line-height: calc(10.5vh + 37%);
-      color: #fffc02;
-      filter: saturate(.1);
-      text-anchor: middle;
-      animation: pulse 3000ms cubic-bezier(.50,.85,.25,1) infinite;
-    }
-    @keyframes pulse {
-      0%{
-        scale: 0;
-        opacity: 0;
-      }
-      10%{
-        scale: 0.5;
-        opacity: 0;
-      }
-      15%{
-        scale: 1.5;
-        opacity: 1;
-      }
-      25%{
-        scale: 1.7;
-        opacity: 1;
-      }
-      50%{
-        scale: 0;
-        opacity: .5;
-      }
-      75%{
-        scale: 0;
-        opacity: 0;
-      }
-      100%{
-        scale: 0;
-        opacity: 0;
-      }
-    }
+:root {
+  --lines: #00ffec;
+  --slices-above: #ff00ce;
+  --slices-below: #21ff25;
+  --inner-hoop: #fffc02;
+  --outer-hoop: #cc00ff;
+}
 
-#content{
-  color: black;
-  font-size: 1rem;
+body {
+  background-color: #ff00ce;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  position: absolute;
+  top: 0%;
+  height: 100%;
+  width: 100%;
+  filter: saturate(0.3);
+}
+
+circle {
+  animation: draw-firefox 3000ms ease-in backwards infinite;
+}
+
+/* Chrome-only override: uses UA string quirk to exclude Firefox/Safari */
+@supports (-webkit-app-region: inherit) and (not (-moz-appearance: none)) {
+  circle {
+    animation: draw 3000ms ease-in backwards infinite;
+  }
 }
 
 
+/* Chrome fallback: transform-based */
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 10;
+    transform: scale(1) skewX(0deg) skewY(0deg) translate(0px, 0px);
+    filter: hue-rotate(0deg);
+  }
+  20% {
+    stroke-dashoffset: 20;
+    transform: scale(1.1) skewX(5deg) skewY(3deg) translate(1px, 1px);
+    filter: hue-rotate(10deg);
+  }
+  40% {
+    stroke-dashoffset: 30;
+    transform: scale(1.2) skewX(10deg) skewY(6deg) translate(2px, 2px);
+    filter: hue-rotate(20deg);
+  }
+  60% {
+    stroke-dashoffset: 40;
+    transform: scale(1.15) skewX(8deg) skewY(5deg) translate(1px, 2px);
+    filter: hue-rotate(20deg);
+  }
+  80% {
+    stroke-dashoffset: 50;
+    transform: scale(1.05) skewX(3deg) skewY(2deg) translate(0px, 1px);
+    filter: hue-rotate(10deg);
+  }
+  100% {
+    stroke-dashoffset: 60;
+    transform: scale(1) skewX(0deg) skewY(0deg) translate(0px, 0px);
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* Default matrix-based animation for Firefox + Safari */
+@keyframes draw-firefox {
+  0% {
+    stroke-dashoffset: 10;
+    transform: matrix(1, 0, 0, 1, 0, 0);
+    filter: hue-rotate(0deg);
+  }
+  20% {
+    stroke-dashoffset: 20;
+    transform: matrix(6, 2, 2, 4, 5, 3);
+    filter: hue-rotate(10deg);
+  }
+  40% {
+    stroke-dashoffset: 30;
+    transform: matrix(3, 2, 2, 4, 5, 3);
+    filter: hue-rotate(20deg);
+  }
+  60% {
+    stroke-dashoffset: 40;
+    filter: hue-rotate(20deg);
+  }
+  80% {
+    stroke-dashoffset: 50;
+    filter: hue-rotate(10deg);
+  }
+  100% {
+    stroke-dashoffset: 60;
+    transform: matrix(3, 2, 2, 4, 5, 3);
+    filter: hue-rotate(0deg);
+  }
+}
+
+text {
+  position: absolute;
+  top: 42%;
+  font-size: clamp(3.5rem, 12.5vw, 7.5rem);
+  font-weight: bold;
+  line-height: calc(10.5vh + 37%);
+  color: #fffc02;
+  filter: saturate(0.1);
+  text-anchor: middle;
+  animation: pulse 3000ms cubic-bezier(0.5, 0.85, 0.25, 1) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    scale: 0;
+    opacity: 0;
+  }
+  10% {
+    scale: 0.5;
+    opacity: 0;
+  }
+  15% {
+    scale: 1.5;
+    opacity: 1;
+  }
+  25% {
+    scale: 1.7;
+    opacity: 1;
+  }
+  50% {
+    scale: 0;
+    opacity: 0.5;
+  }
+  75% {
+    scale: 0;
+    opacity: 0;
+  }
+  100% {
+    scale: 0;
+    opacity: 0;
+  }
+}
+
+#content {
+  color: black;
+  font-size: 1rem;
+}
 
 .fade-in {
   animation: fadeIn 5s ease-in-out;

@@ -150,5 +150,18 @@
 
 <script src="stats.js" type="module"></script>
 <script src="script.js" type="module"></script>
+<!-- logic for enter key to check/unchecks checkboxes -->
+<script>
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+  checkbox.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission or other side effects
+      this.checked = !this.checked;
+      this.dispatchEvent(new Event('change')); // Optional: trigger change handler
+    }
+  });
+});
+
+</script>
 </body>
 </html>

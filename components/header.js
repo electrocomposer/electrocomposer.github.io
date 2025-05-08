@@ -37,7 +37,7 @@ class RecordLabelHeader extends HTMLElement {
                     <li><a href="/api/overlays" class="nav-link block px-4 py-2 hover:bg-gray-100">Overlays</a></li>
                     <li><a href="/api/gallery" class="nav-link block px-4 py-2 hover:bg-gray-100">Gallery</a></li>
                     <li><a href="/api/albums" class="nav-link block px-4 py-2 hover:bg-gray-100">Albums</a></li>
-                    <li><a href="/api/charts" class="nav-link block px-4 py-2 hover:bg-gray-100">Charts</a></li>
+                    <li><a href="/api/dashboard" class="nav-link block px-4 py-2 hover:bg-gray-100">Dashboard</a></li>
                     <li><a href="/api/docs" class="nav-link block px-4 py-2 hover:bg-gray-100">API Docs</a></li>
                   </ul>
               </li>
@@ -69,7 +69,7 @@ class RecordLabelHeader extends HTMLElement {
             <a href="/api/overlays" class="block">Overlays</a>
             <a href="/api/gallery" class="block">Gallery</a>
             <a href="/api/albums" class="block">Albums</a>
-            <a href="/api/charts" class="block">Charts</a>
+            <a href="/api/dashboard" class="block">Dashboard</a>
             <a href="/api/docs" class="block">API Docs</a>
           </div>
         </div>

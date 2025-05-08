@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" class="dark transition-colors duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>electroComposer</title>
+  <script type="module" src="/components/header.js"></script>
+  <script src="chartjs.min.js"></script>
+  <script src="chartjs-plugin-datalabels.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel='stylesheet' href='/style.css' />
+  <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
+  <script src="dashboard.js" defer></script>
+
+  <style>
+   .focused {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      z-index: 10;
+      /* transition: transform 1.3s ease; */
+      width: 90vw;
+      height: 85vh;
+    }
+    html.overflow-hidden,
+    body.overflow-hidden {
+      overflow: hidden;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body class="space-mono-regular pb-[80px] fade-in bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+
+<div class="space-mono-regular">
+  <record-label-header></record-label-header>
+</div>
+
+  <div class="mt-2 md:mt-16 max-w-[2000px] mx-auto min-h-screen flex flex-col md:flex-row">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-full md:w-48 md:h-48 p-4 md:p-6 flex flex-col rounded-br-3xl">
+
+
+    <div id="toggle-theme">
+      <img src="Sun.svg" alt="Sun Icon" class="w-10 mb-8" id="theme-icon">
+    </div>
+
+
+      
+      <nav id="dashboard-nav" class="select-none">
+        <ul class="flex md:flex-col gap-4 md:space-y-2">
+          <li>
+            <a href="#" id="nav-charts" class="nav-link transition-all duration-200 ease-in-out py-2 rounded-lg">Charts</a>
+          </li>
+          <li>
+            <a href="#" id="nav-table" class="nav-link transition-all duration-200 ease-in-out py-2 rounded-lg">Data Table</a>
+          </li>
+        </ul>
+      </nav>
+
+    </aside>
+  <!-- \Sidebar -->
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 md:p-6" id="main-content">
+
+
+
+      <!-- Charts Section -->
+      <div id="charts-section" class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
+
+
+
+
+
+
+
+<!-- Table Section -->
+<section id="table-section" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+  
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4">
+    
+    <h2 class="flex-shrink-0 text-xl font-semibold text-gray-900 dark:text-gray-100 md:-mt-2 md:pl-1">Catalogue Data</h2>
+    
+    <input type="text" id="search-input" placeholder="multi-keyword search (e.g new wave 2018)"
+      class="w-full md:w-2/3 mr-0 px-3 py-2 text-sm rounded bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring focus:ring-blue-500" />
+  </div>
+
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border border-gray-200 dark:border-gray-700 text-sm">
+      <thead class="bg-gray-100 dark:bg-gray-700 text-left text-gray-900 dark:text-gray-100">
+        <tr>
+          <th class="px-4 py-2">ID</th>
+          <th class="px-4 py-2">Track</th>
+          <th class="px-4 py-2">Track Length</th>
+          <th class="px-4 py-2">Album</th>
+          <th class="px-4 py-2">Album Duration</th>
+          <th class="px-4 py-2">Year</th>
+          <th class="px-4 py-2">Genre</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+</section>
+
+    </main>
+  </div>
+</body>
+</html>

@@ -147,6 +147,7 @@ async function fetchArtworks() {
         const span = document.querySelector(".close");
         const gallery = document.querySelector('.gallery');
         let currentIndex = 0;
+        let previousScrollY = 0; // store scroll position
 
         // Clear existing gallery content
         gallery.innerHTML = '';
@@ -171,6 +172,7 @@ async function fetchArtworks() {
         if (window.innerWidth > 1024) {
           img.addEventListener('click', () => {
             currentIndex = index;
+             previousScrollY = window.scrollY; // save scroll position before opening modal
             modal.style.display = "flex";
             modalImg.src = validArtworks[currentIndex].canvas;
             gallery.style.position = "fixed";
@@ -214,6 +216,7 @@ async function fetchArtworks() {
         function closeModal() {
             modal.style.display = "none";
             gallery.style.position = "relative";
+            window.scrollTo({ top: previousScrollY, behavior: "instant" }); // restore scroll position
         }
 
         // Keyboard navigation

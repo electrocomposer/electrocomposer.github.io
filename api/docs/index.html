@@ -43,18 +43,17 @@
     <div class="bg-gray-50 p-6 mt-2">
     <strong class="text-gray-700">Base URL:</strong>
 
-    <ul class="ml-6 text-gray-700">
-      <li><strong>Tracks:</strong> <a href="https://ecapi.olk1.com/tracks" target="_blank" class="text-blue-600 hover:underline"><code class="bg-gray-200 px-2 py-1 rounded"><span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks</code></a></li>
-      <span class="italic text-gray-600">Returns all track information fields/the entire data set.</span>
-    </ul>
-    
+      <ul class="ml-6 text-gray-700">
+        <li><strong>Tracks:</strong> <a href="https://ecapi.olk1.com/tracks" target="_blank" class="text-blue-600 hover:underline"><code class="bg-gray-200 px-2 py-1 rounded"><span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks</code></a></li>
+        <span class="italic text-gray-600">Returns all track information fields/the entire data set.</span>
+      </ul>
     </div>
 
     <h2 class="italic text-3xl font-semibold text-gray-700 pl-4 mt-4">How to use</h2>
 
     <div class="bg-gray-50 p-6 mt-4">
       <div class="mt-0">
-        <strong class="text-gray-700">Response Fields:</strong>
+        <strong class="text-gray-700">Track Response Fields:</strong>
         <ul class="ml-6 text-gray-700">
           <li><code class="bg-gray-100 px-2 py-1 rounded">id</code> (Integer): Unique identifier for the track.</li>
           <li><code class="bg-gray-100 px-2 py-1 rounded">trackName</code> (String): The name of the track.</li>
@@ -170,11 +169,10 @@
 <div class="bg-gray-50 p-6 mt-4">
       <div class="mt-0">
     
-    <h4 class="mt-0 text-lg font-semibold text-gray-800">Combine queries (use &amp;):</h4>
+    <h4 class="mt-0 text-lg font-semibold text-gray-800">Combine/chain queries parameters together (using &amp;):</h4>
     
     <ul class="ml-6 text-gray-700">
-          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_sort=releaseYear&_order=desc</code> Fetch tracks by release year in descending order.</li>   
-
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_sort=releaseYear&_order=desc&_limit=5&genre=New Wave</code> <br/>Fetch tracks by release year, in descending order, limited to 5 results, in a specific genre.</li>   
      </ul>
       </div>
     </div>
@@ -183,16 +181,55 @@
 
 
 
+<!-- ALBUMS -->
+<div class="bg-gray-100 p-6 mt-8">
+  <strong class="text-gray-700">Base URL:</strong>
 
-    <div class="bg-gray-50 p-6 mt-4">
+    <ul class="ml-6 text-gray-700">
+      <li><strong>Albums:</strong> <a href="https://ecapi.olk1.com/albums" target="_blank" class="text-blue-600 hover:underline"><code class="bg-gray-200 px-2 py-1 rounded"><span class="hidden sm:inline">https://</span>ecapi.olk1.com/albums</code></a></li>
+      <span class="italic text-gray-600">Returns all album information fields.</span>
+    </ul>
+</div>
+
+ <div class="bg-gray-100 p-6 mt-4">
+      <div class="mt-0">
+        <strong class="text-gray-700">Album Response Fields:</strong>
+        <ul class="ml-6 text-gray-700">
+          <li><code class="bg-gray-100 px-2 py-1 rounded">id</code> (Integer): Unique identifier for the album.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">albumName</code> (String): The name of the album.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">artistName</code> (String): The artist's name.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">releaseYear</code> (Integer): The album release year.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">albumDuration</code> (Float): Duration of the album (e.g. <code>mm:ss</code>).</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">trackCount</code> (Integer): Number of tracks on the album.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">genre</code> (String): The musical genre of the album.</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">artwork</code> (String): The accompanying image for the album. (Album Artwork)</li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">ytPlaylistUrl</code> (String): The URL which links to a YouTube playlist for the album.</li>
+        </ul>
+      </div>
+    </div>
+<!-- \ALBUMS -->
+
+
+
+
+    <div class="bg-gray-200 p-6 mt-8">
     
-      <h4 class="mt-0 text-lg font-semibold text-gray-800">Example Requests:</h4>
+      <h4 class="mb-3 text-lg font-semibold text-gray-800">Example Requests:</h4>
     
-      <ul class="ml-6 text-gray-700">
-        <li><code class="bg-gray-100 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?id=42</code></li>
-        <li><code class="bg-gray-100 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?_limit=50</code></li>
-        <li><code class="bg-gray-100 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?_start=200&_limit=50</code></li>
-        <li class="hidden lg:inline"><code class="bg-gray-100 px-2 py-1 rounded">GET https://ecapi.olk1.com/tracks?trackMin=1&trackMax=3&_order=desc&genre=Electronic</code></li>
+      <ul class="ml-6 text-gray-700 flex flex-col gap-4">
+        <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?id=42</code></li>
+        
+        <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?_limit=50</code></li>
+        
+        <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?_start=200&_limit=50</code></li>
+        
+        <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?trackMin=1&trackMax=3&_order=desc&genre=Electronic</code></li>
+        
+        
+        <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/albums?_sort=releaseYear&_order=asc</code></li>
+        
+        <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/albums?albumMin=25&albumMax=30&_sort=albumDuration&_order=desc</code></li>
+        
       </ul>
     </div>
 
@@ -202,8 +239,9 @@
 <!-- REPL -->
 <!-- REPL -->
 
-  <div class="mt-4 md:mt-16 max-w-4xl mx-auto">
-    <h1 class="space-mono-regular text-3xl font-bold mb-6">API Query Live Demo</h1>
+    <h1 class="mt-4 md:mt-10  space-mono-regular text-2xl font-bold mb-6 bg-black text-white w-fit px-2 pb-1">API Query Parameters: Live Demo</h1>
+  
+  <div class="mt-4 md:mt-10 max-w-4xl mx-auto">
 
     <div class="gap-4 flex flex-wrap justify-center">
       <button onclick="getAllData()" class="btn">Get All</button>
@@ -265,7 +303,7 @@
 <!--  -->
 <!--  -->
 <!--  -->
-    <div class="bg-gray-50 p-6 mt-4 flex flex-col items-center justify-center gap-4">
+    <div class="bg-gray-50 p-6 mt-16 flex flex-col items-center justify-center gap-4">
       <p>Currently API usage is by invitation:</p>
       <p class="bg-orange-500 text-sm text-white px-2 py-1 pb-1.5 md:p-2 rounded-md w-fit">
         <a href="https://ecmessage.olk1.com/">Request Access</a> 

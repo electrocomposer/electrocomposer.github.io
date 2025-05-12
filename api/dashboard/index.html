@@ -18,6 +18,11 @@
   <script src="dashboard.js" defer></script>
 
 <style>
+    html.overflow-hidden,
+    body.overflow-hidden {
+      overflow: hidden;
+      height: 100%;
+    }
    .focused {
       position: fixed;
       top: 50%;
@@ -28,12 +33,10 @@
       width: 90vw;
       height: 85vh;
     }
-    html.overflow-hidden,
-    body.overflow-hidden {
-      overflow: hidden;
-      height: 100%;
+    .close {
+      transition: color 0.2s ease;
     }
-  </style>
+</style>
 </head>
 
 <body class="space-mono-regular pb-[80px] fade-in bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
@@ -87,7 +90,14 @@
   
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4">
     
-    <h2 class="flex-shrink-0 text-xl font-semibold text-gray-900 dark:text-gray-100 md:-mt-2 md:pl-1">Catalogue Data</h2>
+    <div class="text-center md:text-left flex flex-col md:flex-row">
+      <h2 class="mb-2 md:mb-0 mr-0 md:mr-2 text-xl font-semibold text-gray-900 dark:text-gray-100 md:-mt-2 md:pl-1">Catalogue Data</h2>
+
+      <div class="flex justify-center items-center md:ml-2 md:-mt-1">
+        <p class="text-sm">Results: </p>
+        <p id="resultsCount">0</p>
+      </div>
+    </div>
     
     <input type="text" id="search-input" placeholder="multi-keyword search (e.g new wave 2018)"
       class="w-full md:w-2/3 mr-0 px-3 py-2 text-sm rounded bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring focus:ring-blue-500" />
@@ -96,15 +106,16 @@
 
   <div class="overflow-x-auto">
     <table class="min-w-full table-auto border border-gray-200 dark:border-gray-700 text-sm">
-      <thead class="bg-gray-100 dark:bg-gray-700 text-left text-gray-900 dark:text-gray-100">
+      <thead class="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-center">
         <tr>
-          <th class="px-4 py-2">ID</th>
-          <th class="px-4 py-2">Track</th>
+          <th class="px-4 py-2">Cat ID</th>
+          <th class="px-4 py-2 text-left w-fit">Track Name</th>
           <th class="px-4 py-2">Track Length</th>
           <th class="px-4 py-2">Album</th>
           <th class="px-4 py-2">Album Duration</th>
           <th class="px-4 py-2">Year</th>
           <th class="px-4 py-2">Genre</th>
+          <th class="px-4 py-2">Track #</th>
         </tr>
       </thead>
       <tbody id="table-body"></tbody>

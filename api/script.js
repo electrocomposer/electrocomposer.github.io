@@ -41,7 +41,7 @@ const API = "https://ecapi.olk1.com/tracks";
     function createTruncatedElement(label, value, maxLength = 22) {
       const p = document.createElement('p');
       const strong = document.createElement('strong');
-      strong.textContent = `${label}: `;
+      strong.textContent = label + ': ';
       p.appendChild(strong);
 
       if (value.length > maxLength) {
@@ -70,52 +70,78 @@ const API = "https://ecapi.olk1.com/tracks";
   
 
 
+
+
+
+
+// SEARCH
 let filteredTracks = null; // Track the current filtered subset
 
-let sortAlbumLengthContainer = document.getElementById('album-length-checkbox-container');
+function formatDuration(val) {
+  // if number like 3.1, pad it to 3.10
+  if (!val) return "";
+  const num = parseFloat(val);
+  if (isNaN(num)) return String(val);
+  return num.toFixed(2); // Ensures 3.1 becomes "3.10"
+}
 
-// Search functionality
+
+const searchFields = ['track', 'album', 'genre', 'year', 'id'];
+
 const searchTracks = (query, tracks) => {
   const normalizedQuery = query.toLowerCase();
-
-  // Check if the query contains the exact characters '()'
-  const isAlbumSearch = normalizedQuery.includes("()");
-
-  // Check if the query contains the exact character '*'
   const isReverseSearch = normalizedQuery.includes("*");
 
-  // Adjust visibility of sortAlbumLengthContainer based on the search type
-  if (isAlbumSearch) {
-    sortAlbumLengthContainer.style.visibility = "hidden"; // Hide for album-specific searches
+  // Clean query for parsing
+  const cleanedQuery = normalizedQuery.replace("*", "").trim();
+
+  // Detect scoped search (e.g., track:in one voice)
+  const scopedSearchRegex = /(\w+):(.+)/;
+  const keywords = [];
+
+  if (scopedSearchRegex.test(cleanedQuery)) {
+    const match = cleanedQuery.match(scopedSearchRegex);
+    const field = match[1];
+    const value = match[2].trim();
+
+    if (searchFields.includes(field)) {
+      keywords.push({ field, value });
+    }
   } else {
-    sortAlbumLengthContainer.style.visibility = "visible"; // Show for all other searches
+    keywords.push(...cleanedQuery.split(/\s+/).filter(kw => kw.length > 0));
   }
 
-  let filteredTracks = tracks.filter((track) => {
-    if (isAlbumSearch) {
-      const albumQuery = normalizedQuery.replace("()", "").replace("*", "").trim();
-      return track.albumName?.toLowerCase().includes(albumQuery);
-    }
+  const normalize = str => str?.toLowerCase().trim().replace(/\s+/g, ' ') || '';
 
-    const cleanQuery = normalizedQuery.replace("*", "").trim();
-    const trackNameMatch = track.trackName?.toLowerCase().includes(cleanQuery);
-    const releaseYearMatch = track.releaseYear?.toString().includes(cleanQuery);
+  const filtered = tracks.filter(track => {
+    const searchable = {
+      id: String(track.id).toLowerCase(),
+      track: normalize(track.trackName),
+      album: normalize(track.albumName),
+      albumduration: normalize(formatDuration(track.albumDuration)),
+      trackduration: normalize(formatDuration(track.trackDuration)),
+      genre: normalize(track.genre),
+      year: String(track.releaseYear).toLowerCase(),
+    };
 
-    return trackNameMatch || releaseYearMatch;
+    return keywords.every(kw => {
+      if (kw.field) {
+        return searchable[kw.field] === normalize(kw.value);
+      } else {
+        return Object.values(searchable).some(val =>
+          val.includes(kw) || val.includes(kw + "0")
+        );
+      }
+    });
   });
 
-  // If searching for albums, sort the filtered tracks by trackNumber
-  if (isAlbumSearch) {
-    filteredTracks.sort((a, b) => a.trackNumber - b.trackNumber);
-  }
-
-  // If reverse search, reverse the filtered results
   if (isReverseSearch) {
-    filteredTracks.reverse();
+    filtered.reverse();
   }
 
-  return filteredTracks;
+  return filtered;
 };
+
 
 
 let updatedTracks = [];
@@ -123,11 +149,13 @@ const totalCount = document.getElementById('totalCount');
 
 const handleSearch = (event) => {
   const query = event.target.value;
-  filteredTracks = query ? searchTracks(query, updatedTracks) : null; // Update filteredTracks
-  renderTracksWrapper(determineSortingOrder(filteredTracks || updatedTracks)); // Render with sorting
-  totalCount.innerText = (filteredTracks || updatedTracks).length;
+  filteredTracks = query ? searchTracks(query, updatedTracks) : null;
 
-  // Update visual states if necessary
+  const tracksToRender = filteredTracks || updatedTracks;
+
+  renderTracksWrapper(determineSortingOrder(tracksToRender));
+  totalCount.innerText = tracksToRender.length;
+
   const trackElements = document.querySelectorAll('#trackList li');
   trackElements.forEach((li) => {
     const trackId = li.getAttribute('data-track-id');
@@ -143,7 +171,6 @@ const handleSearch = (event) => {
       li.classList.remove(greenBgClass, redBgClass);
     }
 
-    // Update button opacity
     const thumbsUp = li.querySelector('button[data-type="thumbsUp"]');
     const thumbsDown = li.querySelector('button[data-type="thumbsDown"]');
 
@@ -164,11 +191,18 @@ const handleSearch = (event) => {
 
 
 
-      // Attach event listener to the search input
-      const searchInput = document.getElementById('searchInput');
-      if (searchInput) {
-        searchInput.addEventListener('input', handleSearch);
-      }
+
+// Attach event listener to the search input
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+  searchInput.addEventListener('input', handleSearch);
+}
+
+
+// \SEARCH
+
+
+
 
 
 
@@ -336,7 +370,18 @@ const renderTracks = (tracks) => {
     albumDuration.innerHTML = `<strong>Album Duration:</strong> ${Number(track.albumDuration).toFixed(2)}`;
 
     details.appendChild(albumDuration);
+    
+    const genre = document.createElement('p');
+    genre.innerHTML = `<strong>Genre:</strong> ${track.genre}`;
 
+    details.appendChild(genre);
+    
+    const trackNumber = document.createElement('p');
+    trackNumber.innerHTML = `<strong>Track Number:</strong> ${Number(track.trackNumber)}`;
+
+    details.appendChild(trackNumber);
+// 
+// 
     const ytUrl = document.createElement('p');
     ytUrl.innerHTML = `<a class="block mt-2 w-fit bg-green-200 rounded-md text-sm text-black font-bold tracking-wider pt-0.5 pb-1 px-1" href="${track.ytUrl}" target="_blank">Play Track</a>`;
 

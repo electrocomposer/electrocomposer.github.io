@@ -109,6 +109,9 @@ toggleThemeBtn.addEventListener("click", () => {
 
 
 
+
+
+
 function formatDuration(val) {
   // if number like 3.1, pad it to 3.10
   if (!val) return "";
@@ -118,32 +121,75 @@ function formatDuration(val) {
 }
 
 
+
+const searchFields = ['track', 'album', 'genre', 'year', 'id'];
+
+
 searchInput.addEventListener("input", (e) => {
-  const keywords = e.target.value
-    .trim()
-    .toLowerCase()
-    .split(/\s+/); // Split by any whitespace
+  const query = e.target.value.trim().toLowerCase();
+  
+  // Regular expression to capture scoped searches (e.g., track:the wall, genre:rock, year:2023)
+  const scopedSearchRegex = /(\w+):(.+)/;
+
+  const keywords = [];
+
+  // If the query contains a scoped search (e.g., track:the wall)
+  if (scopedSearchRegex.test(query)) {
+    const match = query.match(scopedSearchRegex);
+    const field = match[1];  // track or album, genre, etc.
+    const value = match[2].trim();  // the wall, rock, 2023
+
+    // Only push the scoped search if the field is valid
+    if (searchFields.includes(field)) {
+      keywords.push({ field, value });
+    } 
+  } else {
+    // Otherwise, split the query into individual keywords for a loose search
+    keywords.push(...query.split(/\s+/).filter(kw => kw.length > 0));
+  }
 
   const filtered = allData.filter(track => {
-    const searchableFields = [
-      track.id,
-      track.trackName,
-      track.albumName,
-      formatDuration(track.albumDuration),
-      track.genre,
-      track.releaseYear,
-      formatDuration(track.trackDuration)
-    ]
-    .map(val => String(val).toLowerCase())
-    .join(" "); // Combine into one searchable string
+    // Normalize function to handle case, trimming, and collapsing spaces
+    const normalize = str =>
+      str?.toLowerCase().trim().replace(/\s+/g, ' ') || '';
 
-    // return keywords.every(kw => searchableFields.includes(kw));
-    return keywords.every(kw => searchableFields.includes(kw) || searchableFields.includes(kw + "0"));
+    // Apply normalization to all searchable fields
+    const searchable = {
+      id: String(track.id).toLowerCase(),
+      track: normalize(track.trackName),
+      album: normalize(track.albumName),
+      albumduration: normalize(formatDuration(track.albumDuration)),
+      trackduration: normalize(formatDuration(track.trackDuration)),
+      genre: normalize(track.genre),
+      year: String(track.releaseYear).toLowerCase(),
+    };
 
+    return keywords.every(kw => {
+      if (kw.field) {
+        // Scoped search: exact match required
+        return searchable[kw.field] === normalize(kw.value);
+      } else {
+        // Loose search: substring match on any field
+        return Object.values(searchable).some(val =>
+          val.includes(kw) || val.includes(kw + "0")
+        );
+      }
+    });
   });
+
+  // Update the UI with the filtered results count
+  const resultsCount = document.getElementById('resultsCount');
+  resultsCount.innerText = filtered.length;
 
   renderTable(filtered);
 });
+
+
+
+
+
+
+
 
 
 
@@ -167,6 +213,19 @@ searchInput.addEventListener("input", (e) => {
     titleEl.innerText = title;
     card.prepend(titleEl);
 
+    const closeBtn = document.createElement("span");
+    closeBtn.innerHTML = "&times;";
+    closeBtn.className = "close hidden cursor-pointer text-7xl font-bold text-white hover:text-gray-300";
+    closeBtn.style.position = "absolute";
+    closeBtn.style.top = "10px";
+    closeBtn.style.right = "20px";
+    closeBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); // prevent toggling again
+      toggleFocus(card);   // same logic as clicking to un-focus
+    });
+
+    card.appendChild(closeBtn);
+
     return card;
   }
 
@@ -180,6 +239,7 @@ function toggleFocus(card) {
   charts.forEach(c => {
     c.classList.remove("focused", "hidden");
     c.classList.add("block", "fade-in");
+    c.querySelector(".close")?.classList.add("hidden");
   });
 
   if (!isFocused) {
@@ -195,9 +255,10 @@ function toggleFocus(card) {
     });
     // remove scrollbars when chart is full screen
     document.querySelector('html').classList.add("overflow-hidden");
+    sidebar.classList.add("hidden"); // hide sidebar only when focusing a chart
 
     card.classList.add("focused", "fade-in");
-    sidebar.classList.add("hidden"); // hide sidebar only when focusing a chart
+    card.querySelector(".close")?.classList.remove("hidden");
   } else {
     // add scrollbars back to UI
     document.querySelector('html').classList.remove("overflow-hidden");
@@ -531,15 +592,16 @@ function renderCharts(data) {
     tableBody.innerHTML = "";
     data.forEach(track => {
       const row = document.createElement("tr");
-      row.className = "border-t border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100";
+      row.className = "border-t border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 text-center";
       row.innerHTML = `
         <td class="px-4 py-2">${track.id}</td>
-        <td class="px-4 py-2">${track.trackName}</td>
+        <td class="px-4 py-2 text-left">${track.trackName}</td>
         <td class="px-4 py-2">${track.trackDuration.toFixed(2)}</td>
         <td class="px-4 py-2">${track.albumName}</td>
         <td class="px-4 py-2">${track.albumDuration.toFixed(2)}</td>
         <td class="px-4 py-2">${track.releaseYear}</td>
         <td class="px-4 py-2">${track.genre}</td>
+        <td class="px-4 py-2">${track.trackNumber}</td>
       `;
       tableBody.appendChild(row);
     });
@@ -553,4 +615,17 @@ function renderCharts(data) {
       renderTable(data);
     })
     .catch(err => console.error("API error:", err));
+
+
+
+    // Allow ESC key to close focused chart (fullscreen mode)
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        const focusedCard = document.querySelector("#charts-section .focused");
+        if (focusedCard) {
+          toggleFocus(focusedCard);
+        }
+      }
+    });
+
 });

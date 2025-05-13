@@ -99,8 +99,14 @@
       </div>
     </div>
     
-    <input type="text" id="search-input" placeholder="multi-keyword search (e.g new wave 2018)"
-      class="w-full md:w-2/3 mr-0 px-3 py-2 text-sm rounded bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring focus:ring-blue-500" />
+    <input
+      type="text"
+      id="search-input"
+      data-placeholder="Search catalogue... (track:heart, album:heart, id:50, new wave)"
+      placeholder="Search catalogue... (track:heart, album:heart, id:50, new wave)"
+      class="w-full md:w-2/3 mr-0 px-3 py-2 text-sm rounded bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring focus:ring-blue-500"
+    />
+
   </div>
 
 
@@ -125,5 +131,18 @@
 
     </main>
   </div>
+
+  <script>
+  function updateSearchPlaceholder() {
+  const input = document.getElementById('search-input');
+  const full = input.dataset.placeholder;
+  const isMobile = window.innerWidth < 768; // Tailwind's md breakpoint = 768px
+
+  input.placeholder = isMobile ? "Search...track:heart, album:heart, id:50, new wave" : full;
+}
+window.addEventListener('DOMContentLoaded', updateSearchPlaceholder);
+window.addEventListener('resize', updateSearchPlaceholder);
+
+  </script>
 </body>
 </html>

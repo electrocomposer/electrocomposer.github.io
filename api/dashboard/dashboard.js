@@ -184,7 +184,8 @@ searchInput.addEventListener("input", (e) => {
   renderTable(filtered);
 });
 
-
+// default results displayed on load and fallback between queries
+resultsCount.innerText = 500;
 
 
 

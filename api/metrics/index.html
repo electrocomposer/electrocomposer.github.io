@@ -5,13 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>electroComposer</title>
   <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
+  <link rel='stylesheet' href='/style.css' />  
   <script src='/tailwindcss.min.js'></script>
 </head>
 <style>
-body{
-  font-size: 20px;
-  background-color: #202123;
+html{
+  overflow: hidden;
 }
+body{
+  overflow: hidden;
+	height: 100vh;
+  background-color: #f7f7f7;
+   background: radial-gradient(#ff3333, #e73c7e, #ffff00, #11d5ab);
+	background-size: 400% 400%;
+  color: #333;
+  font-family: sans-serif;
+	animation: gradient 60s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
+
+
+
 .slideDown{
   animation: .5s ease-out 0s 1 slideDown;
 }
@@ -26,58 +53,91 @@ body{
     opacity: 1;
   }
 }
+.large-stat-bubble {
+  position: absolute;
+  border-radius: 50%;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
+  animation: floatBig 10s ease-in-out infinite;
+  z-index: 100;
+  background-color: #fef3c7; /* default fallback */
+  box-shadow: 0 20px 12px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes floatBig {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-100px); }
+}
+
+
+
+.duplicate-bubbles {
+  z-index: 1;
+  position: absolute;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float 10s ease-in-out infinite;
+  box-shadow: 0 40px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+@keyframes float {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-30px); }
+  100% { transform: translateY(0px); }
+}
+
 </style>
-<body class="space-mono-regular pb-[80px] slideDown">
+<body class="space-mono-regular pb-[80px]">
 
-<div class="flex flex-col justify-center items-center">
+<div class="w-full h-screen overflow-hidden slideDown">
 
-<a class="text-white" href="/api/">&larr;back</a>
-
-<!-- <div id="metrics"></div>   -->
-
-<div class="bg-red-300 border border-dashed" id="shortestTrack"></div>  
-
-<div class="-ml-16 rotate-3 bg-yellow-300 border border-dashed" id="longestTrack"></div>  
-
-<div class="ml-16 bg-cyan-300 -rotate-3 border border-dashed" id="averageTrack"></div>  
-
-<div class="bg-green-300 border border-dashed" id="medianTrack"></div>  
-
-<div class="bg-orange-300 -ml-16 rotate-3 border border-dashed" id="modeTrack"></div>  
-
-<div class="bg-purple-300 -rotate-3 ml-16 border border-dashed" id="rangeCoefficient"></div>  
+  <a class="bg-black text-white w-fit" href="/api/">&larr; back</a>
 
 
+  <div id="shortestTrack" class="large-stat-bubble"></div>
+  <div id="longestTrack" class="large-stat-bubble"></div>
+  <div id="averageTrack" class="large-stat-bubble"></div>
+  <div id="medianTrack" class="large-stat-bubble"></div>
+  <div id="modeTrack" class="large-stat-bubble"></div>
+  <div id="rangeCoefficient" class="large-stat-bubble"></div>
 
-<div class="bg-gray-100 border border-dashed" id="duplicateDurations"></div>  
 
+  <div class="relative w-full h-screen overflow-hidden" id="duplicateDurations"></div>
 
-
-
+<!--  -->
+<!--  -->
+<!--  -->
 </div>
+
+
+
   <script>
 document.addEventListener("DOMContentLoaded", () => {
-
 const api = "https://ecapi.olk1.com/tracks"; 
-  // 
-  // 
-  // 
-  // 
 
 
+const shortestTrackContainer = document.getElementById('shortestTrack');
+const longestTrackContainer = document.getElementById('longestTrack');
+const averageTrackContainer = document.getElementById('averageTrack');
+const medianTrackContainer = document.getElementById('medianTrack');
+const modeTrackContainer = document.getElementById('modeTrack');
+const rangeCoefficientContainer = document.getElementById('rangeCoefficient');
 
-
-
-
-const metricsContainer = document.querySelector("#metrics");
-const shortestTrackContainer = document.querySelector("#shortestTrack");
-const longestTrackContainer = document.querySelector("#longestTrack");
-const averageTrackContainer = document.querySelector("#averageTrack");
-const medianTrackContainer = document.querySelector("#medianTrack");
-const modeTrackContainer = document.querySelector("#modeTrack");
-const rangeCoefficientContainer = document.querySelector("#rangeCoefficient");
-
+// 
+// 
 const duplicateDurationsContainer = document.querySelector("#duplicateDurations");
+
+
+
 
 async function fetchData() {
   try {
@@ -110,76 +170,106 @@ async function fetchTrackData(data) {
 
 
 
+const placedBubbles = [];
+
+function largeStatBubble(container, text, backgroundColor = "#fef3c7", textColor = "#000000") {
+  const width = 250;
+  const height = 250;
+  const maxAttempts = 20;
+  let attempt = 0;
+  let positionFound = false;
+  let left, top;
+
+  // Try to find a non-overlapping position
+  while (!positionFound && attempt < maxAttempts) {
+    left = 10 + Math.random() * 50;
+    top = 10 + Math.random() * 50;
+
+    const newBox = {
+      left,
+      top,
+      right: left + (width / window.innerWidth) * 100,
+      bottom: top + (height / window.innerHeight) * 100
+    };
+
+    positionFound = !placedBubbles.some(existing => {
+      return (
+        newBox.left < existing.right &&
+        newBox.right > existing.left &&
+        newBox.top < existing.bottom &&
+        newBox.bottom > existing.top
+      );
+    });
+
+    attempt++;
+  }
+
+  // Save the position to avoid overlaps
+  placedBubbles.push({
+    left,
+    top,
+    right: left + (width / window.innerWidth) * 100,
+    bottom: top + (height / window.innerHeight) * 100
+  });
+
+  container.classList.add("large-stat-bubble");
+  container.innerHTML = `<div>${text}</div>`;
+  container.style.position = "absolute";
+  container.style.zIndex = "9999";
+  container.style.backgroundColor = backgroundColor;
+  container.style.color = textColor;
+  container.style.width = `${width}px`;
+  container.style.height = `${height}px`;
+  container.style.left = `${left}%`;
+  container.style.top = `${top}%`;
+  container.style.animationDuration = `${6 + Math.random() * 4}s`;
+  container.style.animationDelay = `${Math.random() * 3}s`;
+  container.style.display = "flex";
+  container.style.alignItems = "center";
+  container.style.justifyContent = "center";
+}
+
+
+
 
 async function findShortestTrack(data) {
   try {
-    // Extract trackDuration values and convert to seconds (as numbers)
-    const trackDurationsInSeconds = data.map(item => {
-      const duration = parseFloat(item.trackDuration); // Convert string to float
-      return duration;
-    });
+    const trackDurationsInSeconds = data.map(item => parseFloat(item.trackDuration));
+    const shortestTrack = Math.min(...trackDurationsInSeconds);
 
-    // Find the shortest track by using Math.min on the array of durations
-    const ShortestTrack = Math.min(...trackDurationsInSeconds);
+    // Clear any previous content
+    shortestTrackContainer.innerHTML = "";
 
-    // Log the shortest track value
-    // console.log("Shortest Track (in minutes):", ShortestTrack);
+    // Apply styling and display the shortest track in a floating bubble
+    largeStatBubble(shortestTrackContainer, `Shortest Track<br>${shortestTrack} seconds`, "#f33", "#fff");
 
-    shortestTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Shortest Track</p> <p>${ShortestTrack}s</p></div>`;  
-
-    return ShortestTrack;
+    return shortestTrack;
   } catch (error) {
     console.error("Error finding the shortest track:", error);
     return null;
   }
 }
 
-
 async function findLongestTrack(data) {
   try {
-    // Extract trackDuration values and convert to seconds (as numbers)
-    const trackDurationsInSeconds = data.map(item => {
-      const duration = parseFloat(item.trackDuration); // Convert string to float
-      return duration;
-    });
-
-    // Find the shortest track by using Math.min on the array of durations
-    const LongestTrack = Math.max(...trackDurationsInSeconds);
-
-    // Log the shortest track value
-    // console.log("Longest Track (in minutes):", LongestTrack);
-
-    longestTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Longest Track</p> <p>${LongestTrack}m</p></div>`;  
-
-    return LongestTrack;
+    const trackDurationsInSeconds = data.map(item => parseFloat(item.trackDuration));
+    const longestTrack = Math.max(...trackDurationsInSeconds);
+    // Use the helper function to style and append the bubble
+    largeStatBubble(longestTrackContainer, `Longest Track<br>${longestTrack} m/s`, "#ffff00", "#000");
+    return longestTrack;
   } catch (error) {
-    console.error("Error finding the Longest track:", error);
+    console.error("Error finding the longest track:", error);
     return null;
   }
 }
 
-
-
-// To calculate the average, you need to sum all the track durations and then divide by the number of tracks.
 async function findAverageTrackLength(data) {
   try {
-    // Extract trackDuration values and convert to seconds (as numbers)
-    const trackDurationsInSeconds = data.map(item => {
-      const duration = parseFloat(item.trackDuration); // Convert string to float
-      return duration;
-    });
-
-    // Calculate the sum of all track durations
+    const trackDurationsInSeconds = data.map(item => parseFloat(item.trackDuration));
     const totalDuration = trackDurationsInSeconds.reduce((acc, curr) => acc + curr, 0);
-
-    // Calculate the average duration (in minutes)
     const averageTrackLength = totalDuration / trackDurationsInSeconds.length;
-
-    // Log the average track length
-    // console.log("Average Track Length (in minutes):", averageTrackLength);
-
-    averageTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Average Track Length</p> <p>${averageTrackLength.toFixed(2)}m</p></div>`;  
-
+    // Use the helper function to style and append the bubble
+    largeStatBubble(averageTrackContainer, `Average Track Length<br>${averageTrackLength.toFixed(2)} m/s`, "#55f08a", "#ffffff");
     return averageTrackLength;
   } catch (error) {
     console.error("Error finding the average track length:", error);
@@ -189,35 +279,22 @@ async function findAverageTrackLength(data) {
 
 
 
-
-// find the middle value. if the number of durations is odd the median is the middle value else the median is the average of the two middle values
 async function findMedianTrackLength(data) {
   try {
-    // Extract trackDuration values and convert to seconds (as numbers)
-    const trackDurationsInSeconds = data.map(item => {
-      const duration = parseFloat(item.trackDuration); // Convert string to float
-      return duration;
-    });
-
-    // Sort the track durations in ascending order
+    const trackDurationsInSeconds = data.map(item => parseFloat(item.trackDuration));
     trackDurationsInSeconds.sort((a, b) => a - b);
-
-    // Find the median
     const middleIndex = Math.floor(trackDurationsInSeconds.length / 2);
     let medianTrackLength;
 
     if (trackDurationsInSeconds.length % 2 === 0) {
-      // If even number of tracks, median is the average of the two middle values
       medianTrackLength = (trackDurationsInSeconds[middleIndex - 1] + trackDurationsInSeconds[middleIndex]) / 2;
     } else {
-      // If odd number of tracks, median is the middle value
       medianTrackLength = trackDurationsInSeconds[middleIndex];
     }
 
-    // Log the median track length
-    // console.log("Median Track Length (in minutes):", medianTrackLength);
-
-    medianTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Median Track Length</p> <p>${medianTrackLength.toFixed(2)}m</p></div>`;
+    // Clear the container and use the helper function to style and append the bubble
+    medianTrackContainer.innerHTML = ""; // Clear previous content
+    largeStatBubble(medianTrackContainer, `Median<br>${medianTrackLength.toFixed(2)} m/s<br>('middle' track duration, comparing longest to shortest)`, "#1550ff", "#ffffff");
 
     return medianTrackLength;
   } catch (error) {
@@ -226,35 +303,22 @@ async function findMedianTrackLength(data) {
   }
 }
 
-
-
-//  the mode of the track lengths, we need to find the track duration that appears most frequently in the data
 async function findModeTrackLength(data) {
   try {
-    // Extract trackDuration values and convert to seconds (as numbers)
-    const trackDurationsInSeconds = data.map(item => {
-      const duration = parseFloat(item.trackDuration); // Convert string to float
-      return duration;
-    });
-
-    // Create an object to count the frequency of each duration
+    const trackDurationsInSeconds = data.map(item => parseFloat(item.trackDuration));
     const frequencyMap = trackDurationsInSeconds.reduce((acc, curr) => {
-      acc[curr] = (acc[curr] || 0) + 1; // Increment the count for the current duration
+      acc[curr] = (acc[curr] || 0) + 1;
       return acc;
     }, {});
 
-    // Find the maximum frequency
     const maxFrequency = Math.max(...Object.values(frequencyMap));
-
-    // Find all durations that have the maximum frequency (mode(s))
     const modeTrackLengths = Object.keys(frequencyMap)
       .filter(duration => frequencyMap[duration] === maxFrequency)
-      .map(Number); // Convert the string keys back to numbers
+      .map(Number);
 
-    // Log the mode track lengths
-    // console.log("Mode Track Length(s) (in minutes):", modeTrackLengths);
-
-    modeTrackContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Mode Track Length</p> <p>${modeTrackLengths.join(', ')}m</p></div>`;
+    // Clear the container and use the helper function to style and append the bubble
+    modeTrackContainer.innerHTML = ""; // Clear previous content
+    largeStatBubble(modeTrackContainer, `Mode<br>${modeTrackLengths.join(" and ")} m/s<br>(most common track durations)`, "#00ff00", "#000000");
 
     return modeTrackLengths;
   } catch (error) {
@@ -263,35 +327,20 @@ async function findModeTrackLength(data) {
   }
 }
 
-
-
-// The Range Coefficient is a statistical measure that expresses the range(entire dataset / difference between the maximum and minimum values) relative to the mean
-
 async function findRangeCoefficient(data) {
   try {
-    // Extract trackDuration values and convert to seconds (as numbers)
-    const trackDurationsInSeconds = data.map(item => {
-      const duration = parseFloat(item.trackDuration); // Convert string to float
-      return duration;
-    });
-
-    // Find the maximum and minimum track durations
+    const trackDurationsInSeconds = data.map(item => parseFloat(item.trackDuration));
     const maxTrackDuration = Math.max(...trackDurationsInSeconds);
     const minTrackDuration = Math.min(...trackDurationsInSeconds);
 
-    // Calculate the range
     const range = maxTrackDuration - minTrackDuration;
-
-    // Calculate the mean (average) track duration
     const mean = trackDurationsInSeconds.reduce((acc, curr) => acc + curr, 0) / trackDurationsInSeconds.length;
 
-    // Calculate the range coefficient
     const rangeCoefficient = range / mean;
 
-    // Log the range coefficient
-    // console.log("Range Coefficient:", rangeCoefficient);
-
-    rangeCoefficientContainer.innerHTML = `<div class="text-black text-center p-2 text-2xl"><p>Range Coefficient</p> <p>${rangeCoefficient.toFixed(2)}m</p></div>`;
+    // Clear the container and use the helper function to style and append the bubble
+    rangeCoefficientContainer.innerHTML = ""; // Clear previous content
+    largeStatBubble(rangeCoefficientContainer, `Range Coef.<br>${rangeCoefficient.toFixed(2)} m/s<br>(very high variability in track durations)`, "#f00a74", "#ffffff");
 
     return rangeCoefficient;
   } catch (error) {
@@ -305,65 +354,158 @@ async function findRangeCoefficient(data) {
 
 
 
+// 
+// 
+// 
+// 
+// 
+
+
+
+
+
+
+const colors = [
+  '#f002e2', '#00caca', '#00a5a5', '#f87171', '#004444', '#dc2626', '#b91c1c', '#991b1b', '#7f1d1d', // red 100–900
+  '#00eafe', '#00dbfe', '#93c5fd', '#60a5fa', '#3b82f6', '#2563eb', '#1d4ed8', '#1e40af', '#1e3a8a', // blue 100–900
+  '#00fae5', '#a703d0', '#6ee7b7', '#34d399', '#10b981', '#059669', '#047857', '#065f46', '#064e3b', // green 100–900
+  '#00f9c3', '#00f08a', '#fde047', '#00cc15', '#eab308', '#ca8a04', '#a16207', '#854d0e', '#713f12', // yellow 100–900
+  '#00e8ff', '#e9d500', '#d8b40e', '#c084fc', '#a855f7', '#9333ea', '#7e22ce', '#6b21a8', '#581c87', // purple 100–900
+  '#00e7f3', '#0bc0e8', '#f9a8d4', '#0072b6', '#ec4899', '#db2777', '#be185d', '#9d174d', '#831843', // pink 100–900
+  '#00e7ff', '#c0d20e', '#a5b4fc', '#818cf8', '#6366f1', '#4f46e5', '#4338ca', '#3730a3', '#312e81',  // indigo 100–900
+];
+
+
+function shuffleArray(array) {
+  const shuffled = [...array]; // copy original array
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+
 async function sortDuplicateDurations(data) {
   try {
-    // Extract trackDuration values and convert to numbers
-    const trackDurationsInSeconds = data.map(item => parseFloat(item.trackDuration)); // Convert string to float
+    const container = document.getElementById("duplicateDurations");
+    container.innerHTML = "";
 
-    // Create an object to track the frequency of each track duration
+    // Convert durations to floats and count occurrences
     const durationCount = {};
-
+    const trackDurationsInSeconds = data.map(item => parseFloat(item.trackDuration));
     trackDurationsInSeconds.forEach(duration => {
-      // If the duration exists in the object, increment the count, otherwise, set to 1
       durationCount[duration] = (durationCount[duration] || 0) + 1;
     });
 
-    // Filter to get only the durations that appear more than once (duplicates)
+    // Filter to duplicates only
     const duplicateDurations = Object.keys(durationCount)
-      .filter(duration => durationCount[duration] > 1) // Only keep durations that appear more than once
+      .filter(duration => durationCount[duration] > 1)
       .map(duration => ({
-        duration: parseFloat(duration).toFixed(2),  // Ensure 2 decimal places
+        duration: parseFloat(duration),
         count: durationCount[duration]
       }));
 
-    // Sort the duplicateDurations by the frequency (most frequent first)
-    // and by the duration in descending order within each frequency
-    duplicateDurations.sort((a, b) => {
-      if (b.count === a.count) {
-        return b.duration - a.duration; // If counts are the same, sort by duration (longer first)
-      }
-      return b.count - a.count; // Sort by count (most frequent first)
+    if (duplicateDurations.length === 0) {
+      container.innerHTML = "<p class='text-center p-4'>No duplicate durations found.</p>";
+      return;
+    }
+
+   const shuffledColors = shuffleArray(colors);
+   const colorMap = {};
+    duplicateDurations.forEach((item, index) => {
+      colorMap[item.duration] = shuffledColors[index % shuffledColors.length];
     });
 
-    // Log the results for debugging
-    // console.log("Sorted Duplicate Durations:", duplicateDurations);
 
-    // If no duplicates, display a message
-    if (duplicateDurations.length === 0) {
-      duplicateDurationsContainer.innerHTML = "<p>No duplicate durations found.</p>";
-    } else {
-      // Display the results in the UI
-      duplicateDurationsContainer.innerHTML = `
-        <div class="overflow-x-auto">
-          <table class="w-full md:w-[500px] table-auto border-collapse border border-gray-200">
-            <thead>
-              <tr class="bg-gray-200">
-                <th class="text-center px-4 py-2 text-left border border-gray-300">Track Duration (min:sec)</th>
-                <th class="text-center px-4 py-2 text-left border border-gray-300">Same track length occurrence</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${duplicateDurations.map(item => `
-                <tr class="border-b">
-                  <td class="px-4 py-2 text-center border border-gray-300">${item.duration}</td>
-                  <td class="px-4 py-2 text-center border border-gray-300">${item.count} times</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>
-      `;
+
+    // Normalize size based on max duration
+    const maxDuration = Math.max(...duplicateDurations.map(d => d.duration));
+
+    const placedDuplicateBubbles = [];
+
+duplicateDurations.forEach(item => {
+  const colorHex = colorMap[item.duration] || '#d1d5db'; // fallback
+  const baseX = Math.random() * 80;
+  const baseY = Math.random() * 80;
+
+  for (let i = 0; i < item.count; i++) {
+    const bubble = document.createElement("div");
+    bubble.classList.add("duplicate-bubbles");
+
+    bubble.style.backgroundColor = colorHex;
+    bubble.textContent = item.duration.toFixed(2);
+
+    const size = 55 + (item.duration / maxDuration) * 90;
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+
+    const maxAttempts = 20;
+    let attempt = 0;
+    let positionFound = false;
+    let offsetX, offsetY, left, top;
+
+    while (!positionFound && attempt < maxAttempts) {
+      offsetX = Math.random() * 10;
+      offsetY = Math.random() * 10;
+      left = baseX + offsetX;
+      top = baseY + offsetY;
+
+      const widthPercent = (size / window.innerWidth) * 100;
+      const heightPercent = (size / window.innerHeight) * 100;
+
+      const newBox = {
+        left,
+        top,
+        right: left + widthPercent,
+        bottom: top + heightPercent
+      };
+
+      positionFound = !placedDuplicateBubbles.some(existing => {
+        return (
+          newBox.left < existing.right &&
+          newBox.right > existing.left &&
+          newBox.top < existing.bottom &&
+          newBox.bottom > existing.top
+        );
+      });
+
+      attempt++;
     }
+
+    placedDuplicateBubbles.push({
+      left,
+      top,
+      right: left + (size / window.innerWidth) * 100,
+      bottom: top + (size / window.innerHeight) * 100
+    });
+
+    bubble.style.left = `${left}%`;
+    bubble.style.top = `${top}%`;
+
+    bubble.style.animationDuration = `${8 + Math.random() * 4}s`;
+    bubble.style.animationDelay = `${Math.random() * 5}s`;
+
+    function formatOccurrence(count) {
+      const wordMap = {
+        2: "twice",
+        3: "three times",
+        4: "four times",
+        5: "five times",
+        6: "six times"
+      };
+      return wordMap[count] || `${count} times`;
+    }
+
+    // Usage:
+    bubble.title = `The track length ${item.duration} (mins/secs) occurs ${formatOccurrence(item.count)} in the catalogue`;
+
+
+    container.appendChild(bubble);
+  }
+});
+
+
 
     return { duplicateDurations };
 
@@ -372,6 +514,19 @@ async function sortDuplicateDurations(data) {
     return { duplicateDurations: [] };
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -405,6 +560,7 @@ init();
 
   
 });
+
 
   </script>
 </body>

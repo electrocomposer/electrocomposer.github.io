@@ -15,6 +15,10 @@
     label {
       user-select: none; /* Prevent selection of label text */
     }
+    .disabled-style {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body class="pb-[330px] lg:pb-[500px] fade-in">
@@ -78,7 +82,7 @@
 <div id="app" class="max-w-[800px] container mx-auto md:mt-0 px-4 py-6 bg-white rounded">
 
   <div class="flex justify-between items-center text-sm mb-1">
-    <p>Reverse results: <span id="reverseFetchData">use *</span></p>
+    <p>Type * to <span id="reverseFetchData">reverse by Cat ID</span></p>
     <p>Total: <span id="totalCount">0</span></p>
   </div>
 

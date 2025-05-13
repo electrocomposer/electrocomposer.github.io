@@ -1,5 +1,44 @@
 const API = "https://ecapi.olk1.com/tracks";
 
+
+// Define checkbox-label pairs for cleaner management
+const checkboxConfig = [
+  {
+    input: document.getElementById('sort-alpha').previousElementSibling,
+    label: document.getElementById('sort-alpha').parentElement,
+  },
+  {
+    input: document.getElementById('sort-track-length').previousElementSibling,
+    label: document.getElementById('sort-track-length').parentElement,
+  },
+  {
+    input: document.getElementById('sort-album-length').previousElementSibling,
+    label: document.getElementById('sort-album-length').parentElement,
+  },
+];
+
+// Helper function to disable others and apply visual styles
+function updateCheckboxStates(checkedInput) {
+  checkboxConfig.forEach(({ input, label }) => {
+    const shouldDisable = input !== checkedInput && checkedInput.checked;
+
+    input.disabled = shouldDisable;
+    label.classList.toggle('opacity-50', shouldDisable);
+    label.classList.toggle('cursor-not-allowed', shouldDisable);
+  });
+}
+
+// Attach change listeners
+checkboxConfig.forEach(({ input }) => {
+  input.addEventListener('change', () => {
+    updateCheckboxStates(input);
+    renderSortedTracks();
+  });
+});
+
+
+
+
 /**
  * Compare fetched API data with localStorage data based on track.id
  * and return a merged dataset with states ("up" or "down") applied.
@@ -188,15 +227,50 @@ const handleSearch = (event) => {
 };
 
 
-
-
-
-
-// Attach event listener to the search input
 const searchInput = document.getElementById('searchInput');
+
 if (searchInput) {
-  searchInput.addEventListener('input', handleSearch);
+  searchInput.addEventListener('input', (event) => {
+    const value = event.target.value.trim();
+    const albumLengthCheckbox = document.getElementById('sort-album-length-checkbox');
+
+    const isAlbumLengthChecked = albumLengthCheckbox.checked;
+    const isAsterisk = value === "";
+    const isOnlyAsterisk = value === "*";
+
+    // If album checkbox is checked and input is cleared or non-asterisk
+    if (isAlbumLengthChecked && (value === "" || (value !== "*" && value !== ""))) {
+      albumLengthCheckbox.checked = false;
+
+      // Re-enable all checkboxes and reset styles
+      checkboxConfig.forEach(({ input, label }) => {
+        input.disabled = false;
+        label.classList.remove('opacity-50', 'cursor-not-allowed');
+      });
+
+      renderSortedTracks(); // Rerun default render
+    }
+
+    // Always run the live filter/search logic
+    handleSearch(event);
+
+    // Special case: album checkbox is checked and input is exactly "*"
+    if (isAlbumLengthChecked && isOnlyAsterisk) {
+      clearList(); // Optional if you're replacing existing content
+
+      const baseTracks = filteredTracks || updatedTracks;
+      const reversedAlbums = getUniqueAlbums(baseTracks).sort(
+        (a, b) => a.albumDuration - b.albumDuration // Ascending: shortest first
+      );
+
+      totalCount.innerText = reversedAlbums.length;
+      renderTracksWrapper(reversedAlbums);
+    }
+  });
 }
+
+
+
 
 
 // \SEARCH
@@ -213,36 +287,41 @@ let allCountElement;
 let upCountElement;
 let downCountElement;
 
-// Function to determine sorting order
 const determineSortingOrder = (tracks) => {
   const sortAlphabetically = document.getElementById('sort-alpha').previousElementSibling.checked;
   const sortTrackLength = document.getElementById('sort-track-length').previousElementSibling.checked;
   const sortAlbumLength = document.getElementById('sort-album-length').previousElementSibling.checked;
 
-  let sortedTracks = [...tracks]; // Clone tracks to avoid mutating the original array
+  let sortedTracks = [...tracks]; // Default is all tracks
 
-  sortedTracks.sort((a, b) => {
-    if (sortAlbumLength) {
-      if (b.albumDuration !== a.albumDuration) {
-        return b.albumDuration - a.albumDuration;
+  // 💡 If album length sort is selected, reduce to longest track per album
+  if (sortAlbumLength) {
+    const albumMap = new Map();
+
+    tracks.forEach(track => {
+      const existing = albumMap.get(track.albumName);
+
+      if (!existing || track.trackDuration > existing.trackDuration) {
+        albumMap.set(track.albumName, track);
       }
-      if (sortTrackLength && b.trackDuration !== a.trackDuration) {
-        return b.trackDuration - a.trackDuration;
-      }
-    }
+    });
 
-    if (sortTrackLength && !sortAlbumLength) {
-      if (b.trackDuration !== a.trackDuration) {
-        return b.trackDuration - a.trackDuration;
-      }
-    }
+    // Now sortedTracks is only the longest tracks per album
+    sortedTracks = Array.from(albumMap.values());
 
-    if (sortAlphabetically) {
-      return a.trackName.localeCompare(b.trackName);
-    }
+    // Optional: sort albums by total album duration descending
+    sortedTracks.sort((a, b) => b.albumDuration - a.albumDuration);
+  }
 
-    return 0;
-  });
+  // 🔡 Track Length sorting (if NOT in album mode or combined mode)
+  if (sortTrackLength && !sortAlbumLength) {
+    sortedTracks.sort((a, b) => b.trackDuration - a.trackDuration);
+  }
+
+  // 🔤 Alphabetical sorting
+  if (sortAlphabetically) {
+    sortedTracks.sort((a, b) => a.trackName.localeCompare(b.trackName));
+  }
 
   return sortedTracks;
 };
@@ -250,16 +329,40 @@ const determineSortingOrder = (tracks) => {
 
 
 
+const getUniqueAlbums = (tracks) => {
+  const seen = new Map();
+  tracks.forEach(track => {
+    if (!seen.has(track.albumName)) {
+      seen.set(track.albumName, track);
+    } else {
+      const existing = seen.get(track.albumName);
+      if (track.albumDuration > existing.albumDuration) {
+        seen.set(track.albumName, track);
+      }
+    }
+  });
+  return Array.from(seen.values());
+};
+
+
 
 // Function to render sorted tracks
 const renderSortedTracks = () => {
-  renderTracksWrapper(determineSortingOrder(filteredTracks || updatedTracks));
+  const baseTracks = filteredTracks || updatedTracks;
+  const sortAlbumLength = document.getElementById('sort-album-length').previousElementSibling.checked;
+
+  let tracksToRender = determineSortingOrder(baseTracks);
+
+  if (sortAlbumLength) {
+    tracksToRender = getUniqueAlbums(tracksToRender);
+    // Optionally sort again if needed
+    tracksToRender.sort((a, b) => b.albumDuration - a.albumDuration);
+  }
+  totalCount.innerText = tracksToRender.length;
+  renderTracksWrapper(tracksToRender);
 };
 
-// Add event listeners to checkboxes
-document.getElementById('sort-alpha').previousElementSibling.addEventListener('change', renderSortedTracks);
-document.getElementById('sort-track-length').previousElementSibling.addEventListener('change', renderSortedTracks);
-document.getElementById('sort-album-length').previousElementSibling.addEventListener('change', renderSortedTracks);
+
 
 
 

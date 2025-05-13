@@ -60,7 +60,7 @@
           <li><code class="bg-gray-100 px-2 py-1 rounded">albumName</code> (String): The name of the album.</li>
           <li><code class="bg-gray-100 px-2 py-1 rounded">artistName</code> (String): The artist's name.</li>
           <li><code class="bg-gray-100 px-2 py-1 rounded">trackNumber</code> (Integer): Track number on the album.</li>
-          <li><code class="bg-gray-100 px-2 py-1 rounded">releaseYear</code> (Integer): The release year.</li>
+          <!-- <li><code class="bg-gray-100 px-2 py-1 rounded">releaseYear</code> (Integer): The release year.</li> -->
           <li><code class="bg-gray-100 px-2 py-1 rounded">trackDuration</code> (Float): Duration of the track (e.g. <code>mm:ss</code>).</li>
           <li><code class="bg-gray-100 px-2 py-1 rounded">albumDuration</code> (Float): Duration of an album (e.g. <code>mm:ss</code>).</li>
           <li><code class="bg-gray-100 px-2 py-1 rounded">genre</code> (String): The musical genre of the track.</li>
@@ -103,7 +103,7 @@
       <h4 class="mt-0 text-lg font-semibold text-gray-800">Sorting:</h4>
         
         <ul class="ml-6 text-gray-700">    
-          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_sort=releaseYear</code> Specifies the field to sort by (e.g. trackDuration, releaseYear).</li>
+          <!-- <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_sort=releaseYear</code> Specifies the field to sort by (e.g. trackDuration, releaseYear).</li> -->
           
           <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_order=desc</code> Specifies the sorting order (asc or desc/reverse).</li>
      </ul>
@@ -172,7 +172,7 @@
     <h4 class="mt-0 text-lg font-semibold text-gray-800">Combine/chain queries parameters together (using &amp;):</h4>
     
     <ul class="ml-6 text-gray-700">
-          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_sort=releaseYear&_order=desc&_limit=5&genre=New Wave</code> <br/>Fetch tracks by release year, in descending order, limited to 5 results, in a specific genre.</li>   
+          <li><code class="bg-gray-100 px-2 py-1 rounded">/tracks?_sort=albumDuration&_order=desc&_limit=5&genre=New Wave</code> <br/>Fetch tracks by album duration, in descending order, limited to 5 results, in a specific genre.</li>   
      </ul>
       </div>
     </div>
@@ -198,7 +198,7 @@
           <li><code class="bg-gray-100 px-2 py-1 rounded">id</code> (Integer): Unique identifier for the album.</li>
           <li><code class="bg-gray-100 px-2 py-1 rounded">albumName</code> (String): The name of the album.</li>
           <li><code class="bg-gray-100 px-2 py-1 rounded">artistName</code> (String): The artist's name.</li>
-          <li><code class="bg-gray-100 px-2 py-1 rounded">releaseYear</code> (Integer): The album release year.</li>
+          <!-- <li><code class="bg-gray-100 px-2 py-1 rounded">releaseYear</code> (Integer): The album release year.</li> -->
           <li><code class="bg-gray-100 px-2 py-1 rounded">albumDuration</code> (Float): Duration of the album (e.g. <code>mm:ss</code>).</li>
           <li><code class="bg-gray-100 px-2 py-1 rounded">trackCount</code> (Integer): Number of tracks on the album.</li>
           <li><code class="bg-gray-100 px-2 py-1 rounded">genre</code> (String): The musical genre of the album.</li>
@@ -226,7 +226,7 @@
         <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/tracks?trackMin=1&trackMax=3&_order=desc&genre=Electronic</code></li>
         
         
-        <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/albums?_sort=releaseYear&_order=asc</code></li>
+        <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/albums?_sort=albumDuration&_order=asc</code></li>
         
         <li><code class="bg-gray-50 px-2 py-1 rounded">GET <span class="hidden sm:inline">https://</span>ecapi.olk1.com/albums?albumMin=25&albumMax=30&_sort=albumDuration&_order=desc</code></li>
         
@@ -271,7 +271,7 @@
       <button onclick="getRandomTracks()" class="btn">Get Random Track</button>
 
 
-    <button onclick="getSortedAlbums()" class="btn">Sorted Albums by Release Year</button>
+    <!-- <button onclick="getSortedAlbums()" class="btn">Sorted Albums by Release Year</button> -->
     
     <button onclick="getFilteredAlbumDuration()" class="btn">Filter by Album Duration</button>
     

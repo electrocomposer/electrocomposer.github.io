@@ -86,7 +86,7 @@ function formatDuration(val) {
 }
 
 
-const searchFields = ['track', 'album', 'genre', 'year', 'id'];
+const searchFields = ['track', 'album', 'genre', 'id'];
 
 const searchTracks = (query, tracks) => {
   const normalizedQuery = query.toLowerCase();
@@ -121,7 +121,7 @@ const searchTracks = (query, tracks) => {
       albumduration: normalize(formatDuration(track.albumDuration)),
       trackduration: normalize(formatDuration(track.trackDuration)),
       genre: normalize(track.genre),
-      year: String(track.releaseYear).toLowerCase(),
+      // year: String(track.releaseYear).toLowerCase(),
     };
 
     return keywords.every(kw => {
@@ -357,9 +357,9 @@ const renderTracks = (tracks) => {
     details.appendChild(createTruncatedElement('Track', track.trackName));
     details.appendChild(createTruncatedElement('Album', track.albumName));
 
-    const year = document.createElement('p');
-    year.innerHTML = `<strong>First Released:</strong> ${track.releaseYear}`;
-    details.appendChild(year);
+    // const year = document.createElement('p');
+    // year.innerHTML = `<strong>First Released:</strong> ${track.releaseYear}`;
+    // details.appendChild(year);
 
     const trackDuration = document.createElement('p');
     trackDuration.innerHTML = `<strong>Track Duration:</strong> ${Number(track.trackDuration).toFixed(2)}`;

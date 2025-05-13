@@ -49,9 +49,9 @@ const baseUrl = "https://ecapi.olk1.com";
       }
 
 //  
-      function getSortedAlbums() {
-        fetchAndDisplay("/albums?_sort=releaseYear&_order=asc");
-      }
+      // function getSortedAlbums() {
+      //   fetchAndDisplay("/albums?_sort=releaseYear&_order=asc");
+      // }
 
       function getFilteredAlbumDuration() {
         fetchAndDisplay("/albums?albumMin=25&albumMax=30&_sort=albumDuration&_order=desc");

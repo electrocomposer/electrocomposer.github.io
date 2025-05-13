@@ -122,22 +122,22 @@ function formatDuration(val) {
 
 
 
-const searchFields = ['track', 'album', 'genre', 'year', 'id'];
+const searchFields = ['track', 'album', 'genre', 'id'];
 
 
 searchInput.addEventListener("input", (e) => {
   const query = e.target.value.trim().toLowerCase();
   
-  // Regular expression to capture scoped searches (e.g., track:the wall, genre:rock, year:2023)
+  // Regular expression to capture scoped searches (e.g., track:in one voice, genre:new wave)
   const scopedSearchRegex = /(\w+):(.+)/;
 
   const keywords = [];
 
-  // If the query contains a scoped search (e.g., track:the wall)
+  // If the query contains a scoped search (e.g., track:in one voice)
   if (scopedSearchRegex.test(query)) {
     const match = query.match(scopedSearchRegex);
     const field = match[1];  // track or album, genre, etc.
-    const value = match[2].trim();  // the wall, rock, 2023
+    const value = match[2].trim();  // in one voice, new wave
 
     // Only push the scoped search if the field is valid
     if (searchFields.includes(field)) {
@@ -161,7 +161,7 @@ searchInput.addEventListener("input", (e) => {
       albumduration: normalize(formatDuration(track.albumDuration)),
       trackduration: normalize(formatDuration(track.trackDuration)),
       genre: normalize(track.genre),
-      year: String(track.releaseYear).toLowerCase(),
+      // year: String(track.releaseYear).toLowerCase(),
     };
 
     return keywords.every(kw => {
@@ -296,21 +296,22 @@ function renderCharts(data) {
       return map;
     }, new Map())
   );
+
   const albumNames = uniqueAlbums.map(([name]) => name);
   const albumDurations = uniqueAlbums.map(([, duration]) => duration);
 
   const genres = [...new Set(data.map(d => d.genre))];
   const genreCounts = genres.map(g => data.filter(d => d.genre === g).length);
-  const yearly = data.reduce((acc, d) => {
-    acc[d.releaseYear] = (acc[d.releaseYear] || 0) + 1;
-    return acc;
-  }, {});
+  // const yearly = data.reduce((acc, d) => {
+  //   acc[d.releaseYear] = (acc[d.releaseYear] || 0) + 1;
+  //   return acc;
+  // }, {});
 
 
 
+const charts = [
 
-  const charts = [
-    {
+{
   id: "radarChart",
   title: "Album Duration (Minutes/Seconds)",
   type: "radar",
@@ -375,7 +376,7 @@ function renderCharts(data) {
 },
 
   
-    {
+{
       id: "barChart",
       title: "Album Duration (Minutes/Seconds)",
       type: "bar",
@@ -433,7 +434,7 @@ function renderCharts(data) {
     },
 
 
-    {
+{
       id: "lineChart1",
       title: "Album Duration (Minutes/Seconds)",
       type: "line",
@@ -468,7 +469,7 @@ function renderCharts(data) {
     },
 
 
-    {
+{
   id: "bubbleChart",
   title: "Album Duration (Hours/Minutes/Seconds)",
   type: "bubble",
@@ -524,34 +525,62 @@ function renderCharts(data) {
         }
       }
     }
-  }
+   }
+  },
 
-},
-
-    {
-      id: "lineChart2",
-      title: "Releases Over Time (Years)",
-      type: "line",
-      data: {
-        labels: Object.keys(yearly),
-        datasets: [{
-          label: "Number of Tracks",
-          data: Object.values(yearly),
-          borderColor: "#f33",
-          tension: 0.1
-        }]
+  {
+    id: "lineChart2",
+    title: "Track Durations",
+    type: "line",
+    data: {
+      labels: data.map((_, index) => index + 1), // X-axis: 1, 2, 3, ...
+      datasets: [{
+        label: "Track Name (mins/secs)",
+        data: data.map(x => x.trackDuration),
+        borderColor: "#f33",
+        fill: false,
+        tension: 0.1,
+        // Optional: store track names for tooltip use
+        trackNames: data.map(x => x.trackName)
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { labels: { color: labelColor } },
+        tooltip: {
+          callbacks: {
+            title: (tooltipItems) => {
+              const index = tooltipItems[0].dataIndex;
+              return data[index].trackName; // show track name as title on hover
+            },
+            label: (tooltipItem) => {
+              return `${tooltipItem.formattedValue} mins/secs`;
+            }
+          }
+        }
       },
-      options: {
-        plugins: {
-          legend: { labels: { color: labelColor } }
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: "Catalogue Number"
+          },
+          ticks: { color: labelColor }
         },
-        scales: {
-          x: { ticks: { color: labelColor } },
-          y: { ticks: { color: labelColor } }
+        y: {
+          title: {
+            display: true,
+            text: "Track Duration (mins/secs)"
+          },
+          ticks: { color: labelColor }
         }
       }
     }
-  ];
+  }
+
+// 
+// 
+];
 
   charts.forEach(({ id, title, type, data, options = {}, plugins = [] }) => {
     const canvas = createChartCanvas(id);
@@ -599,7 +628,7 @@ function renderCharts(data) {
         <td class="px-4 py-2">${track.trackDuration.toFixed(2)}</td>
         <td class="px-4 py-2">${track.albumName}</td>
         <td class="px-4 py-2">${track.albumDuration.toFixed(2)}</td>
-        <td class="px-4 py-2">${track.releaseYear}</td>
+        <!-- <td class="px-4 py-2">${track.releaseYear}</td> -->
         <td class="px-4 py-2">${track.genre}</td>
         <td class="px-4 py-2">${track.trackNumber}</td>
       `;

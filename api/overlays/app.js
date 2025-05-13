@@ -43,7 +43,7 @@ const displayData = (data) => {
         <p class="trackNumber"><span>Sequence</span>#<span>${item.trackNumber}</span></p>
         <p class="albumName"><span>Album Title</span><span>${item.albumName}</span></p>
         <p class="albumDuration"><span>Album Duration</span><span>${item.albumDuration}</span></p>
-        <p class="releaseYear"><span>First Released:</span><span>${item.releaseYear}</span></p>
+        <!-- <p class="releaseYear"><span>First Released:</span><span>${item.releaseYear}</span></p> -->
         <p class="genre"><span>Genre</span><span>${item.genre}</span></p>
 
       <div class="color-container"><!--  --></div>

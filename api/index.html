@@ -37,14 +37,14 @@
 
             <h2 class="slideDown text-7xl text-white mt-1 md:mt-3 mb-8 md:mb-1" id="totalTracks"></h2>
             
-            <p class="w-full text-center zoom caption delay bg-[#f64056] text-xl text-white p-3">Total Tracks</p>
+            <p id="totalTracksTitle" class="select-none cursor-pointer w-full text-center zoom caption delay bg-[#f64056] text-xl text-white p-3">Total Tracks</p>
           </div>
 
 
           <div class="flex flex-col justify-center items-center">
             <h2 class="slideDown text-7xl text-white mt-7 mb-8 md:mb-1 md:mt-5" id="totalAlbums"></h2>
             
-            <p class="w-full text-center caption delay zoom bg-[#b353fc] text-xl text-white p-3">Total Albums</p>
+            <p id="totalAlbumsTitle" class="select-none cursor-pointer w-full text-center caption delay zoom bg-[#b353fc] text-xl text-white p-3">Total Albums</p>
           </div>
 
 
@@ -82,8 +82,8 @@
 <div id="app" class="max-w-[800px] container mx-auto md:mt-0 px-4 py-6 bg-white rounded">
 
   <div class="flex justify-between items-center text-sm mb-1">
-    <p>Type * to <span id="reverseFetchData">reverse by Cat ID</span></p>
-    <p>Total: <span id="totalCount">0</span></p>
+    <p id="reverseFetchData">Type * to <span>reverse data</span></p>
+    <p class="ml-auto">Total: <span id="totalCount">0</span></p>
   </div>
 
 
@@ -93,27 +93,29 @@
     placeholder="Search catalogue..." 
     class="w-full p-2 border rounded mb-0.5 focus:outline-none focus:ring focus:ring-blue-300"
   />
-  <p class="mb-4 text-sm text-slate-400"><span class="hidden md:inline-block">Examples &rarr;</span> track:heart, album:heart, id:50, new wave</span></p>
+  <p id="searchHints" class="mb-4 text-sm text-slate-400"><span class="hidden md:inline-block">Examples &rarr;</span> track:heart, album:heart, id:50, new wave</span></p>
 
   <div class="flex justify-center gap-4">
-    <div class="flex items-center justify-center">
+    
+    <div id="sort-alpha-checkbox-container" class="flex items-center justify-center">
       <label for="sort-alpha-checkbox">
         <input type="checkbox" id="sort-alpha-checkbox" class="mr-1">
         <span id="sort-alpha">Alpha</span><span class="hidden md:inline-block">betically</span>
       </label>
     </div>
     
-    <div class="flex items-center justify-center gap-1">
+    <div id="sort-track-length-checkbox-container" class="flex items-center justify-center gap-1">
       <label for="sort-track-length-checkbox">
         <input type="checkbox" id="sort-track-length-checkbox">
         <span id="sort-track-length">Track Length</span>
       </label>
     </div>
     
-    <div id="album-length-checkbox-container" class="flex items-center justify-center gap-1">
+    <!-- hidden unless in total albums view -->
+    <div id="sort-album-length-checkbox-container" class="items-center justify-center mt-5">
       <label for="sort-album-length-checkbox">
         <input type="checkbox" id="sort-album-length-checkbox">
-        <span id="sort-album-length">Album Length</span>
+        <span id="sort-album-length">Toggle Album Length</span>
       </label>
     </div>
   

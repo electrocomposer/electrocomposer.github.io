@@ -1,5 +1,4 @@
-const artistName = `<h1 class="pb-1 sm:pt-2.5 w-auto">electroComposer
-</h1>`;
+const artistName = "electroComposer";
 
 const timeoutDelay = 1000;
 
@@ -9,6 +8,7 @@ class RecordLabelHeader extends HTMLElement {
     }
 
     connectedCallback() {
+        this.extraClass = this.getAttribute("extra-class") || "";
         this.render();
         this.highlightCurrentPage();
         this.catApiSubNav();
@@ -16,22 +16,37 @@ class RecordLabelHeader extends HTMLElement {
     }
 
   render() {
-    this.innerHTML = `<div class="z-50 md:fixed top-0 w-full">
-      <header class="relative flex items-center justify-between px-2 pt-0 mt-0 -mb-1 border-b-2 border-black md:border-0 lg:mt-0 lg:mb-0 md:bg-white md:text-black lg:px-4 lg:py-2 md:h-[58px]">
+    this.innerHTML = `<div class="z-50 h-[28px] bg-[#202123] text-white">
+          <scrolling-text id="dynamic-scroller" speed="60s"></scrolling-text></div>
 
-        <div class="pt-1.5 md:pt-0.5 my-2 lg:mt-0 lg:mb-0">
-            <a href="/"><h1>${artistName}</h1></a>
+    <div class="w-full">
+      <header class="relative flex items-center justify-between">
+
+        <div class="relative md:fixed top-0 z-40 flex items-center">
+          <a href="/">
+            <h1 class="px-1 sm:pt-0.5 pb-0.5 w-auto bg-white text-[#0c0c0c] ${this.extraClass}">
+              ${artistName}
+            </h1>
+          </a>
+
+          <!-- Right-pointing Triangle extension -->
+          <div class="w-0 h-0 border-y-[14px] border-l-[14px] border-y-transparent border-l-white"></div>
         </div>
 
-      <nav class="-mt-5 sm:-mt-2 sm:-mb-4">
-        <ul class="hidden md:flex space-x-7">
+
+      <nav class="md:bg-white px-2 md:fixed top-0 right-0 z-40">
+  
+        <!-- Left-pointing Triangle extension -->
+        <div class="hidden md:block w-0 h-0 border-y-[14px] border-r-[14px] border-y-transparent border-r-white absolute left-[-14px]"></div>
+
+        <ul class="hidden md:flex">
           
-              
               <!-- Catalogue API with Dropdown -->
               <li class="relative">
-                <button id="apiDropdownBtn" class="nav-link hover:text-[#000] sm:-mt-1 cursor-default" aria-haspopup="true" aria-expanded="false">Catalogue API <span class="text-2xl">&#x25BC;</span></button>
+                <button id="apiDropdownBtn" class="bg-transparent nav-link hover:text-[#000] -mt-1 cursor-default" aria-haspopup="true" aria-expanded="false">Catalogue API <span class="text-2xl">&#x25BC;</span></button>
+                
                 <ul id="apiDropdownMenu"
-                    class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden"
+                    class="absolute -left-2 mt-0.5 w-48 bg-white shadow-md hidden"
                     role="menu"
                     aria-label="Catalogue API submenu">
                   <li><a href="/api/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Track Search</a></li>
@@ -41,13 +56,15 @@ class RecordLabelHeader extends HTMLElement {
                   <li><a href="/api/dashboard" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Dashboard</a></li>
                   <li><a href="/api/docs" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">API Docs</a></li>
                 </ul>
+
               </li>
 
           </ul>
 
           <!-- <button id="burger" class="md:hidden text-3xl mt-2.5 text-black">&#9776;</button> -->
-          <!-- down triangle -->
-          <button id="burger" class="md:hidden text-4xl mr-1 pt-1 mt-2.5 text-[#FD6A6D]">&#x25BC;</button>
+
+                             <!-- down triangle -->
+          <button id="burger" class="bg-transparent md:hidden text-4xl mr-0 -mt-2 text-[#FD6A6D]">&#x25BC;</button>
     
  </nav>
 </header></div>
@@ -221,7 +238,7 @@ class RecordLabelHeader extends HTMLElement {
           isOpening = true;
           
           closeNavBtn.classList.remove("hidden");
-          burger.classList.add("hidden");
+          // burger.classList.add("hidden");
           
           navContent.classList.add('fade-in');
 
@@ -322,7 +339,63 @@ class RecordLabelHeader extends HTMLElement {
       return widthNoScroll - widthWithScroll;
     }
   }
-    
+    // 
+    // 
 }
+
+
+
+
+const scrollMessages = [
+  {
+    text: "&gl;&gl; Breaking News &gl;&gl; New Album Released! &gl;&gl;",
+    highlight: "New Album Released!",
+    url: "https://www.youtube.com/@electrocomposer"
+  },
+  {
+    text: "&gl;&gl; Breaking News &gl;&gl; New Samplepack available &gl;&gl;",
+    highlight: "New Samplepack available",
+    url: "https://samplepacks.presetloops.com"
+  },
+  {
+    text: "&gl;&gl; Check out the latest uploads &gl;&gl; listen now",
+    highlight: "listen now",
+    url: "https://www.youtube.com/@electrocomposer"
+  }
+];
+
+let currentIndex = 0;
+const interval = 59000; // 59 seconds
+
+function updateScroller() {
+  const scroller = document.getElementById("dynamic-scroller");
+  if (!scroller || !scrollMessages?.length) return;
+
+  const { text, highlight, url } = scrollMessages[currentIndex];
+
+  const newScroller = document.createElement("scrolling-text");
+  newScroller.setAttribute("id", "dynamic-scroller");
+  newScroller.setAttribute("text", text);
+  newScroller.setAttribute("highlight", highlight);
+  newScroller.setAttribute("speed", "60s");
+  if (url) newScroller.setAttribute("url", url);
+
+  scroller.replaceWith(newScroller);
+
+  currentIndex = (currentIndex + 1) % scrollMessages.length;
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  updateScroller(); // Initial render
+  setInterval(updateScroller, interval);
+});
+
+
+
+
+
+
+
+
 
 customElements.define("record-label-header", RecordLabelHeader);

@@ -159,6 +159,7 @@ albumLengthCheckbox.addEventListener('change', () => {
 
     function createTruncatedElement(label, value, maxLength = 22) {
       const p = document.createElement('p');
+
       const strong = document.createElement('strong');
       strong.textContent = label + ': ';
       p.appendChild(strong);
@@ -169,7 +170,8 @@ albumLengthCheckbox.addEventListener('change', () => {
       p.innerHTML = `<strong>${label}</strong>: ${truncatedValue}`;
 
       if (isTruncated) {
-        p.title = value; // Show full value on hover
+        p.title = value; // Show full track name on hover
+        p.classList.add('cursor-pointer');
       }
 
       return p;

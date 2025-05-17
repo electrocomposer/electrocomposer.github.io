@@ -1,4 +1,4 @@
-const RecordLabel = `<h1 class="pb-1 sm:pt-2 w-auto">electroComposer
+const artistName = `<h1 class="pb-1 sm:pt-2 w-auto">electroComposer
 </h1>`;
 
 const timeoutDelay = 1000;
@@ -15,12 +15,12 @@ class RecordLabelHeader extends HTMLElement {
         this.mobileNav();
     }
 
-    render() {
-        this.innerHTML = `<div class="z-50 md:fixed top-0 w-full">
+  render() {
+    this.innerHTML = `<div class="z-50 md:fixed top-0 w-full">
       <header class="relative flex items-center justify-between px-2 pt-0 mt-0 -mb-1 border-b-2 border-black md:border-0 lg:mt-0 lg:mb-0 md:bg-white md:text-black lg:px-4 lg:py-2 md:h-[58px]">
 
-        <div class="my-2 lg:mt-0 lg:mb-0">
-            <a href="/"><h1>${RecordLabel}</h1></a>
+        <div class="pt-1.5 md:pt-0.5 my-2 lg:mt-0 lg:mb-0">
+            <a href="/"><h1>${artistName}</h1></a>
         </div>
 
       <nav class="-mt-5 sm:-mt-2 sm:-mb-4">
@@ -29,21 +29,25 @@ class RecordLabelHeader extends HTMLElement {
               
               <!-- Catalogue API with Dropdown -->
               <li class="relative">
-                  <button id="apiDropdownBtn" class="nav-link hover:text-[#FD6A6D] focus:outline-none">
-                      Catalogue API ▼
-                  </button>
-                  <ul id="apiDropdownMenu" class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden">
-                    <li><a href="/api/" class="nav-link block px-4 py-2 hover:bg-gray-100">Track Search</a></li>
-                    <li><a href="/api/overlays" class="nav-link block px-4 py-2 hover:bg-gray-100">Overlays</a></li>
-                    <li><a href="/api/gallery" class="nav-link block px-4 py-2 hover:bg-gray-100">Gallery</a></li>
-                    <li><a href="/api/albums" class="nav-link block px-4 py-2 hover:bg-gray-100">Albums</a></li>
-                    <li><a href="/api/dashboard" class="nav-link block px-4 py-2 hover:bg-gray-100">Dashboard</a></li>
-                    <li><a href="/api/docs" class="nav-link block px-4 py-2 hover:bg-gray-100">API Docs</a></li>
-                  </ul>
+                <button id="apiDropdownBtn" class="nav-link hover:text-[#000] cursor-default" aria-haspopup="true" aria-expanded="false">Catalogue API <span class="text-2xl">&#x25BC;</span></button>
+                <ul id="apiDropdownMenu"
+                    class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden"
+                    role="menu"
+                    aria-label="Catalogue API submenu">
+                  <li><a href="/api/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Track Search</a></li>
+                  <li><a href="/api/overlays" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Overlays</a></li>
+                  <li><a href="/api/gallery" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Gallery</a></li>
+                  <li><a href="/api/albums" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Albums</a></li>
+                  <li><a href="/api/dashboard" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Dashboard</a></li>
+                  <li><a href="/api/docs" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">API Docs</a></li>
+                </ul>
               </li>
+
           </ul>
 
-          <button id="burger" class="md:hidden text-3xl mt-2.5 text-black">&#9776;</button>
+          <!-- <button id="burger" class="md:hidden text-3xl mt-2.5 text-black">&#9776;</button> -->
+          <!-- down triangle -->
+          <button id="burger" class="md:hidden text-4xl mr-1 pt-1 mt-2.5 text-[#FD6A6D]">&#x25BC;</button>
     
  </nav>
 </header></div>
@@ -56,15 +60,17 @@ class RecordLabelHeader extends HTMLElement {
     <!-- Mobile Modal Overlay Nav -->
     <div id="mobileMenu">
   
-      <div id="nav-content">
+    <div id="nav-content">
 
-        <div class="text-xl relative -mt-32">
-          <button id="close-nav-btn" class="absolute right-0 -top-4 text-7xl">&#10006;</button>
+      <div class="text-xl relative -mt-32">
+      <!-- X to close -->
+          <button id="close-nav-btn" class="absolute right-0 -top-8 text-7xl">&#10006;</button>
           
-          <div id="nav-links" class="leading-8">
+        <div id="nav-links" class="leading-8">
           
-          <p class="pt-12 -pb-0 flex justify-center"><span class="w-fit block bg-white text-black ">Catalogue API</span></p>
+          <p class="pt-12 pb-2 flex justify-center"><span class="w-fit block bg-white text-black ">Catalogue API</span></p>
 
+          <div class="leading-10 text-center">
             <a href="/api/" class="block">Track Search</a>
             <a href="/api/overlays" class="block">Overlays</a>
             <a href="/api/gallery" class="block">Gallery</a>
@@ -72,9 +78,11 @@ class RecordLabelHeader extends HTMLElement {
             <a href="/api/dashboard" class="block">Dashboard</a>
             <a href="/api/docs" class="block">API Docs</a>
           </div>
-        </div>
 
+        </div>
       </div>
+
+    </div>
 
     </div>
     `;
@@ -87,23 +95,75 @@ class RecordLabelHeader extends HTMLElement {
 
     catApiSubNav() {
         document.addEventListener("DOMContentLoaded", () => {
-            const apiDropdownBtn = document.getElementById("apiDropdownBtn");
-            const apiDropdownMenu = document.getElementById("apiDropdownMenu");
+          const apiDropdownBtn = document.getElementById("apiDropdownBtn");
+          const apiDropdownMenu = document.getElementById("apiDropdownMenu");
+          const dropdownLinks = apiDropdownMenu.querySelectorAll("a");
 
-            if (apiDropdownBtn) {
-                apiDropdownBtn.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                    apiDropdownMenu.classList.toggle("hidden");
-                });
+          if (apiDropdownBtn && apiDropdownMenu) {
+            let hideTimeout;
 
-                // Close dropdown when clicking outside
-                document.addEventListener("click", (event) => {
-                    if (!apiDropdownBtn.contains(event.target) && !apiDropdownMenu.contains(event.target)) {
-                        apiDropdownMenu.classList.add("hidden");
-                    }
-                });
-            }
+            // Show dropdown
+            const showDropdown = () => {
+              clearTimeout(hideTimeout);
+              apiDropdownMenu.classList.remove("hidden");
+              apiDropdownBtn.classList.add("text-black");
+            };
+
+            // Hide dropdown
+            const hideDropdown = () => {
+              apiDropdownMenu.classList.add("hidden");
+              apiDropdownBtn.classList.remove("text-black");
+            };
+
+            // Hover handlers
+            apiDropdownBtn.addEventListener("mouseenter", showDropdown);
+            apiDropdownMenu.addEventListener("mouseenter", () => clearTimeout(hideTimeout));
+
+            apiDropdownBtn.addEventListener("mouseleave", () => {
+              hideTimeout = setTimeout(hideDropdown, 200);
+            });
+            apiDropdownMenu.addEventListener("mouseleave", () => {
+              hideTimeout = setTimeout(hideDropdown, 200);
+            });
+
+            // Keyboard on button
+            apiDropdownBtn.addEventListener("keydown", (e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                showDropdown();
+                dropdownLinks[0]?.focus();
+              } else if (e.key === "Escape") {
+                hideDropdown();
+                apiDropdownBtn.focus();
+              }
+            });
+
+            // Keyboard inside dropdown menu
+            apiDropdownMenu.addEventListener("keydown", (e) => {
+              const focusedIndex = Array.from(dropdownLinks).indexOf(document.activeElement);
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                const nextIndex = (focusedIndex + 1) % dropdownLinks.length;
+                dropdownLinks[nextIndex].focus();
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                const prevIndex = (focusedIndex - 1 + dropdownLinks.length) % dropdownLinks.length;
+                dropdownLinks[prevIndex].focus();
+              } else if (e.key === "Escape") {
+                hideDropdown();
+                apiDropdownBtn.focus();
+              }
+            });
+
+            // Optional: close dropdown when clicking outside
+            document.addEventListener("click", (e) => {
+              if (!apiDropdownBtn.contains(e.target) && !apiDropdownMenu.contains(e.target)) {
+                hideDropdown();
+              }
+            });
+          }
         });
+
     }
 
      highlightCurrentPage() {

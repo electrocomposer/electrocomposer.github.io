@@ -37,7 +37,7 @@ class RecordLabelHeader extends HTMLElement {
       <nav class="md:bg-white px-2 md:fixed top-0 right-0 z-40">
   
         <!-- Left-pointing Triangle extension -->
-        <div class="hidden md:block w-0 h-0 border-y-[14px] border-r-[14px] border-y-transparent border-r-white absolute left-[-14px]"></div>
+        <!-- <div class="hidden md:block w-0 h-0 border-y-[14px] border-r-[14px] border-y-transparent border-r-white absolute left-[-14px]"></div> -->
 
         <ul class="hidden md:flex">
           

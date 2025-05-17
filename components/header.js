@@ -1,4 +1,4 @@
-const artistName = `<h1 class="pb-1 sm:pt-2 w-auto">electroComposer
+const artistName = `<h1 class="pb-1 sm:pt-2.5 w-auto">electroComposer
 </h1>`;
 
 const timeoutDelay = 1000;
@@ -29,7 +29,7 @@ class RecordLabelHeader extends HTMLElement {
               
               <!-- Catalogue API with Dropdown -->
               <li class="relative">
-                <button id="apiDropdownBtn" class="nav-link hover:text-[#000] cursor-default" aria-haspopup="true" aria-expanded="false">Catalogue API <span class="text-2xl">&#x25BC;</span></button>
+                <button id="apiDropdownBtn" class="nav-link hover:text-[#000] sm:-mt-1 cursor-default" aria-haspopup="true" aria-expanded="false">Catalogue API <span class="text-2xl">&#x25BC;</span></button>
                 <ul id="apiDropdownMenu"
                     class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden"
                     role="menu"

@@ -360,7 +360,7 @@ const scrollMessages = [
   {
     text: "&gl;&gl; Check out the latest playlist &gl;&gl; Listen now",
     highlight: "Listen now",
-    url: "https://www.youtube.com/@electrocomposer"
+    url: "https://www.youtube.com/@electrocomposer/playlists"
   }
 ];
 
@@ -378,6 +378,7 @@ function updateScroller() {
   newScroller.setAttribute("text", text);
   newScroller.setAttribute("highlight", highlight);
   newScroller.setAttribute("speed", "60s");
+  newScroller.classList.add("fade-in");
   if (url) newScroller.setAttribute("url", url);
 
   scroller.replaceWith(newScroller);

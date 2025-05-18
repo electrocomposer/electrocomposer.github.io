@@ -602,12 +602,15 @@ const renderTracks = (tracks) => {
   totalTracksTitle.classList.remove('cursor-pointer');
   totalTracksTitle.innerText = "Total Tracks";
   totalTracksTitle.removeEventListener('click', () => {});
+
+  totalAlbumsTitle.innerText = "Total Albums";
 };
 
 
 const renderAlbums = (albums) => {
   totalTracksTitle.classList.add('cursor-pointer');
   totalTracksTitle.innerText = "Reset Tracks";
+  totalAlbumsTitle.innerText = "Toggle Order";
 
   albums.forEach(album => {
     const li = document.createElement('li');

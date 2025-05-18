@@ -16,7 +16,7 @@ class RecordLabelHeader extends HTMLElement {
     }
 
   render() {
-    this.innerHTML = `<div class="z-50 h-[28px] bg-[#202123] text-white">
+    this.innerHTML = `<div class="fade-in z-50 h-[28px] bg-[#202123] text-white">
           <scrolling-text id="dynamic-scroller" speed="60s"></scrolling-text></div>
 
     <div class="w-full">
@@ -348,7 +348,7 @@ class RecordLabelHeader extends HTMLElement {
 
 const scrollMessages = [
   {
-    text: "&gl;&gl; Breaking News &gl;&gl; New Album Released! &gl;&gl;",
+    text: "&gl;&gl; Live Update &gl;&gl; New Album Released! &gl;&gl;",
     highlight: "New Album Released!",
     url: "https://www.youtube.com/@electrocomposer"
   },
@@ -358,8 +358,8 @@ const scrollMessages = [
     url: "https://samplepacks.presetloops.com"
   },
   {
-    text: "&gl;&gl; Check out the latest uploads &gl;&gl; listen now",
-    highlight: "listen now",
+    text: "&gl;&gl; Check out the latest playlist &gl;&gl; Listen now",
+    highlight: "Listen now",
     url: "https://www.youtube.com/@electrocomposer"
   }
 ];

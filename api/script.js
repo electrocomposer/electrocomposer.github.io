@@ -598,10 +598,17 @@ const renderTracks = (tracks) => {
     li.appendChild(controls);
     trackList.appendChild(li);
   });
+
+  totalTracksTitle.classList.remove('cursor-pointer');
+  totalTracksTitle.innerText = "Total Tracks";
+  totalTracksTitle.removeEventListener('click', () => {});
 };
 
 
 const renderAlbums = (albums) => {
+  totalTracksTitle.classList.add('cursor-pointer');
+  totalTracksTitle.innerText = "Reset Tracks";
+
   albums.forEach(album => {
     const li = document.createElement('li');
     li.className = `px-0 py-0 rounded-lg bg-white flex flex-col justify-between items-start relative w-[300px]`;

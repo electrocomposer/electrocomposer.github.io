@@ -216,7 +216,7 @@ resultsCount.innerText = 500;
 
     const closeBtn = document.createElement("span");
     closeBtn.innerHTML = "&times;";
-    closeBtn.className = "close hidden cursor-pointer text-7xl font-bold text-white hover:text-gray-300";
+    closeBtn.className = "close hidden cursor-pointer text-7xl font-bold dark:text-white dark:hover:text-gray-600 text-black hover:text-gray-300";
     closeBtn.style.position = "absolute";
     closeBtn.style.top = "10px";
     closeBtn.style.right = "20px";

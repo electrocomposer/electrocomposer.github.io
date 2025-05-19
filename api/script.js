@@ -608,6 +608,7 @@ const renderTracks = (tracks) => {
 
   if (searchInput.value.trim()) {
     totalTracksTitle.innerText = "Reset Tracks";
+    totalTracksTitle.classList.add('cursor-pointer');
   } else{
     totalTracksTitle.innerText = "Total Tracks";
     totalTracksTitle.removeEventListener('click', () => {});

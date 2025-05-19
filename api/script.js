@@ -1,6 +1,10 @@
 const API = "https://ecapi.olk1.com/tracks";
 const albumsAPI = "https://ecapi.olk1.com/albums";
 
+
+const totalTracksTitle = document.getElementById("totalTracksTitle");
+const totalAlbumsTitle = document.getElementById("totalAlbumsTitle");
+
 const reverseFetchData = document.getElementById('reverseFetchData');
 const totalCount = document.getElementById('totalCount');
 
@@ -89,6 +93,8 @@ sortAlphaCheckbox.addEventListener('change', () => {
         return [];
       }
     };
+
+
 
 
 
@@ -599,9 +605,14 @@ const renderTracks = (tracks) => {
     trackList.appendChild(li);
   });
 
-  totalTracksTitle.classList.remove('cursor-pointer');
-  totalTracksTitle.innerText = "Total Tracks";
-  totalTracksTitle.removeEventListener('click', () => {});
+
+  if (searchInput.value.trim()) {
+    totalTracksTitle.innerText = "Reset Tracks";
+  } else{
+    totalTracksTitle.innerText = "Total Tracks";
+    totalTracksTitle.removeEventListener('click', () => {});
+    totalTracksTitle.classList.remove('cursor-pointer');
+  }
 
   totalAlbumsTitle.innerText = "Total Albums";
 };

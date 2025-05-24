@@ -173,3 +173,17 @@ text {
     opacity: 1;
   }
 }
+
+
+.fade-out {
+  animation: fadeOut 2s ease-in-out;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

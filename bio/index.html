@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>electroComposer</title>
+  <script src='/tailwindcss.min.js'></script>
+  <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
+  <link rel='stylesheet' href='about.css' />
+  <style>
+  .fade-in {
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+  </style>
+</head>
+<body class="space-mono-regular fade-in">
+
+
+<div class="ml-2 z-50 fixed top-0 bg-white w-fit">
+    <a href="/api/" class="hover:underline">B A C K</a>
+</div>
+
+
+
+  <div class="parallax-wrapper -mt-16">
+
+    <h1 id="heading" class="parallax-item z-10 pr-2 md:pr-0 -mt-36 text-3xl md:text-[90vw] 2xl:text-[50vw] font-bold">
+      electroComposer
+    </h1>
+
+
+    <img id="image" 
+         src="images/monki-cutout.png"
+         alt="Parallax Image"
+         class="-mt-36 parallax-item z-20 h-64 md:h-[600px] fixed" />
+
+  </div>
+
+
+
+    <div id="text" class="w-full p-4 mx-auto parallax-item z-30 mt-[80vh] md:mt-[35vh] md:max-w-xl">
+      
+      <p class="text-2xl bg-white md:rounded-full md:p-24">Origin: It seems like so long ago now as indeed it was. Equipt with a Spanish guitar, a synthesizer and a 4 track recorder, recording daily for weeks and months, through years and decades, establishing a substantial <a href="/api/" target="_blank" class="highlight">catalogue</a> of musical demos, funky jams and full album releases. Eventually the studio grew to house live drums, microphones, guitars and basses, more synths and a choice selection of percussion. Everything needed to bring an infinite amount of self expression into being, via musical composition and performance.</p>
+
+    </div>
+
+
+<section class="md:hidden relative max-w-xl mx-auto mt-[25vh] h-[1vh]">
+        <img class="parallax-item" src="images/x-eyes.png" alt="electroComposer">
+    </section>
+
+
+  <section class="p-4 max-w-xl mx-auto mt-[50vh] h-[50vh] text-2xl">
+    <p>Impact: [Youtube subs, watch hours and likes]. 2022 saw the launch of a series of sample packs. Drum hits, percussive elements and synth sounds, freely available for you to compose and remix your own tracks. Centered around an innovative <a href="https://samplepacks.olk1.com" target="_blank" class="highlight">'Guest Pass'</a> login system, you can access an entire platform dedicated to auditioning and downloading custom sounds. An ever changing repository of colours and textures, providing the foundation for inspired sound design.</p>
+  </section>
+  
+
+
+
+   <div class="relative">
+
+    
+    <img id="icon1" 
+      src="images/monki-cutout-rotated.png"
+      alt="Parallax Image"
+      class="parallax-item z-30 h-[300px] hidden md:block" 
+      style="bottom: 20%; right: 20%;" />
+
+
+  </div>
+
+   
+
+
+    <section class="md:hidden relative max-w-xl mx-auto mt-[100vh] sm:mt-[50vh] h-[1vh]">
+        <img class="parallax-item" src="images/mouth.png" alt="electroComposer">
+    </section>
+
+
+
+
+  <section class="p-4 max-w-xl mx-auto mt-[50vh] h-[50vh] text-2xl">
+    <p>Philosophy: Follow <a href="/api/albums/" target="_blank" class="highlight">every musical idea</a> to its natural conclusion, with the record button pressed.</p>
+  </section>
+
+
+
+
+   <div class="relative">
+
+    
+    <img id="icon2" 
+      src="images/monki-cutout.png"
+      alt="Parallax Image"
+      class="hidden md:block parallax-item z-30 h-[600px]" 
+      style="top: 40%; left: 10%;" />
+    
+    <img id="icon3" 
+      src="images/monki-cutout.png"
+      alt="Parallax Image"
+      class="hidden md:block parallax-item z-30 h-[600px]" 
+      style="top: 40%; left: 90%;" />
+
+
+  </div>
+
+
+
+
+
+<div class="relative mb-96">
+
+        <img id="logo" 
+         src="images/logo-full.png"
+         alt="Parallax Image"
+         class="parallax-item z-30 mt-64 pb-24 sm:mt-0" />
+        
+</div>
+
+
+
+<!-- empty space to position logo above in center at scroll end -->
+<div class="h-0 sm:h-[25vh]"></div>
+
+
+
+<div class="relative">
+
+    
+    <img id="icon4" 
+      src="images/x-eyes.png"
+      alt="Parallax Image"
+      class="parallax-item z-30 hidden md:block" 
+      style="top: 40%; left: 10%;" />
+    
+    <img id="icon5" 
+      src="images/mouth.png"
+      alt="Parallax Image"
+      class="parallax-item z-30 hidden md:block" 
+      style="top: 40%; left: 90%;" />
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+<script src="script.js"></script>
+</body>
+</html>

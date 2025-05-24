@@ -10,6 +10,7 @@ class RecordLabelHeader extends HTMLElement {
     connectedCallback() {
         this.extraClass = this.getAttribute("extra-class") || "";
         this.render();
+        this.setupInteractivity();
         this.highlightCurrentPage();
         this.catApiSubNav();
         this.mobileNav();
@@ -22,16 +23,50 @@ class RecordLabelHeader extends HTMLElement {
     <div class="w-full">
       <header class="relative flex items-center justify-between">
 
-        <div class="relative md:fixed top-0 z-40 flex items-center">
-          <a href="/">
-            <h1 class="px-1 sm:pt-0.5 pb-0.5 w-auto bg-white text-[#0c0c0c] ${this.extraClass}">
-              ${artistName}
-            </h1>
-          </a>
+
+
+<!--  -->
+<!--  -->
+<!--  -->
+
+<div id="header-container" class="select-none relative md:fixed top-0 z-40 flex items-center transition-all duration-300 overflow-hidden w-[max-content]">
+  <!-- Panel that grows -->
+  <div id="expanding-panel" class="flex items-center bg-white text-[#0c0c0c] transition-all duration-300 translate-w w-[max-content]">
+    <!-- Artist Name -->
+    <h1 id="artist-title" class="cursor-pointer px-1 sm:pt-0.5 pb-0.5 w-auto">
+      ${artistName}
+    </h1>
+
+    <!-- Hidden links -->
+    <div id="panel-links"
+         class="w-0 translate-w flex items-center space-x-2 px-0 transition-all duration-300 opacity-0 translate-x-[-10px] pointer-events-none">
+      <a href="/" tabindex="-1" class="bg-slate-50 hover:underline ml-3 pb-0.5 md:pb-0">Home</a>
+      <span class="bg-slate-50">\\</span>
+      <a href="/bio" tabindex="-1" class="bg-slate-50 hover:underline pb-0.5 md:pb-0">Bio</a>
+    </div>
+  </div>
+
+  <!-- Triangle wrapper that will move right -->
+  <div id="triangle-container" class="transition-transform duration-300 translate-x-0">
+    <div class="w-0 h-0 border-y-[14px] border-l-[14px] border-y-transparent border-l-white shrink-0"></div>
+  </div>
+</div>
+
+
+
+
 
           <!-- Right-pointing Triangle extension -->
-          <div class="w-0 h-0 border-y-[14px] border-l-[14px] border-y-transparent border-l-white"></div>
-        </div>
+          <!-- <div class="w-0 h-0 border-y-[14px] border-l-[14px] border-y-transparent border-l-white"></div> -->
+
+
+
+
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+
 
 
       <nav class="md:bg-white px-2 md:fixed top-0 right-0 z-40">
@@ -41,12 +76,12 @@ class RecordLabelHeader extends HTMLElement {
 
         <ul class="hidden md:flex">
           
-              <!-- Catalogue API with Dropdown -->
+              <!-- Catalogue API with automatic Dropdown Menu Nav-->
               <li class="relative">
                 <button id="apiDropdownBtn" class="bg-transparent nav-link hover:text-[#000] -mt-1 cursor-default" aria-haspopup="true" aria-expanded="false">Catalogue API <span class="text-2xl">&#x25BC;</span></button>
                 
                 <ul id="apiDropdownMenu"
-                    class="absolute -left-2 mt-0.5 w-48 bg-white shadow-md hidden"
+                    class="absolute -left-2 mt-0 w-48 bg-white shadow-md invisible"
                     role="menu"
                     aria-label="Catalogue API submenu">
                   <li><a href="/api/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Track Search</a></li>
@@ -108,80 +143,98 @@ class RecordLabelHeader extends HTMLElement {
 
 
 
-
-
     catApiSubNav() {
-        document.addEventListener("DOMContentLoaded", () => {
-          const apiDropdownBtn = document.getElementById("apiDropdownBtn");
-          const apiDropdownMenu = document.getElementById("apiDropdownMenu");
-          const dropdownLinks = apiDropdownMenu.querySelectorAll("a");
+  document.addEventListener("DOMContentLoaded", () => {
+    const apiDropdownBtn = document.getElementById("apiDropdownBtn");
+    const apiDropdownMenu = document.getElementById("apiDropdownMenu");
 
-          if (apiDropdownBtn && apiDropdownMenu) {
-            let hideTimeout;
+    if (apiDropdownBtn && apiDropdownMenu) {
+      const dropdownLinks = apiDropdownMenu.querySelectorAll("a");
+      let hideTimeout;
 
-            // Show dropdown
-            const showDropdown = () => {
-              clearTimeout(hideTimeout);
-              apiDropdownMenu.classList.remove("hidden");
-              apiDropdownBtn.classList.add("text-black");
-            };
+      // Apply initial transform style to all links
+      dropdownLinks.forEach(link => {
+        link.classList.add("transition-transform", "duration-300", "translate-y-[-10px]", "opacity-0");
+      });
 
-            // Hide dropdown
-            const hideDropdown = () => {
-              apiDropdownMenu.classList.add("hidden");
-              apiDropdownBtn.classList.remove("text-black");
-            };
+      const showDropdown = () => {
+        clearTimeout(hideTimeout);
+        apiDropdownMenu.classList.remove("invisible");
+        apiDropdownBtn.classList.add("text-black");
 
-            // Hover handlers
-            apiDropdownBtn.addEventListener("mouseenter", showDropdown);
-            apiDropdownMenu.addEventListener("mouseenter", () => clearTimeout(hideTimeout));
+        // Animate links into view
+        dropdownLinks.forEach((link, index) => {
+          setTimeout(() => {
+            link.classList.remove("translate-y-[-10px]", "opacity-0");
+            link.classList.add("translate-y-0", "opacity-100");
+          }, index * 50); // staggered animation
+        });
+      };
 
-            apiDropdownBtn.addEventListener("mouseleave", () => {
-              hideTimeout = setTimeout(hideDropdown, 200);
-            });
-            apiDropdownMenu.addEventListener("mouseleave", () => {
-              hideTimeout = setTimeout(hideDropdown, 200);
-            });
-
-            // Keyboard on button
-            apiDropdownBtn.addEventListener("keydown", (e) => {
-              if (e.key === "ArrowDown") {
-                e.preventDefault();
-                showDropdown();
-                dropdownLinks[0]?.focus();
-              } else if (e.key === "Escape") {
-                hideDropdown();
-                apiDropdownBtn.focus();
-              }
-            });
-
-            // Keyboard inside dropdown menu
-            apiDropdownMenu.addEventListener("keydown", (e) => {
-              const focusedIndex = Array.from(dropdownLinks).indexOf(document.activeElement);
-              if (e.key === "ArrowDown") {
-                e.preventDefault();
-                const nextIndex = (focusedIndex + 1) % dropdownLinks.length;
-                dropdownLinks[nextIndex].focus();
-              } else if (e.key === "ArrowUp") {
-                e.preventDefault();
-                const prevIndex = (focusedIndex - 1 + dropdownLinks.length) % dropdownLinks.length;
-                dropdownLinks[prevIndex].focus();
-              } else if (e.key === "Escape") {
-                hideDropdown();
-                apiDropdownBtn.focus();
-              }
-            });
-
-            // Optional: close dropdown when clicking outside
-            document.addEventListener("click", (e) => {
-              if (!apiDropdownBtn.contains(e.target) && !apiDropdownMenu.contains(e.target)) {
-                hideDropdown();
-              }
-            });
-          }
+      const hideDropdown = () => {
+        // Reset animation before hiding
+        dropdownLinks.forEach(link => {
+          link.classList.remove("translate-y-0", "opacity-100");
+          link.classList.add("translate-y-[-10px]", "opacity-0");
         });
 
+        hideTimeout = setTimeout(() => {
+          apiDropdownMenu.classList.add("invisible");
+          apiDropdownBtn.classList.remove("text-black");
+        }, 0); // Allow animation to complete
+      };
+
+      // Hover behavior
+      apiDropdownBtn.addEventListener("mouseenter", showDropdown);
+      apiDropdownMenu.addEventListener("mouseenter", () => clearTimeout(hideTimeout));
+
+      apiDropdownBtn.addEventListener("mouseleave", () => {
+        hideTimeout = setTimeout(hideDropdown, 0);
+      });
+      apiDropdownMenu.addEventListener("mouseleave", () => {
+        hideTimeout = setTimeout(hideDropdown, 0);
+      });
+
+      // Keyboard navigation on the button
+      apiDropdownBtn.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          showDropdown();
+          dropdownLinks[0]?.focus();
+        } else if (e.key === "Escape") {
+          hideDropdown();
+          apiDropdownBtn.focus();
+        }
+      });
+
+      // Keyboard navigation inside dropdown
+      apiDropdownMenu.addEventListener("keydown", (e) => {
+        const focusedIndex = Array.from(dropdownLinks).indexOf(document.activeElement);
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          const nextIndex = (focusedIndex + 1) % dropdownLinks.length;
+          dropdownLinks[nextIndex].focus();
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          const prevIndex = (focusedIndex - 1 + dropdownLinks.length) % dropdownLinks.length;
+          dropdownLinks[prevIndex].focus();
+        } else if (e.key === "Escape") {
+          hideDropdown();
+          apiDropdownBtn.focus();
+        }
+      });
+
+      // Click outside to close
+      document.addEventListener("click", (e) => {
+        if (!apiDropdownBtn.contains(e.target) && !apiDropdownMenu.contains(e.target)) {
+          hideDropdown();
+        }
+      });
     }
+  });
+}
+
+
 
      highlightCurrentPage() {
         const links = this.querySelectorAll(".nav-link");
@@ -339,10 +392,98 @@ class RecordLabelHeader extends HTMLElement {
       return widthNoScroll - widthWithScroll;
     }
   }
-    // 
-    // 
+
+
+
+
+
+
+// LEFT SIDE MENU
+setupInteractivity() {
+  const artistTitle = this.querySelector("#artist-title");
+  const panelLinks = this.querySelector("#panel-links");
+  const headerContainer = this.querySelector("#header-container");
+
+  const expand = () => {
+    headerContainer.style.width = "max-content";
+
+    panelLinks.classList.remove("w-0", "opacity-0", "translate-x-[-10px]", "pointer-events-none", "px-0");
+    panelLinks.classList.add("w-[100%]", "opacity-100", "translate-x-0", "pointer-events-auto", "px-0");
+  };
+
+  const collapse = () => {
+    panelLinks.classList.remove("w-[100%]", "opacity-100", "translate-x-0", "pointer-events-auto", "px-0");
+    panelLinks.classList.add("w-0", "opacity-0", "translate-x-[-10px]", "pointer-events-none", "px-0");
+
+    setTimeout(() => {
+      headerContainer.style.width = "";
+    }, 300);
+  };
+
+  const toggleMenu = () => {
+    const isOpen = panelLinks.classList.contains("opacity-100");
+    isOpen ? collapse() : expand();
+  };
+
+  const setupListeners = () => {
+    // Remove any existing listeners first
+    artistTitle.replaceWith(artistTitle.cloneNode(true));
+    const newTitle = this.querySelector("#artist-title");
+
+    if (window.innerWidth >= 1280) {
+      newTitle.addEventListener("mouseenter", expand);
+      this.addEventListener("mouseleave", collapse);
+    } else {
+      newTitle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleMenu();
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!this.contains(e.target)) {
+          collapse();
+        }
+      });
+    }
+  };
+
+  // Initial setup
+  setupListeners();
+
+  // Optional: re-check on resize
+  // window.addEventListener("resize", () => {
+  //   setupListeners();
+  // });
 }
 
+
+
+
+
+    // 
+    // 
+    // 
+    // 
+// \DOMContentLoaded
+}
+
+
+
+
+
+
+
+
+
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
 
 
 
@@ -390,13 +531,6 @@ window.addEventListener("DOMContentLoaded", () => {
   updateScroller(); // Initial render
   setInterval(updateScroller, interval);
 });
-
-
-
-
-
-
-
 
 
 customElements.define("record-label-header", RecordLabelHeader);

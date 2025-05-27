@@ -3,7 +3,10 @@ const albumsAPI = "https://ecapi.olk1.com/albums";
 
 
 const totalTracksTitle = document.getElementById("totalTracksTitle");
+const totalTracksTitleContainer = document.getElementById("totalTracksTitleContainer");
+
 const totalAlbumsTitle = document.getElementById("totalAlbumsTitle");
+const totalAlbumsTitleContainer = document.getElementById("totalAlbumsTitleContainer");
 
 const reverseFetchData = document.getElementById('reverseFetchData');
 const totalCount = document.getElementById('totalCount');
@@ -616,6 +619,9 @@ const renderTracks = (tracks) => {
   }
 
   totalAlbumsTitle.innerText = "Total Albums";
+  
+  totalAlbumsTitleContainer.classList.add("totalAlbumsCTA");
+  totalTracksTitleContainer.classList.remove("totalTracksCTA");
 };
 
 
@@ -623,6 +629,9 @@ const renderAlbums = (albums) => {
   totalTracksTitle.classList.add('cursor-pointer');
   totalTracksTitle.innerText = "Reset Tracks";
   totalAlbumsTitle.innerText = "Toggle Order";
+
+  totalTracksTitleContainer.classList.add("totalTracksCTA");
+  totalAlbumsTitleContainer.classList.remove("totalAlbumsCTA");
 
   albums.forEach(album => {
     const li = document.createElement('li');

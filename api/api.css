@@ -1,0 +1,96 @@
+    input[type="checkbox"] {
+      user-select: none;
+    }
+    label {
+      user-select: none; /* Prevent selection of label text */
+    }
+    .disabled-style {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+
+
+.totalTracksCTA::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #d64056;
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 0;
+  animation: bgFloodRightToLeft 30s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+
+.totalTracksCTA span{
+  position: relative;
+  z-index: 10;
+}
+
+
+@keyframes bgFloodLeftToRight {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  49.999% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: right; /* Switch origin here with no movement */
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+
+
+/* total albums button CTA */
+    @keyframes bgFloodRightToLeft {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  49.999% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  50.01% {
+    transform-origin: left; /* switch origin mid-animation */
+  }
+  100% {
+    transform-origin: left;
+  }
+}
+
+
+.totalAlbumsCTA::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #d353fc;
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 0;
+  animation: bgFloodRightToLeft 30s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+
+.totalAlbumsCTA span{
+  position: relative;
+  z-index: 10;
+}

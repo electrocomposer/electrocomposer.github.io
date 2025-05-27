@@ -8,19 +8,8 @@
   <script type="module" src="/components/scrolling-text-banner.js"></script>
   <script src='/tailwindcss.min.js'></script>
   <link rel='stylesheet' href='/style.css' />
+  <link rel='stylesheet' href='api.css' />
   <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
-  <style>
-    input[type="checkbox"] {
-      user-select: none;
-    }
-    label {
-      user-select: none; /* Prevent selection of label text */
-    }
-    .disabled-style {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  </style>
 </head>
 <body class="pb-[330px] lg:pb-[500px] fade-in">
 
@@ -38,15 +27,17 @@
 
             <h2 class="slideDown text-7xl text-white mt-1 md:mt-3 mb-8 md:mb-1" id="totalTracks"></h2>
             
-            <p id="totalTracksTitle" class="select-none w-full text-center zoom caption delay bg-[#f64056] text-xl text-white p-3">Total Tracks</p>
+            <p id="totalTracksTitleContainer" class="relative overflow-hidden select-none w-full text-center zoom caption delay bg-[#f64056] text-xl text-white p-3"><span id="totalTracksTitle">Total Tracks</span></p>
           </div>
 
 
-          <div class="flex flex-col justify-center items-center">
-            <h2 class="slideDown text-7xl text-white mt-7 mb-8 md:mb-1 md:mt-5" id="totalAlbums"></h2>
-            
-            <p id="totalAlbumsTitle" class="select-none cursor-pointer w-full text-center caption delay zoom bg-[#b353fc] text-xl text-white p-3">Total Albums</p>
-          </div>
+        <div class="flex flex-col justify-center items-center">
+          <h2 class="slideDown text-7xl text-white mt-7 mb-8 md:mb-1 md:mt-5" id="totalAlbums"></h2>
+          
+
+        <!-- onload zoom class removed / clashes with btn animation -->
+          <p id="totalAlbumsTitleContainer" class="relative overflow-hidden select-none cursor-pointer w-full text-center caption delay bg-[#b353fc] text-xl text-white p-3 transition-all"><span id="totalAlbumsTitle">Total Albums</span></p>
+        </div>
 
 
           <div class="flex flex-col items-center">
@@ -171,5 +162,26 @@ document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
 });
 
 </script>
+
+
+
+<!-- albums button CTA -->
+<script>
+  // document.addEventListener("DOMContentLoaded", () => {
+  //   const target = document.getElementById("totalAlbumsTitleContainer");
+
+  //   const triggerPulse = () => {
+  //     target.classList.add("totalAlbumsCTA");
+  //     setTimeout(() => {
+  //       target.classList.remove("totalAlbumsCTA");
+  //     }, 3000); // match animation duration
+  //   };
+
+  //   triggerPulse(); // Run once on load
+
+  //   setInterval(triggerPulse, 3500);  // match animation duration or above so animation completes
+  // });
+</script>
+
 </body>
 </html>

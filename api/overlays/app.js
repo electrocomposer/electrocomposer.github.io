@@ -36,8 +36,9 @@ const displayData = (data) => {
     const albumDurationDecimal = item.albumDuration.toFixed(2);
 
     // Use listItem directly without wrapping it in another <div> with track-item
-    listItem.innerHTML = `
-      <div class="track-item xl:w-[1280px] xl:h-[720px]">
+    listItem.innerHTML = `<div class="track-item xl:w-[1280px] xl:h-[720px]">
+
+      <div class="relative z-10">
         <p class="artistName"><span>${item.artistName}</span></p>
         <p class="id"><span>[Catalogue ID]</span><span>&rarr;${item.id}</span></p>
         <p class="trackName"><span>TrackName</span><span class="title">${item.trackName}</span></p>
@@ -47,10 +48,11 @@ const displayData = (data) => {
         <p class="albumDuration"><span>Album Duration</span><span>${albumDurationDecimal}</span></p>
         <!-- <p class="releaseYear"><span>First Released:</span><span>${item.releaseYear}</span></p> -->
         <p class="genre"><span>Genre</span><span>${item.genre}</span></p>
-
+      </div>
+      
       <div class="color-container"><!--  --></div>
       
-      <div class="flex flex-wrap justify-start gap-1">
+      <div class="relative z-50 flex flex-wrap justify-start gap-1">
         <button class="download-btn">Download PNG</button> 
         <button class="bg-and-white-text-btn">PNG White Text</button> 
         <button class="remove-bg-btn">PNG No Background</button> 
@@ -59,9 +61,10 @@ const displayData = (data) => {
         <button class="bg-black-title-white-text-btn">Black Title / White Text</button> 
         <button class="no-bg-black-title-black-text-btn">No BG Black Title</button> 
         <button class="no-bg-black-title-white-text-btn">No BG Black Title / White Text</button>
-        <button></button><!-- empty button added so previous button cursor pointer show correctly -->
+        <button></button><!-- empty button added so previous button cursor pointer shows correctly -->
       </div>
-      
+    <!--  -->
+    <!--  -->
     </div>
     `;
     

@@ -427,9 +427,9 @@ const renderStoredData = () => {
 
     // Display the counts
     storedData.innerHTML = `
-      <p class="cursor-pointer bg-gray-200 p-2" id="allCount">All</p>
-      <p class="cursor-pointer bg-green-200 p-2" id="upCount">Up: <strong>${upCount}</strong></p>
-      <p class="cursor-pointer bg-red-200 p-2" id="downCount">Down: <strong>${downCount}</strong></p>`;
+      <p class="select-none cursor-pointer bg-gray-200 p-2" id="allCount">All</p>
+      <p class="select-none cursor-pointer bg-green-200 p-2" id="upCount">Up: <strong>${upCount}</strong></p>
+      <p class="select-none cursor-pointer bg-red-200 p-2" id="downCount">Down: <strong>${downCount}</strong></p>`;
 
     // Reassign global variables to the newly created DOM elements
     allCountElement = document.getElementById('allCount');
@@ -534,74 +534,75 @@ const renderTracks = (tracks) => {
     const controls = document.createElement('div');
     controls.className = 'h-full rounded p-1 relative';
 
-    // Thumbs Up button
+    // Create buttons
     const thumbsUp = document.createElement('button');
     thumbsUp.innerHTML = '👍';
     thumbsUp.className = 'text-md absolute top-2 right-1';
 
-    // Thumbs Down button
     const thumbsDown = document.createElement('button');
     thumbsDown.innerHTML = '👎';
     thumbsDown.className = 'text-md absolute bottom-2 right-1';
 
-    // Event listener for thumbsUp
-    thumbsUp.addEventListener('click', () => {
-      const updatedState = loadState();
-      updatedState[track.id] = 'up';
-      saveState(updatedState);
-
-      li.classList.add(greenBgClass);
-      li.classList.remove(redBgClass);
-      thumbsUp.classList.remove('opacity-50');
-      thumbsDown.classList.add('opacity-50');
-      
-      renderStoredData(); // Refresh counts
-      // renderTracksWrapper(updatedTracks); // Refresh tracks
-    });
-
-    // Event listener for thumbsDown
-    thumbsDown.addEventListener('click', () => {
-      const updatedState = loadState();
-      updatedState[track.id] = 'down';
-      saveState(updatedState);
-
-      li.classList.add(redBgClass);
-      li.classList.remove(greenBgClass);
-      thumbsDown.classList.remove('opacity-50');
-      thumbsUp.classList.add('opacity-50');
-      
-      renderStoredData(); // Refresh counts
-      // renderTracksWrapper(updatedTracks); // Refresh tracks
-    });
-
-    // Initial state check to update button opacity
-    if (savedData[track.id] === 'up') {
-      thumbsUp.classList.remove('opacity-50');
-      thumbsDown.classList.add('opacity-50');
-    } else if (savedData[track.id] === 'down') {
-      thumbsDown.classList.remove('opacity-50');
-      thumbsUp.classList.add('opacity-50');
+    // Helper: Update UI state
+    function updateVisualState(state) {
+      if (state === 'up') {
+        li.classList.add(greenBgClass);
+        li.classList.remove(redBgClass);
+        thumbsUp.classList.remove('opacity-50');
+        thumbsDown.classList.add('opacity-50');
+      } else if (state === 'down') {
+        li.classList.add(redBgClass);
+        li.classList.remove(greenBgClass);
+        thumbsDown.classList.remove('opacity-50');
+        thumbsUp.classList.add('opacity-50');
+      } else {
+        li.classList.remove(greenBgClass, redBgClass);
+        thumbsUp.classList.add('opacity-50');
+        thumbsDown.classList.add('opacity-50');
+      }
     }
 
-    // Click listener for removing a track state
-    li.addEventListener('click', (event) => {
-      if (event.target === thumbsUp || event.target === thumbsDown) return;
+    // Initial state from saved data
+    let currentState = savedData[track.id] || null;
+    updateVisualState(currentState);
 
+    // Event listener: Thumbs Up
+    thumbsUp.addEventListener('click', () => {
       const updatedState = loadState();
-      delete updatedState[track.id];
+
+      if (currentState === 'up') {
+        delete updatedState[track.id];
+        currentState = null;
+      } else {
+        updatedState[track.id] = 'up';
+        currentState = 'up';
+      }
+
       saveState(updatedState);
+      updateVisualState(currentState);
+      renderStoredData();
+    });
 
-      li.classList.remove(greenBgClass);
-      li.classList.remove(redBgClass);
-      thumbsDown.classList.remove('opacity-50');
-      thumbsUp.classList.remove('opacity-50');
+    // Event listener: Thumbs Down
+    thumbsDown.addEventListener('click', () => {
+      const updatedState = loadState();
 
-      renderStoredData(); // Refresh counts
-      // renderTracksWrapper(updatedTracks); // Refresh tracks
+      if (currentState === 'down') {
+        delete updatedState[track.id];
+        currentState = null;
+      } else {
+        updatedState[track.id] = 'down';
+        currentState = 'down';
+      }
+
+      saveState(updatedState);
+      updateVisualState(currentState);
+      renderStoredData();
     });
 
     controls.appendChild(thumbsUp);
     controls.appendChild(thumbsDown);
+
 
     li.appendChild(details);
     li.appendChild(controls);

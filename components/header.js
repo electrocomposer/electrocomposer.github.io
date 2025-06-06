@@ -496,7 +496,7 @@ const scrollMessages = [
   {
     text: "&gl;&gl; Breaking News &gl;&gl; New Samplepack available &gl;&gl;",
     highlight: "New Samplepack available",
-    url: "https://samplepacks.presetloops.com"
+    url: "https://ecs-samplepacks.olk1.com"
   },
   {
     text: "&gl;&gl; Check out the latest playlist &gl;&gl; Listen now",

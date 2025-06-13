@@ -86,7 +86,7 @@ class RecordLabelHeader extends HTMLElement {
                     aria-label="Catalogue API submenu">
                   <li><a href="/api/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Track Search</a></li>
                   <li><a href="/api/overlays" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Overlays</a></li>
-                  <li><a href="/api/gallery" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Gallery</a></li>
+                  <!-- <li><a href="/api/gallery" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Gallery</a></li> -->
                   <li><a href="/api/albums" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Albums</a></li>
                   <li><a href="/api/dashboard" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Dashboard</a></li>
                   <li><a href="/api/docs" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">API Docs</a></li>
@@ -125,7 +125,7 @@ class RecordLabelHeader extends HTMLElement {
           <div class="leading-10 text-center">
             <a href="/api/" class="block">Track Search</a>
             <a href="/api/overlays" class="block">Overlays</a>
-            <a href="/api/gallery" class="block">Gallery</a>
+            <!-- <a href="/api/gallery" class="block">Gallery</a> -->
             <a href="/api/albums" class="block">Albums</a>
             <a href="/api/dashboard" class="block">Dashboard</a>
             <a href="/api/docs" class="block">API Docs</a>

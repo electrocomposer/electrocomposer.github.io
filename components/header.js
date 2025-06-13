@@ -84,12 +84,23 @@ class RecordLabelHeader extends HTMLElement {
                     class="absolute -left-2 mt-0 w-48 bg-white shadow-md invisible"
                     role="menu"
                     aria-label="Catalogue API submenu">
+                  
                   <li><a href="/api/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Track Search</a></li>
-                  <li><a href="/api/overlays" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Overlays</a></li>
-                  <!-- <li><a href="/api/gallery" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Gallery</a></li> -->
+                  
                   <li><a href="/api/albums" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Albums</a></li>
+                  
                   <li><a href="/api/dashboard" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Dashboard</a></li>
+                  
+                  <li><a href="https://ecs-samplepacks.olk1.com/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1" target="_blank">Samplepacks</a></li>
+                  
+                  <li class="py-2 px-4">- - -</li>
+
                   <li><a href="/api/docs" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">API Docs</a></li>
+
+                  <li><a href="/api/overlays" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Overlays</a></li>
+                  
+                  <li><a href="/api/styleguide" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Style Guide</a></li>
+                  
                 </ul>
 
               </li>
@@ -114,21 +125,31 @@ class RecordLabelHeader extends HTMLElement {
   
     <div id="nav-content">
 
-      <div class="text-xl relative -mt-32">
+      <div class="text-xl relative -mt-24">
       <!-- X to close -->
           <button id="close-nav-btn" class="absolute right-0 -top-8 text-7xl">&#10006;</button>
           
         <div id="nav-links" class="leading-8">
           
-          <p class="pt-12 pb-2 flex justify-center"><span class="w-fit block bg-white text-black ">Catalogue API</span></p>
+          <p class="pt-16 pb-2 flex justify-center"><span class="w-fit block bg-white text-black mb-4">Catalogue API</span></p>
 
           <div class="leading-10 text-center">
             <a href="/api/" class="block">Track Search</a>
-            <a href="/api/overlays" class="block">Overlays</a>
-            <!-- <a href="/api/gallery" class="block">Gallery</a> -->
+            
             <a href="/api/albums" class="block">Albums</a>
+            
             <a href="/api/dashboard" class="block">Dashboard</a>
+                        
+            <a href="https://ecs-samplepacks.olk1.com/" class="block" target="_blank">Samplepacks</a>
+            
+            <li class="block">- - -</li>
+
             <a href="/api/docs" class="block">API Docs</a>
+
+            <a href="/api/overlays" class="block">Overlays</a>
+            
+            <a href="/api/styleguide" class="block">Style Guide</a>
+            
           </div>
 
         </div>

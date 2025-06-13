@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>electroComposer</title>
+  <script type="module" src="/components/header.js"></script>
+  <script type="module" src="/components/scrolling-text-banner.js"></script>
+    <script src='/tailwindcss.min.js'></script>
+    <link rel='stylesheet' href='/style.css' />
+<style>
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+  @font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/SpaceMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+  html{
+    overflow-x: hidden;
+    scrollbar-width: none; 
+  }
+  body{
+    padding: 0;
+    margin: 0;
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, #eee 1px, transparent 1px),
+      linear-gradient(to bottom, #eee 1px, transparent 1px);
+      /* radial-gradient(circle, #000000 1px, rgba(0, 0, 0, 0) 1px); */
+  }
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0;
+}
+
+.ec {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+  white-space: no-wrap;
+  display: flex;
+  /* letter-spacing: -1px; */
+  font-size: clamp(2rem, 4vw, 4.25rem);
+  line-height: 1rem;
+  align-items: center;
+  margin: 20px 0 20px;
+}
+
+pre{
+  font-size: 16px!important;
+  font-family: serif!important;
+}
+@media (min-width: 768px) {
+  .wrapper {
+   margin: 40px 0 330px;
+  }
+  .ec{
+    margin: 50px 0 0;
+  }
+  pre {
+    font-size: clamp(.8rem, 3vw, 3.25rem)!important;
+  }
+}
+
+</style>
+</head>
+<body class="fade-in">
+ 
+
+<div class="space-mono-regular">
+  <record-label-header></record-label-header>
+</div>
+
+<div class="wrapper">
+   
+  <p class="ec">electroComposer</p>
+
+<div>
+  <pre>
+
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/SpaceMono-Regular.ttf') 
+  format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+.ec {
+  font-family: "Space Mono", monospace;
+  white-space: no-wrap;
+}
+</pre>
+</div>
+
+<div class="mt-8 text-sm text-blue-600 underline"><a href="https://fonts.google.com/specimen/Space+Mono" target="_blank">Space Mono from Google Fonts</a></div>
+
+
+</div>
+</body>
+</html>

@@ -23,8 +23,10 @@ body {
   border: 1px dashed #888;
   /* padding: 10px; */
 
+  background-image: url(redacted.png);
+  /* background-image: url(dual-texture-alt-2-25-1000-sq.png); */
+
   /* background-image: url(photocopy-overlay-flat.png); */
-  background-image: url(dual-texture-alt-2-25-1000-sq.png);
   /* background-image: url(dual-texture-alt-2-25-1280.png); */
 
   background-repeat: no-repeat;
@@ -84,8 +86,8 @@ body {
   font-weight: bold;
   letter-spacing: -5px;
   color: white;
+  /* opacity: 0.85; */
   /* color: #050505; */
-  opacity: 0.85;
   /* filter: blur(0.4px); */
 }
 

@@ -36,7 +36,8 @@ const displayData = (data) => {
     const albumDurationDecimal = item.albumDuration.toFixed(2);
 
     // Use listItem directly without wrapping it in another <div> with track-item
-    listItem.innerHTML = `<div class="track-item xl:w-[1280px] xl:h-[720px]">
+    // <div class="track-item xl:w-[1280px] xl:h-[720px]">
+    listItem.innerHTML = `<div class="track-item xl:w-[1000px] xl:h-[1000px]">
 
       <div class="relative z-10">
         <p class="artistName"><span>${item.artistName}</span></p>

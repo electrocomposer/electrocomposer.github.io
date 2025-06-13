@@ -14,11 +14,14 @@ body {
   position: relative;
   overflow: hidden;
   width: 100%;
-  max-width: 1280px;
+  max-width: 1000px;
   height: auto; /* Let height adjust automatically */
-  aspect-ratio: 16 / 9; /* Maintain a 16:9 ratio (1280x720) */
-  /* padding: 10px; */
+  
+  /* aspect-ratio: 16 / 9;  */
+  /* ^^^^ Maintain a 16:9 ratio (1280x720) */
+  
   border: 1px dashed #888;
+  /* padding: 10px; */
 
   /* background-image: url(photocopy-overlay-flat.png); */
   background-image: url(dual-texture-alt-2-25-1280.png);

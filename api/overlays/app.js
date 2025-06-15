@@ -55,13 +55,13 @@ const displayData = (data) => {
       
       <div class="relative z-50 flex flex-wrap justify-start gap-1">
         <button class="download-btn">Download PNG</button> 
-        <button class="bg-and-white-text-btn">PNG White Text</button> 
-        <button class="remove-bg-btn">PNG No Background</button> 
-        <button class="white-text-btn">No BG / White Text</button> 
+        <button class="bg-and-white-text-btn">White Title / White Text</button> 
+        <!-- <button class="remove-bg-btn">PNG No Background</button> 
+        <button class="white-text-btn">No BG / White Text</button>  -->
         <button class="bg-black-title-black-text-btn">Black Title / Black Text</button> 
         <button class="bg-black-title-white-text-btn">Black Title / White Text</button> 
-        <button class="no-bg-black-title-black-text-btn">No BG Black Title</button> 
-        <button class="no-bg-black-title-white-text-btn">No BG Black Title / White Text</button>
+        <!-- <button class="no-bg-black-title-black-text-btn">No BG Black Title</button> 
+        <button class="no-bg-black-title-white-text-btn">No BG Black Title / White Text</button> -->
         <button></button><!-- empty button added so previous button cursor pointer shows correctly -->
       </div>
     <!--  -->

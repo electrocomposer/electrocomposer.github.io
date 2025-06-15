@@ -11,8 +11,7 @@
     <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
 <style>  
   .gallery {
-      /* display: grid; */
-      margin: 0 32px 80px;
+      margin: 20px 0px 80px;
   }
   .gallery img {
       width: 100%;
@@ -23,24 +22,33 @@
       transition: transform 0.2s ease;
   }
   .gallery img:hover{
-    transform: scale(.97);
+    transform: scale(1.2);
   }
   .close, .arrow{
       display: none;
   }
 @media (min-width: 480px) {
+  body{
+    background: red;
+  }
       .gallery {
+        margin-top: 40px;
         display: flex;
+        justify-content: center;
         flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 80px;
+        gap: 40px;
       }
       .gallery img {
         max-width: 200px;
       }
 }
 
-@media (min-width: 1024px) {    
+@media (min-width: 1024px) {
+      .gallery{
+        margin-top: 80px;
+        gap: 80px;
+        /* padding: 80px; */
+      }
       .modal-image-container{
         position: relative;
         margin-bottom: 80px;
@@ -99,9 +107,21 @@
         right: 20px;
       }
   }
-  </style>
 
 
+@media (min-width: 1280px) {
+  .gallery {
+    margin: 90px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    justify-content: space-between;
+  }
+  .gallery img{
+    max-width: 300px;
+  }
+}
+
+</style>
 </head>
 
 <body class="pb-[80px] space-mono-regular fade-in">
@@ -110,7 +130,7 @@
   <record-label-header></record-label-header>
 </div>
 
-  <h2 class="my-4 text-center md:ml-8 md:text-left"><span class="px-1 bg-[#202123] text-white">Album artwork and playlists</span></h2>
+  <!-- <h2 class="my-4 text-center md:ml-8 md:text-left"><span class="px-1 bg-[#202123] text-white">Album artwork and playlists</span></h2> -->
   
 
 <!-- GRID -->
@@ -204,7 +224,7 @@ async function fetchArtworks() {
         
         linkText.href = x.ytPlaylistUrl;
         linkText.textContent = "Play Album";
-        linkText.classList.add("text-sm", "bg-green-200", "text-center", "w-fit", "mb-8");
+        linkText.classList.add("text-sm", "bg-green-600", "text-white", "text-center", "w-fit", "mb-8", "px-1");
         linkText.target = "_blank";
 
         imageContainer.appendChild(img);

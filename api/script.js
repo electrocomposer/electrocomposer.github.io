@@ -658,6 +658,10 @@ const renderAlbums = (albums) => {
     const genre = document.createElement('p');
     genre.innerHTML = `<strong>Genre:</strong> ${album.genre}`;
     detailsText.appendChild(genre);
+    
+    const trackCount = document.createElement('p');
+    trackCount.innerHTML = `<strong>Tracks:</strong> ${album.trackCount}`;
+    detailsText.appendChild(trackCount);
 
     li.appendChild(detailsText);
 

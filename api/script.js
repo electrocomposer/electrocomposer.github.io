@@ -73,6 +73,7 @@ sortAlphaCheckbox.addEventListener('change', () => {
         }
         const json = await response.json();
         // let data = json.reverse();
+        let data = json;
         return data;
       } catch (error) {
         console.error('Failed to fetch data:', error);

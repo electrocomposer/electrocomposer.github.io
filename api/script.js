@@ -72,8 +72,7 @@ sortAlphaCheckbox.addEventListener('change', () => {
           throw new Error(`Error: ${response.status}`);
         }
         const json = await response.json();
-        // let data = json.reverse();
-        let data = json;
+        let data = json.reverse(); // reverse chronological sort
         return data;
       } catch (error) {
         console.error('Failed to fetch data:', error);

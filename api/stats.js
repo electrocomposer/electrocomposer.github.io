@@ -34,7 +34,7 @@ const totalAlbumMinutes = [...uniqueAlbumDurations.values()];
 function calculateTotalTime(timeArray) {
   const totalSeconds = timeArray.reduce((acc, duration) => {
     const minutes = Math.floor(duration);
-    const seconds = Math.round((duration - minutes) * 60);
+    const seconds = Math.round((duration * 100) % 100);
     return acc + minutes * 60 + seconds;
   }, 0);
 

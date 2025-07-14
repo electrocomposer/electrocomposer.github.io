@@ -643,11 +643,11 @@ const renderAlbums = (albums) => {
     const detailsText = document.createElement('div');
     detailsText.className = 'relative p-5 mt-0.5';
 
-    if (albumLengthShowing) {
-      const catId = document.createElement('p');
-      catId.innerHTML = `<span class="font-normal text-slate-400">CatID:</span> <span class="text-[#ff0000]">${album.id}</span>`;
-      detailsText.appendChild(catId);
-    }
+    // if (albumLengthShowing) {
+    // }
+    const catId = document.createElement('p');
+    catId.innerHTML = `<span class="font-normal text-slate-400">CatID:</span> <span class="text-[#ff0000]">${album.id}</span>`;
+    detailsText.appendChild(catId);
 
     detailsText.appendChild(createTruncatedElement('Album', album.albumName));
 

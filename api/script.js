@@ -113,8 +113,11 @@ totalTracksTitle.addEventListener('click', () => {
   sortAlphaCheckboxContainer.classList.remove('hidden');
 
   searchInput.value = "";
-  totalCount.innerText = updatedTracks.length; // Refresh count
+  // remove the searched/filtered query before resetting tracks
+  filteredTracks = null;
+  
   renderTracksWrapper(updatedTracks); // Refresh tracks
+  totalCount.innerText = updatedTracks.length; // Refresh count
 });
 
 

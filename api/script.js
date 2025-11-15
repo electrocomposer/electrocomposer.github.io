@@ -23,9 +23,15 @@ const trackLengthCheckbox = document.getElementById('sort-track-length-checkbox'
 const albumLengthCheckboxContainer = document.getElementById('sort-album-length-checkbox-container');
 const albumLengthCheckbox = document.getElementById('sort-album-length-checkbox');
 
+const albumGenreCheckboxContainer = document.getElementById('sort-album-genre-checkbox-container');
+const albumGenreCheckbox = document.getElementById('sort-album-genre-checkbox');
+
 let showAlbumsInReleaseOrder = false;
 let albumLengthShowing = true;
+let albumGenreShowing = true;
+
 albumLengthCheckboxContainer.classList.add('hidden');
+albumGenreCheckboxContainer.classList.add('hidden');
 
 
 
@@ -109,6 +115,8 @@ totalTracksTitle.addEventListener('click', () => {
 
   albumLengthCheckbox.checked = false;
   albumLengthCheckboxContainer.classList.add('hidden');
+  albumGenreCheckbox.checked = false;
+  albumGenreCheckboxContainer.classList.add('hidden');
   trackLengthCheckboxContainer.classList.remove('hidden');
   sortAlphaCheckboxContainer.classList.remove('hidden');
 
@@ -128,6 +136,9 @@ totalAlbumsTitle.addEventListener('click', () => {
   albumLengthCheckbox.checked = false;
   albumLengthShowing = true;
   
+  albumGenreCheckbox.checked = false;
+  albumGenreShowing = true;
+  
   totalCount.innerText = albumData.length;
 
   searchInput.value = "";
@@ -135,6 +146,7 @@ totalAlbumsTitle.addEventListener('click', () => {
 
   // Show/hide appropriate checkboxes
   albumLengthCheckboxContainer.classList.remove('hidden');
+  albumGenreCheckboxContainer.classList.remove('hidden');
   trackLengthCheckboxContainer.classList.add('hidden');
   sortAlphaCheckboxContainer.classList.add('hidden');
 
@@ -150,16 +162,54 @@ totalAlbumsTitle.addEventListener('click', () => {
 });
 
 
-// Declare this once
-albumLengthCheckbox.addEventListener('change', () => {
-  const sorted = albumLengthCheckbox.checked
-    ? [...albumData].sort((a, b) => a.albumDuration - b.albumDuration)
-    : [...albumData].sort((a, b) => b.albumDuration - a.albumDuration);
+// toggle album length and sort by genre
+// if genre checked length will sort within genre
+function getSortedAlbums() {
+  const list = [...albumData]; // copy to avoid mutating original
 
+  const genreEnabled = albumGenreCheckbox.checked || albumGenreCheckbox.hasAttribute('data-enabled');
+  const genreAsc     = albumGenreCheckbox.checked; // true = A→Z, false = Z→A
+  const lengthAsc    = albumLengthCheckbox.checked; // true = shortest→longest, false = longest→shortest
+
+  if (genreEnabled) {
+    // --- Genre enabled: sort by genre first, then length inside genre ---
+    list.sort((a, b) => {
+      const g = a.genre.localeCompare(b.genre);
+      const genreCompare = genreAsc ? g : -g;
+
+      if (g !== 0) return genreCompare;
+
+      // Same genre → apply length toggle only if length checkbox is checked
+      return lengthAsc
+        ? a.albumDuration - b.albumDuration
+        : b.albumDuration - a.albumDuration;
+    });
+    return list;
+  }
+
+  // --- Genre disabled: sort by length if length checkbox is checked, otherwise original order ---
+  if (albumLengthCheckbox.checked) {
+    return list.sort((a, b) => a.albumDuration - b.albumDuration); // shortest → longest
+  } else if (!albumLengthCheckbox.checked) {
+    return list.sort((a, b) => b.albumDuration - a.albumDuration); // longest → shortest
+  }
+
+  return list; // fallback, original order
+}
+
+function updateAlbumList() {
+  const sorted = getSortedAlbums();
+
+  albumGenreShowing = false;
   albumLengthShowing = false;
+
   clearList();
   renderAlbums(sorted);
-});
+}
+
+// Listeners
+albumGenreCheckbox.addEventListener('change', updateAlbumList);
+albumLengthCheckbox.addEventListener('change', updateAlbumList);
 
 
 
@@ -334,8 +384,9 @@ if (searchInput) {
       albumLengthCheckboxContainer.classList.add('hidden');
       albumLengthCheckbox.checked = false;
 
-      albumLengthCheckbox.checked = false;
-      albumLengthCheckboxContainer.classList.add('hidden');
+      albumGenreCheckboxContainer.classList.add('hidden');
+      albumGenreCheckbox.checked = false;
+
       trackLengthCheckboxContainer.classList.remove('hidden');
       sortAlphaCheckboxContainer.classList.remove('hidden');
       

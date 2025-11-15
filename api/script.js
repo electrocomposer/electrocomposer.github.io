@@ -346,26 +346,27 @@ const handleSearch = (event) => {
     sortAlphaCheckboxContainer.classList.add('hidden');
 
     // Filter albums by genre
-    let filteredAlbums = albumData.filter(album => album.genre.toLowerCase() === genreQuery);
-
-    // Apply album length toggle
-    const lengthAsc = albumLengthCheckbox.checked; // true = shortest→longest
-    filteredAlbums.sort((a, b) => lengthAsc
-      ? a.albumDuration - b.albumDuration
-      : b.albumDuration - a.albumDuration
+    let filteredAlbums = albumData.filter(
+      album => album.genre.toLowerCase() === genreQuery
     );
 
-    totalCount.innerText = filteredAlbums.length;
+    // Initial render: sort by CatID descending (highest ID first)
+    let initialAlbums = [...filteredAlbums].sort((a, b) => b.id - a.id);
     clearList();
-    renderAlbums(filteredAlbums);
+    renderAlbums(initialAlbums);
+    totalCount.innerText = filteredAlbums.length;
 
-    // Re-render on album length checkbox toggle
+    // Checkbox toggle: sort by album duration instead, longest → shortest
     albumLengthCheckbox.onchange = () => {
-      const revLengthAsc = albumLengthCheckbox.checked;
-      const sorted = filteredAlbums.sort((a, b) => revLengthAsc
-        ? a.albumDuration - b.albumDuration
-        : b.albumDuration - a.albumDuration
-      );
+      const lengthAsc = albumLengthCheckbox.checked; // true = shortest → longest
+      const sorted = [...filteredAlbums].sort((a, b) => {
+        const diff = lengthAsc
+          ? a.albumDuration - b.albumDuration
+          : b.albumDuration - a.albumDuration;
+
+        if (diff !== 0) return diff;
+        return a.id - b.id; // secondary tiebreaker by CatID
+      });
       clearList();
       renderAlbums(sorted);
     };
@@ -384,6 +385,7 @@ const handleSearch = (event) => {
     renderSortedTracks();
   }
 };
+
 
 
 

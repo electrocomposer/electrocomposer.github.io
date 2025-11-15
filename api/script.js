@@ -219,7 +219,7 @@ albumLengthCheckbox.addEventListener('change', updateAlbumList);
 
 
 
-    function createTruncatedElement(label, value, maxLength = 22) {
+    function createTruncatedElement(label, value, maxLength = 17) {
       const p = document.createElement('p');
 
       const strong = document.createElement('strong');
@@ -332,44 +332,59 @@ const searchTracks = (query, tracks) => {
 let updatedTracks = [];
 
 const handleSearch = (event) => {
-  const query = event.target.value;
-  filteredTracks = query ? searchTracks(query, updatedTracks) : null;
+  const query = event.target.value.trim();
+  const genreSearchMatch = query.match(/^genre:(.+)$/i);
 
-  const tracksToRender = filteredTracks || updatedTracks;
+  if (genreSearchMatch) {
+    // --- Album mode ---
+    showAlbumsInReleaseOrder = true;
+    const genreQuery = genreSearchMatch[1].trim().toLowerCase();
 
-  renderTracksWrapper(determineSortingOrder(tracksToRender));
-  totalCount.innerText = tracksToRender.length;
+    // Show album length toggle
+    albumLengthCheckboxContainer.classList.remove('hidden');
+    trackLengthCheckboxContainer.classList.add('hidden');
+    sortAlphaCheckboxContainer.classList.add('hidden');
 
-  const trackElements = document.querySelectorAll('#trackList li');
-  trackElements.forEach((li) => {
-    const trackId = li.getAttribute('data-track-id');
-    const state = states[trackId];
+    // Filter albums by genre
+    let filteredAlbums = albumData.filter(album => album.genre.toLowerCase() === genreQuery);
 
-    if (state === 'up') {
-      li.classList.add(greenBgClass);
-      li.classList.remove(redBgClass);
-    } else if (state === 'down') {
-      li.classList.add(redBgClass);
-      li.classList.remove(greenBgClass);
-    } else {
-      li.classList.remove(greenBgClass, redBgClass);
-    }
+    // Apply album length toggle
+    const lengthAsc = albumLengthCheckbox.checked; // true = shortest→longest
+    filteredAlbums.sort((a, b) => lengthAsc
+      ? a.albumDuration - b.albumDuration
+      : b.albumDuration - a.albumDuration
+    );
 
-    const thumbsUp = li.querySelector('button[data-type="thumbsUp"]');
-    const thumbsDown = li.querySelector('button[data-type="thumbsDown"]');
+    totalCount.innerText = filteredAlbums.length;
+    clearList();
+    renderAlbums(filteredAlbums);
 
-    if (state === 'up') {
-      thumbsUp?.classList.remove('opacity-50');
-      thumbsDown?.classList.add('opacity-50');
-    } else if (state === 'down') {
-      thumbsDown?.classList.remove('opacity-50');
-      thumbsUp?.classList.add('opacity-50');
-    } else {
-      thumbsUp?.classList.remove('opacity-50');
-      thumbsDown?.classList.remove('opacity-50');
-    }
-  });
+    // Re-render on album length checkbox toggle
+    albumLengthCheckbox.onchange = () => {
+      const revLengthAsc = albumLengthCheckbox.checked;
+      const sorted = filteredAlbums.sort((a, b) => revLengthAsc
+        ? a.albumDuration - b.albumDuration
+        : b.albumDuration - a.albumDuration
+      );
+      clearList();
+      renderAlbums(sorted);
+    };
+
+  } else {
+    // --- Regular track search ---
+    showAlbumsInReleaseOrder = false;
+
+    albumLengthCheckboxContainer.classList.add('hidden');
+    albumLengthCheckbox.checked = false;
+
+    trackLengthCheckboxContainer.classList.remove('hidden');
+    sortAlphaCheckboxContainer.classList.remove('hidden');
+
+    filteredTracks = query ? searchTracks(query, updatedTracks) : null;
+    renderSortedTracks();
+  }
 };
+
 
 
 

@@ -107,8 +107,8 @@
     <input
       type="text"
       id="search-input"
-      data-placeholder="Search catalogue... (track:heart, album:heart, id:50, new wave)"
-      placeholder="Search catalogue... (track:heart, album:heart, id:50, new wave)"
+      data-placeholder="Search catalogue... (track:heart, album:heart, genre:ambient, id:50, new wave)"
+      placeholder="Search catalogue... (track:heart, album:heart, genre:ambient, id:50, new wave)"
       class="w-full md:w-2/3 mr-0 px-3 py-2 text-sm rounded bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring focus:ring-blue-500"
     />
 
@@ -120,11 +120,10 @@
       <thead class="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-center">
         <tr>
           <th class="px-4 py-2">Cat ID</th>
-          <th class="px-4 py-2 text-left w-fit">Track Name</th>
-          <th class="px-4 py-2">Track Length</th>
+          <th id="trackName" class="px-4 py-2 text-left w-fit">Track Name</th>
+          <th id="trackLength" class="px-4 py-2">Track Length</th>
           <th class="px-4 py-2">Album</th>
           <th class="px-4 py-2">Album Duration</th>
-          <!-- <th class="px-4 py-2">Year</th> -->
           <th class="px-4 py-2">Genre</th>
           <th class="px-4 py-2">Track #</th>
         </tr>

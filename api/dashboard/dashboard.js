@@ -1,4 +1,8 @@
 const API_URL = "https://ecapi.olk1.com/tracks"
+const albumsAPI = "https://ecapi.olk1.com/albums";
+
+const trackName = document.getElementById('trackName');
+const trackLength = document.getElementById('trackLength');
 
 document.addEventListener("DOMContentLoaded", function () {
   let chartInstances = [];
@@ -126,50 +130,84 @@ const searchFields = ['track', 'album', 'genre', 'id'];
 
 
 searchInput.addEventListener("input", (e) => {
-  const query = e.target.value.trim().toLowerCase();
-  
-  // Regular expression to capture scoped searches (e.g., track:in one voice, genre:new wave)
-  const scopedSearchRegex = /(\w+):(.+)/;
+  const raw = e.target.value.trim();
+  const query = raw.toLowerCase();
 
+  // Detect album-mode (genre search)
+  const genreSearchMatch = query.match(/^genre:(.+)$/);
+
+  if (genreSearchMatch) {
+
+    if (!albumData || albumData.length === 0) {
+    console.warn("Album data not loaded yet");
+    return;  // or show “loading albums…”
+  }
+  // -------------------------
+  // ALBUM MODE
+  // -------------------------
+  showAlbumsInReleaseOrder = true;
+
+  trackName.classList.add("hidden");
+  trackLength.classList.add("hidden");
+
+  const genreQuery = genreSearchMatch[1].trim().toLowerCase();
+
+  // Filter ALBUMS ONLY
+  let filteredAlbums = albumData.filter(
+    album => album.genre.toLowerCase() === genreQuery
+  );
+
+  // Sort CatID: highest → lowest
+  let initialAlbums = [...filteredAlbums].sort((a, b) => b.id - a.id);
+
+  resultsCount.innerText = filteredAlbums.length;
+
+  tableBody.innerHTML = "";     // optional clear
+  renderAlbumTable(initialAlbums);
+
+  return; // STOP HERE — track search must not run
+}
+
+
+  // -------------------------
+  // TRACK MODE (default)
+  // -------------------------
+ 
+  const scopedSearchRegex = /(\w+):(.+)/;
   const keywords = [];
 
-  // If the query contains a scoped search (e.g., track:in one voice)
+  trackName.classList.remove("hidden");
+  trackLength.classList.remove("hidden");
+
   if (scopedSearchRegex.test(query)) {
     const match = query.match(scopedSearchRegex);
-    const field = match[1];  // track or album, genre, etc.
-    const value = match[2].trim();  // in one voice, new wave
+    const field = match[1];
+    const value = match[2].trim();
 
-    // Only push the scoped search if the field is valid
     if (searchFields.includes(field)) {
       keywords.push({ field, value });
-    } 
+    }
   } else {
-    // Otherwise, split the query into individual keywords for a loose search
-    keywords.push(...query.split(/\s+/).filter(kw => kw.length > 0));
+    keywords.push(...query.split(/\s+/).filter(Boolean));
   }
 
   const filtered = allData.filter(track => {
-    // Normalize function to handle case, trimming, and collapsing spaces
     const normalize = str =>
-      str?.toLowerCase().trim().replace(/\s+/g, ' ') || '';
+      str?.toLowerCase().trim().replace(/\s+/g, " ") || "";
 
-    // Apply normalization to all searchable fields
     const searchable = {
-      id: String(track.id).toLowerCase(),
+      id: String(track.id),
       track: normalize(track.trackName),
       album: normalize(track.albumName),
       albumduration: normalize(formatDuration(track.albumDuration)),
       trackduration: normalize(formatDuration(track.trackDuration)),
       genre: normalize(track.genre),
-      // year: String(track.releaseYear).toLowerCase(),
     };
 
     return keywords.every(kw => {
       if (kw.field) {
-        // Scoped search: exact match required
         return searchable[kw.field] === normalize(kw.value);
       } else {
-        // Loose search: substring match on any field
         return Object.values(searchable).some(val =>
           val.includes(kw) || val.includes(kw + "0")
         );
@@ -177,12 +215,10 @@ searchInput.addEventListener("input", (e) => {
     });
   });
 
-  // Update the UI with the filtered results count
-  const resultsCount = document.getElementById('resultsCount');
   resultsCount.innerText = filtered.length;
-
   renderTable(filtered);
 });
+
 
 // default results displayed on load and fallback between queries
 resultsCount.innerText = 500;
@@ -648,6 +684,70 @@ const charts = [
 
 
 
+function renderAlbumTable(data) {
+  tableBody.innerHTML = "";
+  data.forEach(album => {
+    const row = document.createElement("tr");
+    row.className = "border-t border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 text-center";
+    row.innerHTML = `
+      <td class="px-4 py-2">${album.id}</td>
+      <td class="px-4 py-2">${album.albumName}</td>
+      <td class="px-4 py-2">${album.albumDuration.toFixed(2)}</td>
+      <td class="px-4 py-2">${album.genre}</td>
+      <td class="px-4 py-2">${album.trackCount || "-"}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+let albumData = [];
+
+const fetchAlbumApiData = async () => {
+  try {
+    const response = await fetch(albumsAPI);
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const tracks = await response.json();
+
+    // Build album-only dataset
+    const albumMap = new Map();
+
+    tracks.forEach(t => {
+      const key = t.albumName.toLowerCase();
+
+      if (!albumMap.has(key)) {
+        albumMap.set(key, {
+          id: t.id,                      // CatID
+          albumName: t.albumName,
+          albumDuration: t.albumDuration,
+          genre: t.genre,
+          trackCount: t.trackCount
+        });
+      } else {
+        const album = albumMap.get(key);
+        album.trackCount++;
+      }
+    });
+
+    // Convert Map → array
+    albumData = Array.from(albumMap.values());
+
+    // Sort newest CatID → oldest
+    albumData.sort((a, b) => b.id - a.id);
+
+    // console.log("Album data loaded:", albumData.length);
+    return albumData;
+
+  } catch (error) {
+    console.error("Failed to fetch album data:", error);
+    return [];
+  }
+};
+
+
+
     // Allow ESC key to close focused chart (fullscreen mode)
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
@@ -658,4 +758,11 @@ const charts = [
       }
     });
 
+
+  
+  fetchAlbumApiData();   // load albums BEFORE searches
+
 });
+
+
+

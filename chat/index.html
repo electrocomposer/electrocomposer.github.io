@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>electroComposer : ChatEC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel='shortcut icon' href='../monki.png' type='image/x-icon' />
+<script src='tailwindcss.min.js'></script>
+<style>
+  html, body {
+    overscroll-behavior: none;
+  }
+  #suggestions li {
+  cursor: pointer;
+  }
+  #suggestions li:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+</style>
+</head>
+<body class="h-[var(--app-height)] flex flex-col overflow-hidden bg-gray-100">
+
+  <!-- Header -->
+  <header class="bg-[#111] text-white">
+    <div class="flex justify-between mx-auto max-w-[500px] px-4 py-4">
+      <h1 class="text-lg font-semibold">ChatEC</h1>
+      <p class="mr-4 text-blue-400 underline"><a href="/api">API</a></p>
+    </div>
+  </header>
+
+
+
+  <!-- Chat area -->
+  <main id="chatScroll" class="pb-48 flex-1 overflow-y-scroll overscroll-contain [-webkit-overflow-scrolling:touch]">
+    <div
+      id="chat"
+      class="mx-auto max-w-[500px] px-4 py-6 space-y-4"
+    ></div>
+  </main>
+
+
+
+  <!-- Input -->
+<footer
+  class="fixed bottom-0 w-full bg-white border-t pb-[env(safe-area-inset-bottom)]"
+  id="chatFooter"
+>
+  <div class="mx-auto max-w-[500px] px-4 py-3">
+  
+  <ul id="suggestions" class="mb-3"></ul>
+    
+    <form id="chatForm" class="flex gap-2">
+      <input
+        autofocus
+        autocomplete="off"
+        id="userInput"
+        type="text"
+        placeholder="Start typing…"
+        class="flex-1 border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-gray-300"
+        autocomplete="off"
+      />
+
+
+      <button type="submit" class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-800">
+        Send
+      </button>
+    </form>
+  </div>
+</footer>
+
+
+
+<script>
+  function lockViewportHeight() {
+    document.documentElement.style.setProperty(
+      "--app-height",
+      `${window.visualViewport.height}px`
+    );
+  }
+
+window.visualViewport.addEventListener("resize", lockViewportHeight);
+lockViewportHeight();
+
+</script>
+
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

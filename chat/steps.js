@@ -129,6 +129,23 @@ listAlbumsById: async ctx => {
   },
 
 
+albumCountByGenre: async ctx => {
+  if (!ctx.albums) await steps.fetchAlbums(ctx);
+
+  ctx.albumCount = ctx.albums.filter(a =>
+    a.genre?.toLowerCase() === ctx.genre
+  ).length;
+},
+
+albumsByGenre: async ctx => {
+  if (!ctx.albums) await steps.fetchAlbums(ctx);
+
+  ctx.albumsList = ctx.albums.filter(a =>
+    a.genre?.toLowerCase() === ctx.genre
+  );
+},
+
+
 computeTrackDurationsInAlbum: async ctx => {
     if (!ctx.tracks?.length) {
       throw new Error(`No tracks found for album "${ctx.albumName}"`);

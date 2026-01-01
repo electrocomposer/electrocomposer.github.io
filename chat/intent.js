@@ -215,6 +215,23 @@ export function parseIntent(text) {
       extract: m => ({ genre: m[1].trim().toLowerCase() })
     },
 
+    {
+  intent: "album_count_by_genre",
+  match: /^how\s+many\s+albums(?:\s+are\s+there)?\s+in\s+(.+)$/i,
+  extract: m => ({
+    genre: m[1].trim().toLowerCase()
+  })
+},
+
+{
+  intent: "albums_by_genre",
+  match: /^(?:list|show|display)\s+(?:all\s+)?albums\s+in\s+(.+)$/i,
+  extract: m => ({
+    genre: m[1].trim().toLowerCase()
+  })
+},
+
+
 /* ---------------- ARTWORK ---------------- */
     {
   intent: "artwork",

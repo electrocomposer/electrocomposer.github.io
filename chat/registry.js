@@ -134,6 +134,16 @@ album_playlist: {
     format: formatters.shortestAlbumInGenre
   },
   
+  album_count_by_genre: {
+  plan: ["albumCountByGenre"],
+  format: formatters.albumCountByGenre
+},
+
+albums_by_genre: {
+  plan: ["albumsByGenre"],
+  format: formatters.albumsList
+},
+
   /* ---------------- ARTWORK ---------------- */
   artwork: {
     plan: ["resolveTitle"],

@@ -2,7 +2,6 @@
 
 import {API_BASE} from './apiBase.js';
 import {fetchJSON} from './fetchJson.js';
-// import { normalizeQuery } from "./normalizeQuery.js";
 import {parseIntent} from './intent.js';
 import {steps} from './steps.js';
 import {formatters} from './formatters.js';
@@ -309,6 +308,11 @@ const queries = [
   // GENRE
   "longest album in [Genre]",
   "shortest album in [Genre]",
+  "how many albums in [Genre]",
+  "list albums in [Genre]",
+  "show albums in [Genre]",
+  "display all albums in [Genre]",
+
 
   // ARTWORK
   "show artwork for [Album Name]",
@@ -397,34 +401,6 @@ function generateSuggestions(inputValue) {
   queries.forEach(template => {
     const lowerTemplate = template.toLowerCase();
 
-    // Dynamic track replacement
-    if (template.includes("[Track Name]")) {
-      const prefix = template.split("[Track Name]")[0].toLowerCase();
-      if (lowerInput.startsWith(prefix)) {
-        const partial = inputValue.slice(prefix.length).trim();
-        if (partial.length >= 1) {
-          getTrackMatches(partial).forEach(track => {
-            suggestions.push(template.replace("[Track Name]", track));
-          });
-        }
-        return;
-      }
-    }
-
-    // Dynamic album replacement
-    if (template.includes("[Album Name]")) {
-      const prefix = template.split("[Album Name]")[0].toLowerCase();
-      if (lowerInput.startsWith(prefix)) {
-        const partial = inputValue.slice(prefix.length).trim();
-        if (partial.length >= 1) {
-          getAlbumMatches(partial).forEach(album => {
-            suggestions.push(template.replace("[Album Name]", album));
-          });
-        }
-        return;
-      }
-    }
-
     // Static fallback
     if (lowerTemplate.startsWith(lowerInput)) {
       suggestions.push(template);
@@ -443,9 +419,9 @@ let selectedIndex = -1; // currently highlighted suggestion
 function normalizeSuggestion(text) {
   return (
     text
-      .replace(/\[(Album|Track) Name\]|\[Letter\]/g, "")
-      .replace(/\s{2,}/g, " ")
-      .trim() + " "
+    .replace(/\[[^\]]+\]/g, "")      
+    .replace(/\s{2,}/g, " ")
+    .trim() + " "
   );
 }
 

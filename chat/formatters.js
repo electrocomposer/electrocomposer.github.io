@@ -94,6 +94,24 @@ albumDuration: ctx => {
     return `Shortest album in ${ctx.genre} is "${album.albumName}" (${formatSeconds(album.totalSeconds)})`;
   },
 
+
+albumCountByGenre: ctx => {
+  return ctx.albumCount === 0
+    ? `No albums found in the genre "${ctx.genre}".`
+    : `There ${ctx.albumCount === 1 ? "is" : "are"} ${ctx.albumCount} album${ctx.albumCount === 1 ? "" : "s"} in the genre "${ctx.genre}".`;
+},
+
+albumsList: ctx => {
+  if (!ctx.albumsList?.length) {
+    return `No albums found in the genre "${ctx.genre}".`;
+  }
+
+  return ctx.albumsList
+    .map(a => a.albumName)
+    .join("\n");
+},
+
+
   trackByDurationInAlbum: (ctx, type = "longest") => {
   if (!ctx.tracksWithDuration?.length) {
     return `No tracks found for album "${ctx.albumName}".`;

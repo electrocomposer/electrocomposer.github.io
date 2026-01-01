@@ -376,6 +376,23 @@ shortest album in ambient
 
 shortest album in rock
 
+```
+album_count_by_genre
+/^how\s+many\s+albums(?:\s+are\s+there)?\s+in\s+(.+)$/i
+"how many albums in [Genre]",
+"how many albums are there in [Genre]"
+```
+
+
+```
+intent: "albums_by_genre",
+match: /^(?:list|show|display)\s+(?:all\s+)?albums\s+in\s+(.+)$/i,
+"list albums in [Genre]",
+"show albums in [Genre]",
+"display all albums in [Genre]"
+
+```
+
 # 6. ARTWORK INTENT
 
 ```

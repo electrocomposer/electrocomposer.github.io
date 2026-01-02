@@ -112,6 +112,26 @@ albumsList: ctx => {
 },
 
 
+listGenres: ctx => {
+  const genres = [
+    ...new Set(
+      ctx.albums
+        .map(a => a.genre)
+        .filter(Boolean)
+    )
+  ].sort((a, b) => a.localeCompare(b));
+
+  if (!genres.length) {
+    return "No genres found.";
+  }
+
+  return (
+    "Genres:\n" +
+    genres.map(g => `• ${g}`).join("\n")
+  );
+},
+
+
   trackByDurationInAlbum: (ctx, type = "longest") => {
   if (!ctx.tracksWithDuration?.length) {
     return `No tracks found for album "${ctx.albumName}".`;

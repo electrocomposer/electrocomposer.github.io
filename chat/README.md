@@ -390,9 +390,18 @@ match: /^(?:list|show|display)\s+(?:all\s+)?albums\s+in\s+(.+)$/i,
 "list albums in [Genre]",
 "show albums in [Genre]",
 "display all albums in [Genre]"
-
 ```
 
+
+```
+intent: "list_genres",
+match: /^(?:list|show|display)\s+(?:all\s+)?genres$/i,
+"list genres",
+"list all genres",
+"show genres",
+"display all genres",
+
+```
 # 6. ARTWORK INTENT
 
 ```

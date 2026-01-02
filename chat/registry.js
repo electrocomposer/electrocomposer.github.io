@@ -144,6 +144,11 @@ albums_by_genre: {
   format: formatters.albumsList
 },
 
+list_genres: {
+  plan: ["fetchAlbums"],
+  format: "listGenres"
+},
+
   /* ---------------- ARTWORK ---------------- */
   artwork: {
     plan: ["resolveTitle"],

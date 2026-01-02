@@ -121,6 +121,9 @@ export const PROMPT_TEMPLATES = [
   "list albums in [Genre]",
   "show albums in [Genre]",
   "display all albums in [Genre]",
+  "list genres",
+  "show genres",
+  "display all genres",
 
 
   // ARTWORK

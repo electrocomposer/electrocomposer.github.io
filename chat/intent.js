@@ -231,6 +231,11 @@ export function parseIntent(text) {
   })
 },
 
+{
+  intent: "list_genres",
+  match: /^(?:list|show|display)\s+(?:all\s+)?genres$/i,
+  extract: () => ({})
+},
 
 /* ---------------- ARTWORK ---------------- */
     {

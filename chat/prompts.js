@@ -53,7 +53,6 @@ export const PROMPT_TEMPLATES = [
   "[Track Name] track duration",
   "[Track Name] track length",
   "[Track Name] track runtime",
-  "[Track Name] track length",
 
 
   // TRACK LISTING
@@ -72,15 +71,15 @@ export const PROMPT_TEMPLATES = [
   // TRACK → ALBUM LOOKUP
   "which album features [Track Name]",
   "what album features [Track Name]",
-  "which album is [Track Name] on",
-  "what album is [Track Name] on",
+  // "which album is [Track Name] on",
+  // "what album is [Track Name] on",
 
   // ALBUM BEFORE / AFTER
   "which album was released before [Album Name]",
-  "what was the album released before [Album Name]",
+  // "what was the album released before [Album Name]",
   "album before [Album Name]",
   "which album was released after [Album Name]",
-  "what was the album released after [Album Name]",
+  // "what was the album released after [Album Name]",
   "album after [Album Name]",
 
   // ALBUM LISTING
@@ -109,10 +108,9 @@ export const PROMPT_TEMPLATES = [
   "query albums over 1 hour",
 
   // ALBUM BY DURATION (OVERALL)
-  "longest album",
-  "shortest album",
   "longest album overall",
   "shortest album in the catalogue",
+  "shortest album overall",
 
   // GENRE
   "longest album in [Genre]",
@@ -129,9 +127,32 @@ export const PROMPT_TEMPLATES = [
   // ARTWORK
   "show artwork for [Album Name]",
   "get artwork for [Album Name]",
-  "display the album cover for [Album Name]",
+  "display the cover for [Album Name]",
+  "display the artwork for [Album Name]",
   "fetch cover of [Album Name]",
   "fetch cover for [Album Name]",
+
+
+
+// GLOBAL CATALOGUE COUNTS
+"how many albums",
+"how many albums in catalogue",
+"number of albums",
+"total albums",
+
+"how many tracks",
+"how many tracks in catalogue",
+"number of tracks",
+"total tracks",
+
+// GLOBAL CATALOGUE DURATION
+"length of catalogue",
+"total duration",
+"total duration of catalogue",
+"catalogue duration",
+"what is the total duration of the catalogue",
+
+
 
   // GENERAL
   "help",
@@ -139,9 +160,6 @@ export const PROMPT_TEMPLATES = [
   "what is this system",
 
   // PROMPTS FILLER (for start letter not yet active)
-  "oh whoops! no prompts here (try another start letter)",
-  "jokes! no prompts start with j (try another start letter)",
-  "knock knock!, no prompts here (try another start letter)",
   "z - no prompts beginning with z, try another letter",
   "x - no prompts beginning with x, try another letter",
 

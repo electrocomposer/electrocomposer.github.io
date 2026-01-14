@@ -1,8 +1,34 @@
+if (parsed.missingFields?.length) {
+  return {
+    type: "system",
+    message: `You forgot to specify the ${parsed.missingFields.join(" or ")}.`
+  };
+}
+
+
 ## askEC
 [LIVE SITE](askec.olk1.com)
 
----
+# issue 
+"how long is album ..."
+track "how long is" not found
+
+
+
 # todo
+
+"which album is [Track Name] on",
+"what album is [Track Name] on",
+
+"length of catalogue"
+
+
+# - - -
+
+average album length
+average track duration
+
+# - - -
 
 also catch track singular with tracks/s
 
@@ -420,7 +446,43 @@ display the album cover for [albumName]
 get artwork [albumName]
 
 
-# 7. GENERAL INTENT
+# 7. GLOBAL
+```
+/^(?:how\s+many|number\s+of|total)\s+albums(?:\s+(?:in\s+the\s+)?catalogue)?$/i
+```
+how many albums
+
+how many albums in catalogue
+
+number of albums
+
+total albums
+
+total albums in the catalogue
+
+```
+/^(?:how\s+many|number\s+of|total)\s+tracks(?:\s+(?:in\s+the\s+)?catalogue)?$/i
+```
+how many tracks
+
+number of tracks
+
+total tracks in catalogue
+
+```
+/^(?:(?:what(?:'s| is)?\s+the\s+)?total\s+duration(?:\s+of\s+(?:the\s+)?catalogue)?|catalogue\s+duration)$/i
+```
+total duration
+
+total duration of catalogue
+
+what is the total duration of the catalogue
+
+catalogue duration
+
+
+
+# 8. GENERAL INTENT
 
 ```
 {

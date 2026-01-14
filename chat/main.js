@@ -51,27 +51,39 @@ async function executeArtwork(ctx) {
 async function handleMessage(text) {
   const parsed = parseIntent(text);
 
-  // Artwork is intentionally bypassed
+  // 1. Missing-field guard (MUST come before registry lookup)
+  if (parsed.missingFields?.length) {
+    return {
+      type: "system",
+      message: `You forgot to specify the ${parsed.missingFields.join(" or ")}.`
+    };
+  }
+
+  // 2. Artwork is intentionally bypassed
   if (parsed.intent === "artwork") {
     return await executeArtwork(parsed);
   }
 
+  // 3. Unknown / unsupported intent
   const intentDef = intentRegistry[parsed.intent];
-
   if (!intentDef) {
     launchConfetti();
-    return "I don't understand that query, please try something else.";
+    return "Please check your query and try again.";
   }
 
   const ctx = { ...parsed };
 
   try {
+    // 4. Execute plan
     for (const stepName of intentDef.plan) {
       const step = steps[stepName];
-      if (!step) throw new Error(`Unknown step: ${stepName}`);
+      if (!step) {
+        throw new Error(`Unknown step: ${stepName}`);
+      }
       await step(ctx);
     }
 
+    // 5. Format result
     if (!intentDef.format) {
       return ctx.playlistLink ?? ctx;
     }

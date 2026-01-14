@@ -13,6 +13,29 @@ export function parseIntent(text) {
 
   const patterns = [
 
+
+/* ---------------- GLOBAL ---------------- */
+{
+  intent: "album_count_catalogue",
+  match: /^(?:how\s+many|number\s+of|total)\s+albums(?:\s+in(?:\s+the)?(?:\s+catalogue)?)?$/i,
+  extract: () => ({})
+},
+
+{
+  intent: "track_count_catalogue",
+  match: /^(?:how\s+many|number\s+of|total)\s+tracks(?:\s+in(?:\s+the)?(?:\s+catalogue)?)?$/i,
+  extract: () => ({})
+},
+
+
+
+{
+  intent: "catalogue_duration",
+  match: /^(?:(?:what(?:'s| is)?\s+the\s+)?(?:total\s+)?(?:duration|length)(?:\s+of\s+(?:the\s+)?catalogue)?|catalogue\s+(?:duration|length))$/i,
+  extract: () => ({})
+},
+
+
     /* ---------------- LINK / INFO (NEW, GENERIC) ---------------- */
 
     {
@@ -217,11 +240,12 @@ export function parseIntent(text) {
 
     {
   intent: "album_count_by_genre",
-  match: /^how\s+many\s+albums(?:\s+are\s+there)?\s+in\s+(.+)$/i,
+  match: /^how\s+many\s+albums(?:\s+are\s+there)?\s+in\s+(?!the\s+)?(?!catalogue\b)(.+)$/i,
   extract: m => ({
     genre: m[1].trim().toLowerCase()
   })
 },
+
 
 {
   intent: "albums_by_genre",
@@ -246,6 +270,8 @@ export function parseIntent(text) {
     explicitAlbum: true
   })
 },
+
+
 
 /* ---------------- GENERAL ---------------- */
 {

@@ -31,6 +31,11 @@ export const intentRegistry = {
   }
 },
 
+  track_by_duration: {
+    plan: ["computeTrackDurations"],
+    format: ctx =>
+      formatters.trackByDuration(ctx, ctx.durationType || "longest")
+  },
 
 track_by_duration_in_album: {
   plan: ["normalizeAlbumName", "fetchTracksByAlbum", "computeTrackDurationsInAlbum"],
@@ -38,11 +43,6 @@ track_by_duration_in_album: {
     formatters.trackByDurationInAlbum(ctx, ctx.durationType || "longest")
 },
 
-  // track_by_duration: {
-  //   plan: ["computeTrackDurations"],
-  //   format: ctx =>
-  //     formatters.trackByDuration(ctx, ctx.durationType || "longest")
-  // },
 track_duration: {
   plan: ["fetchTrackDuration"],
   format: formatters.trackDuration
@@ -156,6 +156,23 @@ list_genres: {
   },
 
   
+  /* ---------------- GLOBAL ---------------- */
+album_count_catalogue: {
+  plan: ["fetchAlbums"],
+  format: "albumCountCatalogue"
+},
+
+track_count_catalogue: {
+  plan: ["fetchTracks"],
+  format: "trackCountCatalogue"
+},
+
+catalogue_duration: {
+  plan: ["fetchTracks", "computeCatalogueDuration"],
+  format: "catalogueDuration"
+},
+
+
   /* ---------------- GENERAL ---------------- */
   system_explanation: {
   plan: ["explainSystem"],

@@ -1,17 +1,20 @@
-const API = "https://ecapi.olk1.com/tracks";
+const API_tracks = "https://ecapi.olk1.com/tracks";
+const API_albums = "https://ecapi.olk1.com/albums";
 
 async function fetchAndProcessData() {
 
-  const res = await fetch(API);
-  const json = await res.json();
+  const res_tracks = await fetch(API_tracks);
+  const res_albums = await fetch(API_albums);
+  const json_tracks = await res_tracks.json();
+  const json_albums = await res_albums.json();
 
 
   const h2 = document.querySelectorAll('h2');
 
   // Extract track names, album names, and durations
-  const tracks = json.map(x => x.trackName);
-  const albums = json.map(x => x.albumName);
-  const albumDuration = json.map(x => x.albumDuration);
+  const tracks = json_tracks.map(x => x.trackName);
+  const albums = json_albums.map(x => x.albumName);
+  // const albumDuration = json.map(x => x.albumDuration);
 
   // TRACKS
   const totalTracks = tracks.length;
@@ -21,7 +24,7 @@ async function fetchAndProcessData() {
 
   // TIME
 const uniqueAlbumDurations = new Map();
-json.forEach(item => {
+json_albums.forEach(item => {
   if (!uniqueAlbumDurations.has(item.albumName)) {
     uniqueAlbumDurations.set(item.albumName, item.albumDuration);
   }

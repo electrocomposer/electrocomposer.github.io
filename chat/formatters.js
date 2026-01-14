@@ -3,12 +3,15 @@
 import { formatSeconds } from "./utils.js";
 
 export const formatters = {
+  
   trackCountByAlbum: ctx => {
-  const album = ctx.album;
+// const intentDef = intentRegistry[parsed.intent];
 
-  if (!album) {
-    return `Album "${ctx.albumName}" not found.`;
-  }
+  if (!ctx.albumName) {
+  return `You forgot to specify the album.`;
+}
+
+  const album = ctx.album;
 
   const count =
     album.trackCount ??
@@ -151,12 +154,6 @@ listGenres: ctx => {
   } track on "${ctx.albumName}" is "${track.trackName}" (${formatSeconds(track.durationSeconds)})`;
 },
 
-albumsList: ctx => {
-  if (!ctx.albumsList?.length) return "No albums found.";
-  return ctx.albumsList
-    .map(a => `${a.albumName} (${a.albumDuration || "Unknown duration"})`)
-    .join("\n");
-},
 
   trackByDuration: (ctx, type = "longest") => {
     if (!ctx.tracksWithDuration?.length) return "No tracks found.";
@@ -273,6 +270,24 @@ Genre: ${ctx.album.genre}`
 
   return blocks.length ? blocks : "No information found.";
 },
+
+
+
+albumCountCatalogue: ctx => {
+  return `There are ${ctx.albums.length} albums in the catalogue.`;
+},
+
+trackCountCatalogue: ctx => {
+  return `There are ${ctx.tracks.length} tracks in the catalogue.`;
+},
+
+catalogueDuration: ctx => {
+  return `The total duration of the catalogue is ${formatSeconds(ctx.totalSeconds)}.`;
+},
+
+
+
+
 
 systemExplanation: ctx => {
   return ctx.systemDescription;

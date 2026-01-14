@@ -99,6 +99,35 @@ listAlbumsById: async ctx => {
 
 
 
+// computeCatalogueDuration: async ctx => {
+//   if (!ctx.albums) await steps.fetchAlbums(ctx);
+
+//   // Sum total seconds for all albums
+//   ctx.totalSeconds = ctx.albums.reduce((sum, album) => {
+//     if (typeof album.albumDuration !== "number" || isNaN(album.albumDuration)) return sum;
+
+//     const minutes = Math.floor(album.albumDuration);
+//     const seconds = Math.round((album.albumDuration % 1) * 100); // fractional part → seconds
+//     return sum + minutes * 60 + seconds;
+//   }, 0);
+
+//   // Break down into h/m/s
+//   const hours = Math.floor(ctx.totalSeconds / 3600);
+//   const remainingSeconds = ctx.totalSeconds % 3600;
+//   const minutes = Math.floor(remainingSeconds / 60);
+//   const seconds = remainingSeconds % 60;
+
+//   ctx.catalogueDuration = { hours, minutes, seconds };
+// },
+computeCatalogueDuration: async ctx => {
+  if (!ctx.albums) await steps.fetchAlbums(ctx);
+
+  ctx.totalSeconds = ctx.albums.reduce((sum, album) => {
+    return sum + parseAlbumDuration(album.albumDuration);
+  }, 0);
+},
+
+
   computeAlbumDurations: async ctx => {
     if (!ctx.albums) await steps.fetchAlbums(ctx);
     ctx.albumsWithDuration = ctx.albums.map(album => ({
@@ -106,6 +135,7 @@ listAlbumsById: async ctx => {
       totalSeconds: parseAlbumDuration(album.albumDuration)
     }));
   },
+
 
   computeGenreAlbumDurations: async ctx => {
     if (!ctx.albums) await steps.fetchAlbums(ctx);
@@ -158,6 +188,11 @@ computeTrackDurationsInAlbum: async ctx => {
   },
   
   // --- Track-related steps ---
+    fetchTracks: async ctx => {
+    ctx.tracks = await fetchJSON(`${API_BASE}/tracks`);
+  },
+
+
   computeTrackDurations: async ctx => {
     ctx.tracks = await fetchJSON(`${API_BASE}/tracks`);
 
@@ -257,6 +292,11 @@ fetchTrackByName: async ctx => {
 
 
 resolveTitle: async ctx => {
+  if (!ctx.subject) {
+    ctx.missingFields = ["title"];
+    return;
+  }
+  
   const [tracks, albums] = await Promise.all([
     fetchJSON(`${API_BASE}/tracks?trackName=${encodeURIComponent(ctx.subject)}`),
     fetchJSON(`${API_BASE}/albums?albumName=${encodeURIComponent(ctx.subject)}`)
@@ -271,7 +311,7 @@ resolveTitle: async ctx => {
     return;
   }
 
-  // 2. Explicit album request  ← THIS IS WHERE IT GOES
+  // 2. Explicit album request
   if (ctx.explicitAlbum) {
     if (!albums.length) {
       throw new Error(`Album "${ctx.subject}" not found`);

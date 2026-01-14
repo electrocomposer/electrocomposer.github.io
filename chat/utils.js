@@ -8,12 +8,12 @@ export function scrollToBottom() {
 }
 
 
-export function parseAlbumDuration(durationFloat) {
-  if (typeof durationFloat !== "number" || isNaN(durationFloat)) return 0;
 
-  const minutes = Math.floor(durationFloat);
-  const seconds = Math.round((durationFloat - minutes) * 60);
+export function parseAlbumDuration(duration) {
+  if (typeof duration !== "number" || isNaN(duration)) return 0;
 
+  const minutes = Math.floor(duration);
+  const seconds = Math.round((duration % 1) * 100); // treat fraction as seconds
   return minutes * 60 + seconds;
 }
 

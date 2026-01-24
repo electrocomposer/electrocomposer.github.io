@@ -1,26 +1,14 @@
-if (parsed.missingFields?.length) {
-  return {
-    type: "system",
-    message: `You forgot to specify the ${parsed.missingFields.join(" or ")}.`
-  };
-}
-
 
 ## askEC
-[LIVE SITE](askec.olk1.com)
+[LIVE SITE](https://electrocomposer.com/chat/)
 
 # issue 
-"how long is album ..."
-track "how long is" not found
+- add h m s to album/track durations 
+- print with a 0 if 10 seconds (not 5.1) 
 
-
+list albums by duration (include the duration -> ref: "list tracks on album name")
 
 # todo
-
-"which album is [Track Name] on",
-"what album is [Track Name] on",
-
-"length of catalogue"
 
 
 # - - -

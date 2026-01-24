@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ElectroComposer Music Catalogue</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
+  <style>
+
+.slideDown{
+  animation: .5s ease-out 0s 1 slideDown;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+  </style>
+</head>
+
+<body class="bg-[#202123] text-neutral-100 h-screen">
+  <div class="flex flex-col items-center lg:flex-row lg:items-start h-full">
+
+    <!-- Sidebar -->
+    <aside class="w-full p-4 flex flex-col lg:w-72 lg:fixed gap-4">
+      <h1 class="text-2xl font-semibold text-center"><a href="/api/">&larr; ElectroComposer</a> <br/><span class="text-lg">Music Catalogue</span></h1>
+
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Search tracks, albums or genres"
+        class="w-full rounded bg-neutral-900 border border-neutral-700 px-3 py-2 text-sm"
+      />
+
+      <div>
+        <h2 class="text-sm font-medium mb-2">Views</h2>
+        <div class="flex">
+          <button data-view="albums" class="view-btn">Albums</button>
+        </div>
+      </div>
+
+      <div>
+        <select id="genreFilter" class="w-full bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-sm">
+          <option value="">All Genres</option>
+        </select>
+      </div>
+
+      <button data-view="tracks" class="view-btn">Tracks</button>
+
+      <button class="view-btn" data-view="timedist">Time Distribution</button>
+
+      <button class="view-btn" data-view="analytics">Analytics</button>
+      
+      <a href="metrics.html" class="px-2 py-1 rounded hover:bg-red-500">Metrics</a>
+
+
+    </aside>
+
+
+    <!-- Main -->
+    <main id="main" class="slideDown w-full flex-1 overflow-y-auto p-6 lg:ml-72"></main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

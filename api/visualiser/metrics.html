@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>electroComposer</title>
+  <title>ElectroComposer Music Catalogue</title>
   <link rel='shortcut icon' href='/monki.png' type='image/x-icon' />
   <link rel='stylesheet' href='/style.css' />  
   <script src='/tailwindcss.min.js'></script>
@@ -53,6 +53,8 @@ body{
     opacity: 1;
   }
 }
+
+
 .large-stat-bubble {
   position: absolute;
   border-radius: 50%;
@@ -101,7 +103,7 @@ body{
 <div class="w-full h-screen overflow-hidden slideDown">
 
   <div class="ml-2 z-50 fixed top-0 bg-white w-fit">
-    <a href="/api/" class="hover:underline">B A C K</a>
+    <a href="/api/visualiser" class="hover:underline">B A C K</a>
   </div>
 
 
@@ -271,7 +273,7 @@ async function findAverageTrackLength(data) {
     const totalDuration = trackDurationsInSeconds.reduce((acc, curr) => acc + curr, 0);
     const averageTrackLength = totalDuration / trackDurationsInSeconds.length;
     // Use the helper function to style and append the bubble
-    largeStatBubble(averageTrackContainer, `Average Track Length<br>${averageTrackLength.toFixed(2)} m/s`, "#55f08a", "#ffffff");
+    largeStatBubble(averageTrackContainer, `Average Track Length<br>${averageTrackLength.toFixed(2)} m/s`, "#55f08a", "#111111");
     return averageTrackLength;
   } catch (error) {
     console.error("Error finding the average track length:", error);

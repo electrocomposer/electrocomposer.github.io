@@ -62,10 +62,10 @@ img {
 li{
   list-style-type: none;
 }
-/* Prevent scrolling bounce on iOS and macOS */
+
 html, body {
     scroll-behavior: smooth;
-    overscroll-behavior: none;
+    overscroll-behavior: scroll;
     overflow-x: hidden;
 }
 html {

@@ -33,8 +33,8 @@ export const downloadPngButtons = (listItem, item) => {
       // Capture the container as PNG
       const dataUrl = await domtoimage.toPng(trackItem, {
         filter: node => !excludeButtons.includes(node),
-        width: 1000,
-        height: 1000,
+        width: 1280,
+        height: 768,
         // style: {
         //   transform: 'scale(1)',
         //   transformOrigin: 'center',

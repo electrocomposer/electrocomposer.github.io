@@ -7,7 +7,7 @@ setTimeout(() => {
   loader.style.display = "none";
 
   // window.location = "/api/";
-  window.location = "/api/";
+  window.location = "/api/albums/";
   document.body.style.backgroundColor = "white";
   content.style.display = "block";
 }, 2000);

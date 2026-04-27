@@ -69,16 +69,16 @@ class RecordLabelHeader extends HTMLElement {
 
 
 
-      <nav class="md:bg-white px-2 md:fixed top-0 right-0 z-40">
+      <nav class="md:bg-white px-2 md:fixed top-0 right-0 z-40 w-36">
   
         <!-- Left-pointing Triangle extension -->
         <!-- <div class="hidden md:block w-0 h-0 border-y-[14px] border-r-[14px] border-y-transparent border-r-white absolute left-[-14px]"></div> -->
 
         <ul class="hidden md:flex">
           
-              <!-- Catalogue API with automatic Dropdown Menu Nav-->
+              <!-- Automatic Dropdown Menu Nav-->
               <li class="relative">
-                <button id="apiDropdownBtn" class="bg-transparent nav-link hover:text-[#000] -mt-1 cursor-default" aria-haspopup="true" aria-expanded="false">Catalogue API <span class="text-2xl">&#x25BC;</span></button>
+                <button id="apiDropdownBtn" class="bg-transparent nav-link hover:text-[#000] ml-8 -mt-1 cursor-default" aria-haspopup="true" aria-expanded="false">MENU <span class="text-2xl">&#x25BC;</span></button>
                 
                 <ul id="apiDropdownMenu"
                     class="absolute -left-2 mt-0 w-48 bg-white shadow-md invisible"
@@ -86,21 +86,34 @@ class RecordLabelHeader extends HTMLElement {
                     aria-label="Catalogue API submenu">
                   
                   <li><a href="/api/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Track Search</a></li>
-                  
-                  <li><a href="/api/albums" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Albums</a></li>
+
+                  <li><a href="https://electrocomposer.com/api/visualiser/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Visualiser</a></li>
                   
                   <li><a href="/api/dashboard" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Dashboard</a></li>
+
+                  <li><a href="/api/albums" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Albums</a></li>
+                                    
+                  <li class="py-2 px-4">- - -</li>
+
+                  <li><a href="https://ecs-apps.olk1.com/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1" target="_blank">Apps</a></li>
                   
                   <li><a href="https://ecs-samplepacks.olk1.com/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1" target="_blank">Samplepacks</a></li>
                   
                   <li class="py-2 px-4">- - -</li>
-
-                  <li><a href="/api/docs" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">API Docs</a></li>
-
-                  <li><a href="/api/overlays" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Overlays</a></li>
                   
+                  
+                  <li><a href="https://electrocomposer.com/chat/" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Ask EC</a></li>
+
+                  <li class="py-2 px-4">- - -</li>
+
                   <li><a href="/api/styleguide" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Style Guide</a></li>
                   
+                  <li><a href="/api/overlays" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">Overlays</a></li>
+                  
+                  <li class="py-2 px-4">- - -</li>
+                  
+                  <li><a href="/api/docs" class="nav-link block px-4 py-2 hover:bg-gray-100 hover:text-[#FD6A6D]" role="menuitem" tabindex="-1">API Docs</a></li>
+
                 </ul>
 
               </li>
@@ -510,20 +523,25 @@ setupInteractivity() {
 
 const scrollMessages = [
   {
-    text: "&gl;&gl; Live Update &gl;&gl; New Album Released! &gl;&gl;",
-    highlight: "New Album Released!",
+    text: "&gl;&gl; Live Update &gl;&gl; New Video Released! &gl;&gl;",
+    highlight: "New Video Released!",
     url: "https://www.youtube.com/@electrocomposer"
+  },
+  {
+    text: "&gl;&gl; APPS APPS APPS &gl;&gl; For Musicians &amp; Designers &gl;&gl;",
+    highlight: "Apps",
+    url: "https://ecs-apps.olk1.com"
   },
   {
     text: "&gl;&gl; Breaking News &gl;&gl; New Samplepack available &gl;&gl;",
     highlight: "New Samplepack available",
     url: "https://ecs-samplepacks.olk1.com"
   },
-  {
-    text: "&gl;&gl; Check out the latest playlist &gl;&gl; Listen now",
-    highlight: "Listen now",
-    url: "https://www.youtube.com/@electrocomposer/playlists"
-  }
+  // {
+  //   text: "&gl;&gl; Check out the latest playlist &gl;&gl; Listen now",
+  //   highlight: "Listen now",
+  //   url: "https://www.youtube.com/@electrocomposer/playlists"
+  // }
 ];
 
 let currentIndex = 0;
